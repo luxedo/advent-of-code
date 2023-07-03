@@ -29,6 +29,7 @@ For example, if your instructions are R8, R4, R4, R8, the first location you vis
 How many blocks away is the first location you visit twice?
 """
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import Enum
 

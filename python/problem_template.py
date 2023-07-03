@@ -6,10 +6,12 @@ import aoc2016
 
 
 def solve_pt1(input_data: str) -> int:
+    # solution_pt1: ???
     return 0
 
 
 def solve_pt2(input_data: str) -> int:
+    # solution_pt2: ???
     return 0
 
 

@@ -1,7 +1,8 @@
-import __main__
 import argparse
-from pathlib import Path
 import unittest
+from pathlib import Path
+
+import __main__
 
 
 class AocTestCase(unittest.TestCase):
