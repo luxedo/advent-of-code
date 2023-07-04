@@ -13,25 +13,25 @@ repos:
         name: isort (python)
         args: [--profile, black, --filter-files]
   - repo: https://github.com/ambv/black
-    rev: 23.1.0
+    rev: 23.3.0
     hooks:
       - id: black
   - repo:
       https://github.com/charliermarsh/ruff-pre-commit
       # Ruff version.
-    rev: v0.0.253
+    rev: v0.0.275
     hooks:
       - id: ruff
         args: [--fix, --ignore, E501]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.0.1 # Use the sha / tag you want to point at
+    rev: v1.4.1 # Use the sha / tag you want to point at
     hooks:
       - id: mypy
         name: mypy
         args: [--no-strict-optional, --ignore-missing-imports]
         exclude: ^(bin\/(?!garanos)|test/update/)
   - repo: https://github.com/doublify/pre-commit-rust
-    rev: master
+    rev: v1.0
     hooks:
       - id: fmt
         args: [--manifest-path, rust/Cargo.toml, --]

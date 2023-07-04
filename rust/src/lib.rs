@@ -8,7 +8,9 @@ pub fn load_input(filename: &str) -> String {
         Ok(_) => read_to_string(filename)
             .expect("Failed reading file {filename}")
             .parse::<String>()
-            .unwrap(),
+            .unwrap()
+            .trim()
+            .to_string(),
         Err(_) => panic!("Input file {filename} not found"),
     }
 }

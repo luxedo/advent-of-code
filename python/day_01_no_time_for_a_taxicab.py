@@ -122,4 +122,4 @@ if __name__ == "__main__":
         aoc2016.AocTestCase(func=solve_pt1, output=12, input_data="R5, L5, R5, R3"),
         aoc2016.AocTestCase(func=solve_pt2, output=4, input_data="R8, R4, R4, R8"),
     ]
-    aoc2016.parser(solve_pt1, solve_pt2, tests)
+    aoc2016.runner(solve_pt1, solve_pt2, tests)

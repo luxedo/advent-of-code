@@ -163,4 +163,4 @@ UUUUD"""
         ),
         aoc2016.AocTestCase(func=solve_pt2, output="5DB3", input_data=test_input),
     ]
-    aoc2016.parser(solve_pt1, solve_pt2, tests)
+    aoc2016.runner(solve_pt1, solve_pt2, tests)

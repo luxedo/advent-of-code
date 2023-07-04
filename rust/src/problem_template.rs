@@ -1,7 +1,8 @@
-// Advent Of Code
-// https://adventofcode.com/2022/day/4
-//
-//  --- PROBLEM DESCRIPTION ---
+/* Advent Of Code 2016
+ * {url}
+ *
+{description}
+*/
 
 use aoc2016::load_input;
 use std::error::Error;
@@ -15,7 +16,7 @@ fn solve_pt2(input_text: &str) -> u64 {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    const FILENAME: &str = "../data/day_X_input.txt";
+    const FILENAME: &str = "../data/day_{day}_input.txt";
     let input_text = load_input(FILENAME);
 
     print!("Part one: {:#?}\n", solve_pt1(&input_text));
