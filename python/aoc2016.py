@@ -1,43 +1,51 @@
 import argparse
 import http.client
 import unittest
+from collections.abc import Callable
 from html.parser import HTMLParser
 from pathlib import Path
 from subprocess import run
+from typing import Union
 
 import __main__
 
 
 class AocTestCase(unittest.TestCase):
-    def __init__(self, func, output, input_data):
+    def __init__(
+        self,
+        func: Callable,
+        output: Union[int, str],
+        input_data: str,
+        func_args: tuple = (),
+    ):
         self.func = func
         self.output = output
         self.input_data = input_data
+        self.func_args = func_args
         super().__init__()
 
     def runTest(self):
-        self.assertEqual(self.output, self.func(self.input_data))
+        self.assertEqual(self.output, self.func(self.input_data, *self.func_args))
 
 
-def load_input():
+def load_input() -> str:
     main_file = Path(__main__.__file__)
     filename = str(main_file.name)
     day = filename.split("_")[1]
     input_filename = main_file.parent.joinpath("../", "data", f"day_{day}_input.txt")
     with open(input_filename, "r", encoding="utf-8") as fp:
-        return fp.read()
+        return fp.read().strip()
 
 
-def aoc_main(mode, year, day):
+def aoc_main(mode: str, year: int, day: int):
     filename = [f for f in Path("python/").iterdir() if f"day_{day:02}_" in f.name]
     if len(filename) == 0:
         print(f"Could not find solution for day {day}")
         return
-    filename = filename[0]
-    run(["python", filename, mode])
+    run(["python", filename[0], mode])
 
 
-def runner(solve_pt1, solve_pt2, tests):
+def runner(solve_pt1: Callable, solve_pt2: Callable, tests: list[AocTestCase]):
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=["run", "test"])
     args = parser.parse_args()
@@ -56,11 +64,11 @@ def runner(solve_pt1, solve_pt2, tests):
             test_runner.run(suite)
 
 
-def prepare_template(year, day):
+def prepare_template(year: int, day: int):
     HOST = "adventofcode.com"
     ROUTE = f"/{year}/day/{day}"
 
-    def fetch_url(route):
+    def fetch_url(route: str) -> str:
         conn = http.client.HTTPSConnection(HOST)
         conn.request("GET", route)
         res = conn.getresponse()
@@ -68,7 +76,7 @@ def prepare_template(year, day):
             raise ValueError("Could not connect!")
         return res.read().decode("utf-8")
 
-    def parse_body(body):
+    def parse_body(body: str) -> str:
         class AoCHTMLParser(HTMLParser):
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
@@ -91,7 +99,7 @@ def prepare_template(year, day):
         p.feed(body)
         return p.text.strip()
 
-    def process_title(description, day):
+    def process_title(description: str, day: int) -> str:
         return (
             description.split("\n")[0]
             .replace("-", "")
@@ -102,12 +110,12 @@ def prepare_template(year, day):
             .replace(f"day_{day}", f"day_{day:02}")
         )
 
-    def boilerplate(lang, year, day, title, description):
+    def boilerplate(lang: str, year: int, day: int, title: str, description: str):
         full_url = f"https://{HOST}{ROUTE}"
         match lang:
             case "python":
                 filename = Path(f"python/{title}.py")
-                Path("python/problem_template.py")
+                template = Path("python/problem_template.py")
             case "rust":
                 filename = Path(f"rust/src/bin/{title}.rs")
                 template = Path("rust/src/problem_template.rs")

@@ -23,4 +23,10 @@ macro_rules! test_solution {
             assert_eq!($expected, super::$func($input));
         }
     };
+    ($name:ident, $func:ident, $expected:expr, $input:expr, $args:expr) => {
+        #[test]
+        fn $name() {
+            assert_eq!($expected, super::$func($input, $args));
+        }
+    };
 }
