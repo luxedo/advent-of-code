@@ -12,6 +12,7 @@
  *
  * In your puzzle input, how many of the listed triangles are possible?
 */
+#![allow(dead_code)]
 
 use aoc2016::load_input;
 use std::error::Error;
@@ -94,10 +95,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let input_text = load_input(FILENAME);
 
     print!("Part one: {:#?}\n", solve_pt1(&input_text));
-    // Correct: 993
+    // solution_pt1: 993
 
     print!("Part two: {:#?}\n", solve_pt2(&input_text));
-    // Correct: 1849
+    // solution_pt2: 1849
 
     Ok(())
 }

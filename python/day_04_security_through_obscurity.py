@@ -31,7 +31,6 @@ For example, the real name for qzmt-zixmtkozy-ivhz-343 is very encrypted name.
 
 What is the sector ID of the room where North Pole objects are stored?
 
-
 """
 from __future__ import annotations
 

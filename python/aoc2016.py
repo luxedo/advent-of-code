@@ -4,6 +4,7 @@ import unittest
 from collections.abc import Callable
 from html.parser import HTMLParser
 from pathlib import Path
+from string import punctuation
 from subprocess import run
 from typing import Union
 
@@ -100,6 +101,7 @@ def prepare_template(year: int, day: int):
         return p.text.strip()
 
     def process_title(description: str, day: int) -> str:
+        punc = "".join(p for p in punctuation if p != "_")
         return (
             description.split("\n")[0]
             .replace("-", "")
@@ -108,6 +110,7 @@ def prepare_template(year: int, day: int):
             .lower()
             .replace(" ", "_")
             .replace(f"day_{day}", f"day_{day:02}")
+            .translate(str.maketrans("", "", punc))
         )
 
     def boilerplate(lang: str, year: int, day: int, title: str, description: str):
