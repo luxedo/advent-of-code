@@ -31,14 +31,47 @@
 */
 
 use aoc2016::load_input;
+use std::collections::BTreeMap;
 use std::error::Error;
 
-fn solve_pt1(input_text: &str) -> u64 {
-    0
+fn solve_pt1(input_text: &str) -> String {
+    let word_len = input_text.find("\n").unwrap();
+    let mut counters = vec![BTreeMap::<char, u32>::new(); word_len];
+    input_text.lines().for_each(|line| {
+        line.chars().enumerate().for_each(|(i, c)| {
+            *counters[i].entry(c).or_insert(0) += 1;
+        })
+    });
+    counters
+        .iter()
+        .map(|counter| {
+            *counter
+                .iter()
+                .max_by(|i, j| i.1.partial_cmp(j.1).unwrap())
+                .unwrap()
+                .0
+        })
+        .collect()
 }
 
-fn solve_pt2(input_text: &str) -> u64 {
-    1
+fn solve_pt2(input_text: &str) -> String {
+    let word_len = input_text.find("\n").unwrap();
+    let mut counters = vec![BTreeMap::<char, u32>::new(); word_len];
+    input_text.lines().for_each(|line| {
+        line.chars().enumerate().for_each(|(i, c)| {
+            *counters[i].entry(c).or_insert(0) += 1;
+        })
+    });
+    counters
+        .iter()
+        .map(|counter| {
+            *counter
+                .iter()
+                .min_by(|i, j| i.1.partial_cmp(j.1).unwrap())
+                .unwrap()
+                .0
+        })
+        .collect()
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -46,10 +79,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let input_text = load_input(FILENAME);
 
     print!("Part one: {:#?}\n", solve_pt1(&input_text));
-    // solution_pt1: ???
+    // solution_pt1: umejzgdw
 
     print!("Part two: {:#?}\n", solve_pt2(&input_text));
-    // solution_pt2: ???
+    // solution_pt2: aovueakv
 
     Ok(())
 }
@@ -58,7 +91,23 @@ fn main() -> Result<(), Box<dyn Error>> {
 #[cfg(test)]
 mod example {
     use aoc2016::test_solution;
+    const INPUT_DATA: &str = "eedadn\n\
+drvtee\n\
+eandsr\n\
+raavrd\n\
+atevrs\n\
+tsrnev\n\
+sdttsa\n\
+rasrtv\n\
+nssdts\n\
+ntnada\n\
+svetve\n\
+tesnvt\n\
+vntsnd\n\
+vrdear\n\
+dvrsen\n\
+enarar";
 
-    test_solution!(test1, solve_pt1, 5, "Your data here");
-    test_solution!(test2, solve_pt2, 4, "Another data");
+    test_solution!(test1, solve_pt1, "easter", INPUT_DATA);
+    test_solution!(test2, solve_pt2, "advent", INPUT_DATA);
 }
