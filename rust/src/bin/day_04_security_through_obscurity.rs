@@ -58,10 +58,10 @@ impl Room {
         }
     }
     fn parse(value: &str) -> Result<Self, RoomParseError> {
-        let Some((head, tail)) = value.split_once("[") else {return Err(RoomParseError)};
+        let Some((head, tail)) = value.split_once('[') else {return Err(RoomParseError)};
         let checksum = tail[0..tail.len() - 1].to_string();
-        let Some((name, sector_id)) = head.rsplit_once("-") else {return Err(RoomParseError)};
-        let name = name.replace("-", " ");
+        let Some((name, sector_id)) = head.rsplit_once('-') else {return Err(RoomParseError)};
+        let name = name.replace('-', " ");
         let sector_id = sector_id.parse::<u64>().unwrap();
         Self::new(name, sector_id, checksum)
     }
@@ -102,15 +102,11 @@ fn solve_pt1(input_text: &str) -> u64 {
 }
 
 fn solve_pt2(input_text: &str, overwrite_sector_name: Option<&str>) -> u64 {
-    let sector_name = match overwrite_sector_name {
-        Some(name) => name,
-        None => "northpole object storage",
-    };
+    let sector_name = overwrite_sector_name.unwrap_or("northpole object storage");
     input_text
         .lines()
         .filter_map(|line| Room::parse(line).ok())
-        .filter(|room| room.decrypt() == sector_name)
-        .next()
+        .find(|room| room.decrypt() == sector_name)
         .unwrap()
         .sector_id
 }
@@ -119,10 +115,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     const FILENAME: &str = "../data/day_04_input.txt";
     let input_text = load_input(FILENAME);
 
-    print!("Part one: {:#?}\n", solve_pt1(&input_text));
+    println!("Part one: {:#?}", solve_pt1(&input_text));
     // solution_pt1: 185371
 
-    print!("Part two: {:#?}\n", solve_pt2(&input_text, None));
+    println!("Part two: {:#?}", solve_pt2(&input_text, None));
     // solution_pt2: 984
 
     Ok(())

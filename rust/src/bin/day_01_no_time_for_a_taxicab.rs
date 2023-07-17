@@ -160,10 +160,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     const FILENAME: &str = "../data/day_01_input.txt";
     let input_text = load_input(FILENAME);
 
-    println!("Part one: {:#?}\n", solve_pt1(&input_text));
+    println!("Part one: {:#?}", solve_pt1(&input_text));
     // Correct: 300
 
-    println!("Part two: {:#?}\n", solve_pt2(&input_text));
+    println!("Part two: {:#?}", solve_pt2(&input_text));
     // Correct: 159
 
     Ok(())

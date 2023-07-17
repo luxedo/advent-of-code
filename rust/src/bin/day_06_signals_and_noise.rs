@@ -28,6 +28,15 @@
  * The most common character in the first column is e; in the second, a; in the third, s, and so on. Combining these characters returns the error-corrected message, easter.
  *
  * Given the recording in your puzzle input, what is the error-corrected version of the message being sent?
+ *
+ * --- Part Two ---
+ * Of course, that would be the message - if you hadn't agreed to use a modified repetition code instead.
+ *
+ * In this modified code, the sender instead transmits what looks like random data, but for each character, the character they actually want to send is slightly less likely than the others. Even after signal-jamming noise, you can look at the letter distributions in each column and choose the least common letter to reconstruct the original message.
+ *
+ * In the above example, the least common character in the first column is a; in the second, d, and so on. Repeating this process for the remaining characters produces the original message, advent.
+ *
+ * Given the recording in your puzzle input and this new decoding methodology, what is the original message that Santa is trying to send?
 */
 
 use aoc2016::load_input;
@@ -35,7 +44,7 @@ use std::collections::BTreeMap;
 use std::error::Error;
 
 fn solve_pt1(input_text: &str) -> String {
-    let word_len = input_text.find("\n").unwrap();
+    let word_len = input_text.find('\n').unwrap();
     let mut counters = vec![BTreeMap::<char, u32>::new(); word_len];
     input_text.lines().for_each(|line| {
         line.chars().enumerate().for_each(|(i, c)| {
@@ -55,7 +64,7 @@ fn solve_pt1(input_text: &str) -> String {
 }
 
 fn solve_pt2(input_text: &str) -> String {
-    let word_len = input_text.find("\n").unwrap();
+    let word_len = input_text.find('\n').unwrap();
     let mut counters = vec![BTreeMap::<char, u32>::new(); word_len];
     input_text.lines().for_each(|line| {
         line.chars().enumerate().for_each(|(i, c)| {
@@ -78,10 +87,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     const FILENAME: &str = "../data/day_06_input.txt";
     let input_text = load_input(FILENAME);
 
-    print!("Part one: {:#?}\n", solve_pt1(&input_text));
+    println!("Part one: {:#?}", solve_pt1(&input_text));
     // solution_pt1: umejzgdw
 
-    print!("Part two: {:#?}\n", solve_pt2(&input_text));
+    println!("Part two: {:#?}", solve_pt2(&input_text));
     // solution_pt2: aovueakv
 
     Ok(())

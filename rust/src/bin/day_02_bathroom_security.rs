@@ -90,7 +90,7 @@ impl KeyPad {
         }
     }
 
-    fn find_starting_position(pad: &Vec<Vec<char>>, starting_pos: &char) -> (i32, i32) {
+    fn find_starting_position(pad: &[Vec<char>], starting_pos: &char) -> (i32, i32) {
         for (y, line) in pad.iter().enumerate() {
             for (x, cell) in line.iter().enumerate() {
                 if cell == starting_pos {
@@ -182,10 +182,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     const FILENAME: &str = "../data/day_02_input.txt";
     let input_text = load_input(FILENAME);
 
-    print!("Part one: {:#?}\n", solve_pt1(&input_text));
+    println!("Part one: {:#?}", solve_pt1(&input_text));
     // solution_pt1: 84452
 
-    print!("Part two: {:#?}\n", solve_pt2(&input_text));
+    println!("Part two: {:#?}", solve_pt2(&input_text));
     // solution_pt2: D65C3
 
     Ok(())

@@ -32,7 +32,7 @@ fn solve_pt1(input_text: &str) -> String {
     while key.len() < MAX_LEN {
         let mut hasher = Md5::new();
         let attempt = input_text.to_owned() + &i.to_string();
-        hasher.update(&attempt.as_bytes());
+        hasher.update(attempt.as_bytes());
         let hex = format!("{:02x}", &hasher.finalize());
         if hex.starts_with("00000") {
             key.push(hex.chars().nth(5).unwrap())
@@ -49,7 +49,7 @@ fn solve_pt2(input_text: &str) -> String {
     while key.into_iter().filter(|k| *k == '\0').count() != 0 {
         let mut hasher = Md5::new();
         let attempt = input_text.to_owned() + &i.to_string();
-        hasher.update(&attempt.as_bytes());
+        hasher.update(attempt.as_bytes());
         let hex = format!("{:02x}", &hasher.finalize());
         if hex.starts_with("00000") {
             let idx = usize::from_str_radix(&hex.chars().nth(5).unwrap().to_string(), 16).unwrap();
@@ -67,10 +67,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     const FILENAME: &str = "../data/day_05_input.txt";
     let input_text = load_input(FILENAME);
 
-    print!("Part one: {:#?}\n", solve_pt1(&input_text));
+    println!("Part one: {:#?}", solve_pt1(&input_text));
     // solution_pt1: f97c354d
 
-    print!("Part two: {:#?}\n", solve_pt2(&input_text));
+    println!("Part two: {:#?}", solve_pt2(&input_text));
     // solution_pt2: 863dde27
 
     Ok(())
