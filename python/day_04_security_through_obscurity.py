@@ -37,6 +37,7 @@ from __future__ import annotations
 from collections import Counter
 from dataclasses import dataclass
 from string import ascii_lowercase
+from typing import Optional
 
 import aoc2016
 
@@ -83,7 +84,7 @@ def solve_pt1(input_data: str) -> int:
     return sum(room.sector_id for room in rooms if room.is_valid())
 
 
-def solve_pt2(input_data: str, overwrite_sector_name: str = None) -> int:
+def solve_pt2(input_data: str, overwrite_sector_name: Optional[str] = None) -> int:
     rooms = [Room.parse(line) for line in input_data.split("\n")]
     if overwrite_sector_name is None:
         sector_name = "northpole object storage"

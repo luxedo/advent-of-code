@@ -38,12 +38,33 @@ def load_input() -> str:
         return fp.read().strip()
 
 
-def aoc_main(mode: str, year: int, day: int):
-    filename = [f for f in Path("python/").iterdir() if f"day_{day:02}_" in f.name]
-    if len(filename) == 0:
-        print(f"Could not find solution for day {day}")
-        return
-    run(["python", filename[0], mode])
+def aoc_main(mode: str, lang: str, year: int, day: int):
+    match lang:
+        case "python":
+            filename = [
+                f for f in Path("python/").iterdir() if f"day_{day:02}_" in f.name
+            ]
+            if len(filename) != 0:
+                run(["python", filename[0], mode])
+            else:
+                print(f"Could not find solution for day {day}")
+        case "rust":
+            filename = [
+                f for f in Path("rust/src/bin").iterdir() if f"day_{day:02}_" in f.name
+            ]
+            if len(filename) != 0:
+                run(
+                    [
+                        "cargo",
+                        "watch",
+                        "--workdir",
+                        "rust/",
+                        "--exec",
+                        f"{mode} --bin {filename[0].name.removesuffix('.rs')}",
+                    ]
+                )
+            else:
+                print(f"Could not find solution for day {day}")
 
 
 def runner(solve_pt1: Callable, solve_pt2: Callable, tests: list[AocTestCase]):
@@ -156,12 +177,13 @@ if __name__ == "__main__":
         description="Prepares the templates for the given day"
     )
     parser.add_argument("command", choices=["run", "test", "fetch"])
+    parser.add_argument("lang", choices=["python", "rust"])
     parser.add_argument("-d", "--day", required=True, type=int, help="AoC day")
     parser.add_argument("-y", "--year", required=True, type=int, help="AoC year")
 
     args = parser.parse_args()
     match args.command:
         case "run" | "test":
-            aoc_main(args.command, args.year, args.day)
+            aoc_main(args.command, args.lang, args.year, args.day)
         case "fetch":
             prepare_template(args.year, args.day)
