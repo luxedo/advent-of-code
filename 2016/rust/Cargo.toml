@@ -1,0 +1,9 @@
+[package]
+name = "aoc2016"
+version = "0.1.0"
+edition = "2021"
+autobins = true
+
+[dependencies]
+md-5 = "0.10.5"
+aoc-lang-rust = { path = "../../aoc/langs/rust" }

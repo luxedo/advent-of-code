@@ -34,8 +34,8 @@ repos:
     rev: v1.0
     hooks:
       - id: fmt
-        args: [--manifest-path, rust/Cargo.toml, --]
+        args: [--manifest-path, 2016/rust/Cargo.toml, --]
       - id: cargo-check
-        args: [--manifest-path, rust/Cargo.toml]
+        args: [--manifest-path, 2016/rust/Cargo.toml]
       - id: clippy
-        args: [--manifest-path, rust/Cargo.toml]
+        args: [--manifest-path, 2016/rust/Cargo.toml]

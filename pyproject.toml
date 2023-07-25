@@ -1,0 +1,62 @@
+[tool.poetry]
+authors = [
+  "Luiz Eduardo Amaral <luiz.amaral@tarvos.ag>"
+]
+description = "Aoc runner and tester"
+name = "aoc"
+readme = "README.md"
+repository = "https://github.com/luxedo/advent-of-code"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.1.0"
+pytest = "^7.2.1"
+pytest-cov = "^4.1.0"
+
+[tool.poetry.scripts]
+aoc = "aoc.__main__:run"
+
+[tool.ruff]
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+# Exclude a variety of commonly ignored directories.
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".hg",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "venv"
+]
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F"]
+ignore = []
+# Same as Black.
+line-length = 88
+per-file-ignores = {}
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
+select = ["E", "F"]
+# Assume Python 3.9.
+target-version = "py39"
+unfixable = []
+
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10

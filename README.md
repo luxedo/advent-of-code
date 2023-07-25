@@ -1,29 +1,31 @@
-# aoc2022
+# Advent of Code
 
-> [Advent Of Code 2016](https://adventofcode.com/2016/about)
+> [Advent Of Code](https://adventofcode.com/)
 >
 > Thank you [Eric!](https://twitter.com/ericwastl)
 
-Trying to learn `rust` 🙌
+Trying to learn `rust` 🙌 and maybe other stuff
+
+### Installing the runner
+
+```bash
+poetry install
+```
 
 ### Running for real
 
 ```bash
-cd rust
-cargo run -C rust/ --bin day_1_no_time_for_a_taxicab
+poetry run aoc --year 2016 --day 9 run rust
 ```
 
-### Running examples
+### Running tests
 
 ```bash
-cd rust
-cargo test -C rust/ --bin day_1_no_time_for_a_taxicab
+poetry run aoc --year 2016 --day 9 test rust
 ```
 
 ### Also in Python
 
 ```bash
-cd python
-python python/day_1_no_time_for_a_taxicab.py test # Run examples
-python python/day_1_no_time_for_a_taxicab.py run  # Run for real
+poetry run aoc --year 2016 --day 9 test python
 ```
