@@ -25,17 +25,12 @@ ROUTE = "/{year}/day/{day}"
 
 
 def aoc_main(mode: str, lang: str, year: int, day: int):
-    input_path = Path(INPUT_FILE.format(year=year, day=day))
-    if mode == "run" and not input_path.is_file():
-        url = f"https://{HOST}{ROUTE.format(year=year, day=day)}/input"
-        print(
-            f"Input not found for year {year}, day {day}. Please fetch it at {url} "
-            f"and save it to {str(input_path)}"
-        )
-        return
     match lang:
         case "python":
             python_root = PYTHON_ROOT.format(year=year)
+            if not Path(python_root).is_dir():
+                print("Python solutions are not set yet")
+                return
             filename = [
                 f for f in Path(python_root).iterdir() if f"day_{day:02}_" in f.name
             ]
@@ -45,6 +40,9 @@ def aoc_main(mode: str, lang: str, year: int, day: int):
                 print(f"Could not find solution for day {day}")
         case "rust":
             rust_root = RUST_ROOT.format(year=year)
+            if not Path(rust_root).is_dir():
+                print("Rust solutions are not set yet")
+                return
             filename = [
                 f
                 for f in Path(rust_root).joinpath("src", "bin").iterdir()
@@ -65,6 +63,13 @@ def aoc_main(mode: str, lang: str, year: int, day: int):
                 print(f"Could not find solution for day {day}")
         case _:
             raise ValueError("Could not find language '{lang}'")
+    input_path = Path(INPUT_FILE.format(year=year, day=day))
+    if mode == "run" and not input_path.is_file():
+        url = f"https://{HOST}{ROUTE.format(year=year, day=day)}/input"
+        print(
+            f"Input not found for year {year}, day {day}. Please fetch it at {url} "
+            f"and save it to {str(input_path)}"
+        )
 
 
 def prepare_template(lang: str, year: int, day: int):
@@ -146,7 +151,7 @@ def prepare_template(lang: str, year: int, day: int):
             with open(filename, "w", encoding="utf-8") as fp:
                 fp.write(bp)
 
-    body = fetch_url(ROUTE)
+    body = fetch_url(route)
     description = parse_body(body)
     title = process_title(description, day)
 
@@ -170,3 +175,7 @@ def run():
             prepare_template(args.lang, args.year, args.day)
         case _:
             raise ValueError(f"Command '{args.command}' not found.")
+
+
+if __name__ == "__main__":
+    run()

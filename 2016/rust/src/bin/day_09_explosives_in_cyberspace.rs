@@ -19,17 +19,231 @@
  *
  *
  * What is the decompressed length of the file (your puzzle input)? Don't count whitespace.
+ *
+ *
+ *--- Part Two ---
+ * Apparently, the file actually uses version two of the format.
+ *
+ * In version two, the only difference is that markers within decompressed data are decompressed. This, the documentation explains, provides much more substantial compression capabilities, allowing many-gigabyte files to be stored in only a few kilobytes.
+ *
+ * For example:
+ *
+ * (3x3)XYZ still becomes XYZXYZXYZ, as the decompressed section contains no markers.
+ * X(8x2)(3x3)ABCY becomes XABCABCABCABCABCABCY, because the decompressed data from the (8x2) marker is then further decompressed, thus triggering the (3x3) marker twice for a total of six ABC sequences.
+ * (27x12)(20x12)(13x14)(7x10)(1x12)A decompresses into a string of A repeated 241920 times.
+ * (25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN becomes 445 characters long.
+ * Unfortunately, the computer you brought probably doesn't have enough memory to actually decompress the file; you'll have to come up with another way to get its decompressed length.
+ *
+ * What is the decompressed length of the file using this improved format?
 */
-
 use aoc_lang_rust::load_input;
 use std::error::Error;
 
+#[derive(Clone, Debug)]
+struct Token {
+    t: String,
+    m: usize,
+}
+
+trait TokenCompiler {
+    fn parse(&mut self) -> &Vec<Token>;
+    fn compile(&mut self) -> String;
+}
+
+struct TokenizeV1 {
+    source: String,
+    _parsed: bool,
+    _parsed_cache: Vec<Token>,
+    _compiled: bool,
+    _compiled_cache: String,
+}
+
+impl TokenizeV1 {
+    fn new(input_text: &str) -> Self {
+        Self {
+            source: input_text.to_string(),
+            _parsed: false,
+            _parsed_cache: vec![],
+            _compiled: false,
+            _compiled_cache: "".to_string(),
+        }
+    }
+}
+
+impl TokenCompiler for TokenizeV1 {
+    fn parse(&mut self) -> &Vec<Token> {
+        if self._parsed {
+            return &self._parsed_cache;
+        }
+        let input_length = self.source.len();
+        let mut i = 0;
+        let source = self.source.chars().collect::<Vec<_>>();
+        while i < input_length {
+            let t = source[i];
+            if t.is_ascii_uppercase() {
+                let token = Token {
+                    t: t.to_string(),
+                    m: 1,
+                };
+                self._parsed_cache.push(token);
+            } else if t == '(' {
+                let (idx, token) = Self::_parse_block(&self.source[i..]);
+                i += idx;
+                self._parsed_cache.push(token);
+            } else {
+                panic!("Cannot reach here!");
+            }
+            i += 1;
+        }
+        self._parsed = true;
+        &self._parsed_cache
+    }
+    fn compile(&mut self) -> String {
+        if self._compiled {
+            return self._compiled_cache.clone();
+        }
+        self._compiled_cache = self
+            .parse()
+            .iter()
+            .map(|token| token.t.repeat(token.m))
+            .collect();
+        self._compiled = true;
+        self._compiled_cache.clone()
+    }
+}
+
+impl TokenizeV1 {
+    fn _parse_block(source: &str) -> (usize, Token) {
+        let (block, tail) = source.strip_prefix('(').unwrap().split_once(')').unwrap();
+        let (chars, m) = block.split_once('x').unwrap();
+        let (chars, m) = (chars.parse::<usize>().unwrap(), m.parse::<usize>().unwrap());
+        let idx = block.len() + chars;
+        (
+            idx + 1,
+            Token {
+                t: tail[..chars].to_string(),
+                m,
+            },
+        )
+    }
+}
+
+struct TokenizeV2 {
+    source: String,
+    _parsed: bool,
+    _parsed_cache: Vec<Token>,
+    _compiled: bool,
+    _compiled_cache: String,
+}
+
+impl TokenizeV2 {
+    fn new(input_text: &str) -> Self {
+        Self {
+            source: input_text.to_string(),
+            _parsed: false,
+            _parsed_cache: vec![],
+            _compiled: false,
+            _compiled_cache: "".to_string(),
+        }
+    }
+}
+
+impl TokenCompiler for TokenizeV2 {
+    fn parse(&mut self) -> &Vec<Token> {
+        if self._parsed {
+            return &self._parsed_cache;
+        }
+        self._parsed_cache = Self::_parse_tokens(vec![Token {
+            t: self.source.to_string(),
+            m: 1,
+        }]);
+        self._parsed = true;
+        &self._parsed_cache
+    }
+    fn compile(&mut self) -> String {
+        if self._compiled {
+            return self._compiled_cache.clone();
+        }
+        self._compiled_cache = self
+            .parse()
+            .iter()
+            .map(|token| token.t.repeat(token.m))
+            .collect();
+        self._compiled = true;
+        self._compiled_cache.clone()
+    }
+}
+
+impl TokenizeV2 {
+    fn size(&mut self) -> usize {
+        self.parse()
+            .iter()
+            .map(|token| token.m * token.t.len())
+            .sum()
+    }
+    fn _parse_tokens(tokens: Vec<Token>) -> Vec<Token> {
+        let (with_x, mut tokens): (Vec<Token>, Vec<Token>) =
+            tokens.into_iter().partition(|token| token.t.contains('x'));
+        if with_x.is_empty() {
+            return tokens;
+        }
+        let with_x = with_x
+            .into_iter()
+            .flat_map(Self::_split_token)
+            .collect::<Vec<Token>>();
+        tokens.extend(with_x);
+        Self::_parse_tokens(tokens)
+    }
+
+    fn _split_token(token: Token) -> Vec<Token> {
+        let mut tokens: Vec<Token> = vec![];
+        let input_length = token.t.len();
+        let mut i = 0;
+        let source = token.t.chars().collect::<Vec<_>>();
+        while i < input_length {
+            let t = source[i];
+            if t.is_ascii_uppercase() {
+                let token = Token {
+                    t: t.to_string(),
+                    m: token.m,
+                };
+                tokens.push(token);
+            } else if t == '(' {
+                let (new_idx, mut new_token) =
+                    Self::_parse_block(&source[i..].iter().collect::<String>());
+                new_token.m *= token.m;
+                i += new_idx;
+                tokens.push(new_token);
+            } else {
+                panic!("Cannot reach here!");
+            }
+            i += 1;
+        }
+        tokens
+    }
+
+    fn _parse_block(source: &str) -> (usize, Token) {
+        let (block, tail) = source.strip_prefix('(').unwrap().split_once(')').unwrap();
+        let (chars, m) = block.split_once('x').unwrap();
+        let (chars, m) = (chars.parse::<usize>().unwrap(), m.parse::<usize>().unwrap());
+        let idx = block.len() + chars;
+        let tail = &tail[..chars];
+        (
+            idx + 1,
+            Token {
+                t: tail.to_string(),
+                m,
+            },
+        )
+    }
+}
+
 fn solve_pt1(input_text: &str) -> u64 {
-    0
+    TokenizeV1::new(input_text).compile().len() as u64
 }
 
 fn solve_pt2(input_text: &str) -> u64 {
-    1
+    TokenizeV2::new(input_text).size() as u64
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -37,10 +251,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let input_text = load_input(FILENAME);
 
     println!("Part one: {:#?}", solve_pt1(&input_text));
-    // solution_pt1: ???
+    // solution_pt1: 138735
 
     println!("Part two: {:#?}", solve_pt2(&input_text));
-    // solution_pt2: ???
+    // solution_pt2: 11125026826
 
     Ok(())
 }
@@ -50,6 +264,24 @@ fn main() -> Result<(), Box<dyn Error>> {
 mod example {
     use aoc_lang_rust::test_solution;
 
-    test_solution!(test1, solve_pt1, 5, "Your data here");
-    test_solution!(test2, solve_pt2, 4, "Another data");
+    test_solution!(test1, solve_pt1, 6, "ADVENT");
+    test_solution!(test2, solve_pt1, 7, "A(1x5)BC");
+    test_solution!(test3, solve_pt1, 9, "(3x3)XYZ");
+    test_solution!(test4, solve_pt1, 11, "A(2x2)BCD(2x2)EFG");
+    test_solution!(test5, solve_pt1, 6, "(6x1)(1x3)A");
+    test_solution!(test6, solve_pt1, 18, "X(8x2)(3x3)ABCY");
+    test_solution!(test7, solve_pt2, 9, "(3x3)XYZ");
+    test_solution!(test8, solve_pt2, 20, "X(8x2)(3x3)ABCY");
+    test_solution!(
+        test9,
+        solve_pt2,
+        241920,
+        "(27x12)(20x12)(13x14)(7x10)(1x12)A"
+    );
+    test_solution!(
+        test10,
+        solve_pt2,
+        445,
+        "(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN"
+    );
 }
