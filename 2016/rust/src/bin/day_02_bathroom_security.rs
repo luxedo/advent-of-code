@@ -48,7 +48,7 @@
  *  Using the same instructions in your puzzle input, what is the correct bathroom code?
  */
 
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 use std::error::Error;
 use std::str::FromStr;
 
@@ -195,7 +195,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc_lang_rust::test_solution;
+    use aoc_rust::test_solution;
 
     const TEST_INPUT: &str = "ULL\n\
                               RRDDD\n\

@@ -31,7 +31,7 @@
  * How many IPs in your puzzle input support SSL?
 */
 
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 use std::error::Error;
 
 #[derive(Debug)]
@@ -147,7 +147,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc_lang_rust::test_solution;
+    use aoc_rust::test_solution;
     const INPUT_1_1: &str = "abba[mnop]qrst\n\
 abcd[bddb]xyyx\n\
 aaaa[qwer]tyui\n\

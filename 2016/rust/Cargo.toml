@@ -7,4 +7,4 @@ autobins = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 md-5 = "0.10.5"
-aoc-lang-rust = { path = "../../aoc/langs/rust" }
+aoc-rust = { path = "../../aoc/langs/rust" }

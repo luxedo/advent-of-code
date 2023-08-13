@@ -36,7 +36,7 @@
  *
  * What is the decompressed length of the file using this improved format?
 */
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 use std::error::Error;
 
 #[derive(Clone, Debug)]
@@ -262,7 +262,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc_lang_rust::test_solution;
+    use aoc_rust::test_solution;
 
     test_solution!(test1, solve_pt1, 6, "ADVENT");
     test_solution!(test2, solve_pt1, 7, "A(1x5)BC");

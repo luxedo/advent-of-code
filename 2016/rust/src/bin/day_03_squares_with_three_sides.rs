@@ -14,7 +14,7 @@
 */
 #![allow(dead_code)]
 
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 use std::error::Error;
 
 struct Triangle {
@@ -106,7 +106,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc_lang_rust::test_solution;
+    use aoc_rust::test_solution;
 
     test_solution!(test1, solve_pt1, 0, "5 10 25");
     test_solution!(

@@ -26,7 +26,7 @@
  * After you swipe your card, what code is the screen trying to display?
 */
 
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 use std::error::Error;
 
 use md5::{Digest, Md5};
@@ -85,7 +85,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc_lang_rust::test_solution;
+    use aoc_rust::test_solution;
 
     // test_solution!(test1, solve_pt1, "18f47a30", "abc");
     test_solution!(test2, solve_pt2, "05ace8e3", "abc");

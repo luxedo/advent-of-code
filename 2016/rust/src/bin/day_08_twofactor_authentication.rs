@@ -40,7 +40,7 @@
  * There seems to be an intermediate check of the voltage used by the display: after you swipe your card, if the screen did work, how many pixels should be lit?
 */
 
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 use std::error::Error;
 use std::fmt;
 
@@ -195,7 +195,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc_lang_rust::test_solution;
+    use aoc_rust::test_solution;
 
     const INPUT: &str = "rect 3x2\n\
                         rotate column x=1 by 1\n\

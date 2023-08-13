@@ -29,7 +29,7 @@
  * How many blocks away is the first location you visit twice?
  */
 
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 
 use std::collections::BTreeSet;
 use std::error::Error;
@@ -174,7 +174,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc_lang_rust::test_solution;
+    use aoc_rust::test_solution;
 
     test_solution!(test1, solve_pt1, 5, "R2, L3");
     test_solution!(test2, solve_pt1, 2, "R2, R2, R2");

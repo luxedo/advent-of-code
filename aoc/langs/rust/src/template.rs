@@ -4,7 +4,7 @@
 {description}
 */
 
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 use std::error::Error;
 
 fn solve_pt1(input_text: &str) -> u64 {

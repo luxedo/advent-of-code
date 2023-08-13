@@ -39,7 +39,7 @@
  * Given the recording in your puzzle input and this new decoding methodology, what is the original message that Santa is trying to send?
 */
 
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 use std::collections::BTreeMap;
 use std::error::Error;
 
@@ -99,7 +99,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc_lang_rust::test_solution;
+    use aoc_rust::test_solution;
     const INPUT_DATA: &str = "eedadn\n\
 drvtee\n\
 eandsr\n\

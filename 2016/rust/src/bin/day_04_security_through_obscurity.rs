@@ -32,7 +32,7 @@
 */
 #![allow(dead_code)]
 
-use aoc_lang_rust::load_input;
+use aoc_rust::load_input;
 use std::collections::HashMap;
 use std::error::Error;
 
@@ -127,7 +127,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc_lang_rust::test_solution;
+    use aoc_rust::test_solution;
 
     test_solution!(
         test1,
