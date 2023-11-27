@@ -36,23 +36,27 @@ class LanguageSpec:
     name: str
     template: Path
     template_destination_str: str
-    runner: Path
     extension: str
+    test_template: Path | None
+    test_template_destination_str: str | None
+    test_extension: str | None
     project_base: Path | None
     run_command: list[str]
     test_command: list[str]
     destination: Callable[[int], Path] = field(init=False)
     input: Callable[[int, int], Path] = field(init=False)
     executable: Callable[[int, int], Path] = field(init=False)
+    test_executable: Callable[[int, int], Path] = field(init=False)
     template_destination: Callable[[int], Path] = field(init=False)
+    test_template_destination: Callable[[int], Path] = field(init=False)
 
     @classmethod
-    def from_json(cls, root: Path) -> LanguageSpec:  # noqa
+    def from_json(cls, root: Path):
         with open(root.joinpath("spec.json"), "r") as fp:
             return LanguageSpec.load(fp, root)
 
     @classmethod
-    def load(cls, fp: TextIO, root: Path) -> LanguageSpec:  # noqa
+    def load(cls, fp: TextIO, root: Path):
         spec = json.load(fp)
         project_base = (
             Path(root.joinpath(spec["project_base"]))
@@ -64,8 +68,10 @@ class LanguageSpec:
             name=root.name,
             template=spec["template"],
             template_destination_str=spec.get("template_destination", "."),
-            runner=spec["runner"],
             extension=spec["extension"],
+            test_template=spec.get("test_template"),
+            test_template_destination_str=spec.get("test_template_destination", "."),
+            test_extension=spec.get("test_extension"),
             project_base=project_base,
             run_command=spec["run_command"],
             test_command=spec["test_command"],
@@ -79,11 +85,18 @@ class LanguageSpec:
         self.input = lambda year, day: ROOT_DIR.joinpath(
             f"solutions/{year}/data/day_{day:02}_input.txt"
         )
+        self.filename = lambda day, extension: f"day_{day:02}_solution.{extension}"
         self.executable = lambda year, day: self.template_destination(year).joinpath(
-            f"day_{day:02}_solution.{self.extension}"
+            self.filename(day, self.extension)
         )
+        self.test_executable = lambda year, day: self.test_template_destination(
+            year
+        ).joinpath(self.filename(day, self.test_extension))
         self.template_destination = lambda year: ROOT_DIR.joinpath(
             f"solutions/{year}/{self.name}/{self.template_destination_str}"
+        )
+        self.test_template_destination = lambda year: ROOT_DIR.joinpath(
+            f"solutions/{year}/{self.name}/{self.test_template_destination_str}"
         )
 
 
@@ -124,21 +137,25 @@ def aoc_main(spec: LanguageSpec, mode: RunMode, year: int, day: int):
         case _:
             print("Mode {mode} not found")
             return
+
     executable = spec.executable(year, day)
+    test_executable = spec.test_executable(year, day)
     destination = spec.destination(year)
     command = [
         c.format(
             executable=str(executable),
+            test_executable=str(test_executable),
             destination=str(destination),
-            module_name=executable.name.removesuffix(f".{spec.extension}"),
+            module_nme=executable.name.removesuffix(f".{spec.extension}"),
+            year=year,
+            day=day,
         )
         for c in command
     ]
-    print(command)
 
     match solutions:
         case [_]:
-            subprocess.run(command)
+            subprocess.run(command, cwd=destination)
         case [_, _]:
             print(
                 "More than one solution found for lang: {spec.name}, year: {year}, day: {day}"
@@ -208,7 +225,6 @@ def prepare_template(spec: LanguageSpec, year: int, day: int):
         for f in src.iterdir():
             if f.is_dir():
                 copy_replace_recursive(f, dst.joinpath(f.name), year)
-                raise ValueError()  # @TODO: Test this
             else:
                 with f.open() as fp:
                     contents = fp.read().replace("{year}", str(year))
@@ -225,16 +241,35 @@ def prepare_template(spec: LanguageSpec, year: int, day: int):
             if not template_destination.is_dir():
                 template_destination.mkdir(parents=True, exist_ok=True)
 
-    def prepare_boilerplate(
+    def prepare_template(
         spec: LanguageSpec, year: int, day: int, title: str, description: str
     ):
         template = spec.root.joinpath(spec.template)
-
         filename = spec.executable(year, day)
         if filename.is_file():
-            print(f"{filename} already exists. Skipping")
+            print(f"Main {filename} already exists. Skipping")
         else:
-            print(f"Creating boilerplate for {filename}...")
+            print(f"Creating template for {filename}...")
+            with open(template, "r", encoding="utf-8") as fp:
+                full_url = f"https://{HOST}{route}"
+                bp = (
+                    fp.read()
+                    .replace("{url}", full_url)
+                    .replace("{description}", description)
+                    .replace("{year}", f"{year}")
+                    .replace("{day}", f"{day:02}")
+                )
+            with open(filename, "w", encoding="utf-8") as fp:
+                fp.write(bp)
+
+    def prepare_test_template(spec: LanguageSpec, year: int, day: int):
+        template = spec.root.joinpath(spec.test_template)
+        filename = spec.test_executable(year, day)
+        print(filename)
+        if filename.is_file():
+            print(f"Test {filename} already exists. Skipping")
+        else:
+            print(f"Creating template for {filename}...")
             with open(template, "r", encoding="utf-8") as fp:
                 full_url = f"https://{HOST}{route}"
                 bp = (
@@ -251,15 +286,17 @@ def prepare_template(spec: LanguageSpec, year: int, day: int):
     description = parse_body(body)
     title = process_title(description, day)
     prepare_project(spec, year)
-    prepare_boilerplate(spec, year, day, title, description)
+    prepare_template(spec, year, day, title, description)
+    if spec.test_template:
+        prepare_test_template(spec, year, day)
 
 
 def run():
     parser = argparse.ArgumentParser(
         description="Prepares the templates for the given day"
     )
-    parser.add_argument("command", choices=["run", "test", "fetch"])
     parser.add_argument("lang", choices=["python", "rust", "elixir"])
+    parser.add_argument("command", choices=["run", "test", "fetch"])
     parser.add_argument("-d", "--day", required=True, type=int, help="AoC day")
     parser.add_argument("-y", "--year", required=True, type=int, help="AoC year")
 

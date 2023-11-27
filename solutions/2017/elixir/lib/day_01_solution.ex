@@ -89,6 +89,19 @@ defmodule Day01 do
     |> Enum.sum()
   end
 
+  @doc """
+      iex> Day01.solve_pt1("1122")
+      3
+
+      iex> Day01.solve_pt1("1111")
+      4
+
+      iex> Day01.solve_pt1("1234")
+      0
+
+      iex> Day01.solve_pt1("91212129")
+      9
+  """
   def solve_pt1(input) do
     captcha = parse_input(input)
 
@@ -97,6 +110,22 @@ defmodule Day01 do
     |> sum_matching(captcha)
   end
 
+  @doc """
+      iex> Day01.solve_pt2("1212")
+      6
+
+      iex> Day01.solve_pt2("1221")
+      0
+
+      iex> Day01.solve_pt2("123425")
+      4
+
+      iex> Day01.solve_pt2("123123")
+      12
+
+      iex> Day01.solve_pt2("12131415")
+      4
+  """
   def solve_pt2(input) do
     captcha = parse_input(input)
 
@@ -106,11 +135,13 @@ defmodule Day01 do
   end
 
   def main do
-    ans1 = File.read!("../data/day_01_input.txt") |> Day01.solve_pt1
+    ans1 = File.read!("../data/day_01_input.txt") |> Day01.solve_pt1()
     IO.puts("Part one: #{ans1}")
 
-    ans2 = File.read!("../data/day_01_input.txt")
-    |> Day01.solve_pt2()
+    ans2 =
+      File.read!("../data/day_01_input.txt")
+      |> Day01.solve_pt2()
+
     IO.puts("Part two: #{ans2}")
   end
 end

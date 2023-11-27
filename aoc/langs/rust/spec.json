@@ -1,9 +1,8 @@
 {
   "template": "src/template.rs",
   "template_destination": "src/bin",
-  "runner": "runner.rs",
   "extension": "rs",
   "project_base": "base/",
-  "run_command": ["cargo", "watch", "--workdir", "{destination}", "--exec", "run --bin {module_name}"],
-  "test_command": ["cargo", "watch", "--workdir", "{destination}", "--exec", "test --bin {module_name}"]
+  "run_command": ["cargo", "watch", "--exec", "run --bin {module_name}"],
+  "test_command": ["cargo", "watch", "--exec", "test --bin {module_name}"]
 }

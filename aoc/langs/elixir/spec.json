@@ -1,0 +1,11 @@
+{
+  "template": "templates/template.ex",
+  "template_destination": "lib",
+  "test_template": "templates/test_template.exs",
+  "test_template_destination": "test/",
+  "test_extension": "exs",
+  "extension": "ex",
+  "project_base": "base",
+  "run_command": ["mix", "run", "-e", "Day{day:02}.main"] ,
+  "test_command": ["mix", "test", "{test_executable}"]
+}
