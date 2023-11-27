@@ -9,70 +9,147 @@ Examples:
 """
 import argparse
 import http.client
+import json
 import subprocess
+from collections.abc import Callable
+from dataclasses import dataclass, field
+from enum import Enum
 from html.parser import HTMLParser
 from pathlib import Path
 from string import punctuation
+from textwrap import wrap
+from typing import TextIO
 
 ROOT_DIR = Path(__file__).parent.parent
-PYTHON_ROOT = f"{ROOT_DIR}/{{year}}/python/"
-PYTHON_TEMPLATE = f"{ROOT_DIR}/aoc/langs/python/template.py"
-RUST_ROOT = f"{ROOT_DIR}/{{year}}/rust/"
-RUST_TEMPLATE = f"{ROOT_DIR}/aoc/langs/rust/src/template.rs"
-INPUT_FILE = "{year}/data/day_{day:02}_input.txt"
 HOST = "adventofcode.com"
 ROUTE = "/{year}/day/{day}"
 
 
-def aoc_main(mode: str, lang: str, year: int, day: int):
-    match lang:
-        case "python":
-            python_root = PYTHON_ROOT.format(year=year)
-            if not Path(python_root).is_dir():
-                print("Python solutions are not set yet")
-                return
-            filename = [
-                f for f in Path(python_root).iterdir() if f"day_{day:02}_" in f.name
-            ]
-            if len(filename) != 0:
-                subprocess.run(["python", filename[0], mode])
-            else:
-                print(f"Could not find solution for day {day}")
-        case "rust":
-            rust_root = RUST_ROOT.format(year=year)
-            if not Path(rust_root).is_dir():
-                print("Rust solutions are not set yet")
-                return
-            filename = [
-                f
-                for f in Path(rust_root).joinpath("src", "bin").iterdir()
-                if f"day_{day:02}_" in f.name
-            ]
-            if len(filename) != 0:
-                subprocess.run(
-                    [
-                        "cargo",
-                        "watch",
-                        "--workdir",
-                        rust_root,
-                        "--exec",
-                        f"{mode} --bin {filename[0].name.removesuffix('.rs')}",
-                    ]
-                )
-            else:
-                print(f"Could not find solution for day {day}")
-        case _:
-            raise ValueError("Could not find language '{lang}'")
-    input_path = Path(INPUT_FILE.format(year=year, day=day))
-    if mode == "run" and not input_path.is_file():
+class RunMode(Enum):
+    run = 0
+    test = 1
+
+
+@dataclass
+class LanguageSpec:
+    root: Path
+    name: str
+    template: Path
+    template_destination_str: str
+    runner: Path
+    extension: str
+    project_base: Path | None
+    run_command: list[str]
+    test_command: list[str]
+    destination: Callable[[int], Path] = field(init=False)
+    input: Callable[[int, int], Path] = field(init=False)
+    executable: Callable[[int, int], Path] = field(init=False)
+    template_destination: Callable[[int], Path] = field(init=False)
+
+    @classmethod
+    def from_json(cls, root: Path) -> LanguageSpec:  # noqa
+        with open(root.joinpath("spec.json"), "r") as fp:
+            return LanguageSpec.load(fp, root)
+
+    @classmethod
+    def load(cls, fp: TextIO, root: Path) -> LanguageSpec:  # noqa
+        spec = json.load(fp)
+        project_base = (
+            Path(root.joinpath(spec["project_base"]))
+            if spec["project_base"] is not None
+            else None
+        )
+        return LanguageSpec(
+            root=root,
+            name=root.name,
+            template=spec["template"],
+            template_destination_str=spec.get("template_destination", "."),
+            runner=spec["runner"],
+            extension=spec["extension"],
+            project_base=project_base,
+            run_command=spec["run_command"],
+            test_command=spec["test_command"],
+        )
+
+    def __post_init__(self):
+        self.name = self.root.name
+        self.destination = lambda year: ROOT_DIR.joinpath(
+            f"solutions/{year}", self.name
+        )
+        self.input = lambda year, day: ROOT_DIR.joinpath(
+            f"solutions/{year}/data/day_{day:02}_input.txt"
+        )
+        self.executable = lambda year, day: self.template_destination(year).joinpath(
+            f"day_{day:02}_solution.{self.extension}"
+        )
+        self.template_destination = lambda year: ROOT_DIR.joinpath(
+            f"solutions/{year}/{self.name}/{self.template_destination_str}"
+        )
+
+
+def load_langs():
+    return {
+        d.name: LanguageSpec.from_json(d)
+        for d in Path(f"{ROOT_DIR}/aoc/langs").iterdir()
+        if d.is_dir() and not d.name.startswith("_")
+    }
+
+
+def aoc_main(spec: LanguageSpec, mode: RunMode, year: int, day: int):
+    solution_not_found = f"No solutions found for lang: {spec.name}, year: {year}, day: {day}. Please fetch before running"
+    if not spec.destination(year).is_dir():
+        print(solution_not_found)
+        return
+
+    input_path = spec.input(year, day)
+    if mode == RunMode.run and not input_path.is_file():
         url = f"https://{HOST}{ROUTE.format(year=year, day=day)}/input"
         print(
             f"Input not found for year {year}, day {day}. Please fetch it at {url} "
             f"and save it to {str(input_path)}"
         )
+        return
+
+    solutions = [
+        f
+        for f in spec.template_destination(year).iterdir()
+        if f.name.startswith(f"day_{day:02}_")
+    ]
+    command: list[str]
+    match mode:
+        case RunMode.run:
+            command = spec.run_command
+        case RunMode.test:
+            command = spec.test_command
+        case _:
+            print("Mode {mode} not found")
+            return
+    executable = spec.executable(year, day)
+    destination = spec.destination(year)
+    command = [
+        c.format(
+            executable=str(executable),
+            destination=str(destination),
+            module_name=executable.name.removesuffix(f".{spec.extension}"),
+        )
+        for c in command
+    ]
+    print(command)
+
+    match solutions:
+        case [_]:
+            subprocess.run(command)
+        case [_, _]:
+            print(
+                "More than one solution found for lang: {spec.name}, year: {year}, day: {day}"
+            )
+            return
+        case _:
+            print(solution_not_found)
+            return
 
 
-def prepare_template(lang: str, year: int, day: int):
+def prepare_template(spec: LanguageSpec, year: int, day: int):
     route = ROUTE.format(year=year, day=day)
 
     def fetch_url(route: str) -> str:
@@ -104,7 +181,13 @@ def prepare_template(lang: str, year: int, day: int):
 
         p = AoCHTMLParser()
         p.feed(body)
-        return p.text.strip()
+        description = p.text.strip()
+        return "\n".join(
+            "\n".join(
+                wrap(line, width=100, initial_indent="  ", subsequent_indent="  ")
+            )
+            for line in description.split("\n")
+        )
 
     def process_title(description: str, day: int) -> str:
         punc = "".join(p for p in punctuation if p != "_")
@@ -119,28 +202,41 @@ def prepare_template(lang: str, year: int, day: int):
             .translate(str.maketrans("", "", punc))
         )
 
-    def boilerplate(lang: str, year: int, day: int, title: str, description: str):
-        full_url = f"https://{HOST}{route}"
-        match lang:
-            case "python":
-                filename = Path(PYTHON_ROOT.format(year=year)).joinpath(f"{title}.py")
-                template = Path(PYTHON_TEMPLATE)
-            case "rust":
-                filename = Path(RUST_ROOT.format(year=year)).joinpath(
-                    "src", "bin", f"{title}.rs"
-                )
-                template = Path(RUST_TEMPLATE)
-                description = "\n".join(
-                    [" * " + line for line in description.split("\n")]
-                )
-            case _:
-                raise ValueError(f"Language {lang} not found")
+    def copy_replace_recursive(src: Path, dst: Path, year: int):
+        if not dst.is_dir():
+            dst.mkdir(parents=True, exist_ok=True)
+        for f in src.iterdir():
+            if f.is_dir():
+                copy_replace_recursive(f, dst.joinpath(f.name), year)
+                raise ValueError()  # @TODO: Test this
+            else:
+                with f.open() as fp:
+                    contents = fp.read().replace("{year}", str(year))
+                with dst.joinpath(f.name).open("w") as fp:
+                    fp.write(contents)
 
+    def prepare_project(spec: LanguageSpec, year: int):
+        project_dir = spec.destination(year)
+        if not project_dir.is_dir():
+            if spec.project_base is not None:
+                print(f"Creating project base at {project_dir}...")
+                copy_replace_recursive(spec.project_base, project_dir, year)
+            template_destination = spec.template_destination(year)
+            if not template_destination.is_dir():
+                template_destination.mkdir(parents=True, exist_ok=True)
+
+    def prepare_boilerplate(
+        spec: LanguageSpec, year: int, day: int, title: str, description: str
+    ):
+        template = spec.root.joinpath(spec.template)
+
+        filename = spec.executable(year, day)
         if filename.is_file():
             print(f"{filename} already exists. Skipping")
         else:
             print(f"Creating boilerplate for {filename}...")
             with open(template, "r", encoding="utf-8") as fp:
+                full_url = f"https://{HOST}{route}"
                 bp = (
                     fp.read()
                     .replace("{url}", full_url)
@@ -154,8 +250,8 @@ def prepare_template(lang: str, year: int, day: int):
     body = fetch_url(route)
     description = parse_body(body)
     title = process_title(description, day)
-
-    boilerplate(lang, year, day, title, description)
+    prepare_project(spec, year)
+    prepare_boilerplate(spec, year, day, title, description)
 
 
 def run():
@@ -163,16 +259,19 @@ def run():
         description="Prepares the templates for the given day"
     )
     parser.add_argument("command", choices=["run", "test", "fetch"])
-    parser.add_argument("lang", choices=["python", "rust"])
+    parser.add_argument("lang", choices=["python", "rust", "elixir"])
     parser.add_argument("-d", "--day", required=True, type=int, help="AoC day")
     parser.add_argument("-y", "--year", required=True, type=int, help="AoC year")
 
     args = parser.parse_args()
+
+    lang_specs = load_langs()
+    spec = lang_specs[args.lang]
     match args.command:
         case "run" | "test":
-            aoc_main(args.command, args.lang, args.year, args.day)
+            aoc_main(spec, RunMode[args.command], args.year, args.day)
         case "fetch":
-            prepare_template(args.lang, args.year, args.day)
+            prepare_template(spec, args.year, args.day)
         case _:
             raise ValueError(f"Command '{args.command}' not found.")
 

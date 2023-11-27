@@ -1,8 +1,8 @@
 """
-Advent Of Code {year} - day {day}
-{url}
+  Advent Of Code {year} - day {day}
+  {url}
 
-{description}
+  {description}
 """
 
 from aoc.langs.python import runner

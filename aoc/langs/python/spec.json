@@ -1,0 +1,8 @@
+{
+  "template": "template.py",
+  "extension": "py",
+  "runner": "runner.py",
+  "project_base": null,
+  "run_command": ["python", "{executable}", "run"] ,
+  "test_command": ["python", "{executable}", "test"]
+}

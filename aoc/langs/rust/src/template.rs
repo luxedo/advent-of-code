@@ -31,7 +31,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Example tests
 #[cfg(test)]
 mod example {
-    use aoc::test_solution;
+    use aoc_rust::test_solution;
 
     test_solution!(test1, solve_pt1, 5, "Your data here");
     test_solution!(test2, solve_pt2, 4, "Another data");

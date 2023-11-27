@@ -1,10 +1,9 @@
 [package]
-name = "aoc2016"
+name = "aoc{year}"
 version = "0.1.0"
 edition = "2021"
 autobins = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-md-5 = "0.10.5"
-aoc-rust = { path = "../../aoc/langs/rust" }
+aoc-rust = { path = "../../../aoc/langs/rust" }

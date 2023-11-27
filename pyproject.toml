@@ -1,3 +1,12 @@
+[project]
+name = "aoc"
+version = "0.1.0"
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+include = ["aoc"]
+namespaces = false
+
 [tool.poetry]
 authors = [
   "Luiz Eduardo Amaral <luiz.amaral@tarvos.ag>"
@@ -7,6 +16,7 @@ name = "aoc"
 readme = "README.md"
 repository = "https://github.com/luxedo/advent-of-code"
 version = "0.1.0"
+packages = [{include = "aoc"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
