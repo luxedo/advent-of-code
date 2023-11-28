@@ -3,7 +3,9 @@ defmodule Day{day} do
   Advent Of Code {year} - day {day}
   {url}
 
-  {description}
+  {description_pt1}
+
+  {description_pt2}
    """
 
   @doc """

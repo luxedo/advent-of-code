@@ -6,26 +6,41 @@
 
 Trying to learn `rust` 🙌 and maybe other stuff
 
-### Installing the runner
+## Installing the runner
 
 ```bash
-poetry install
+poetry install # or pip install -e .
+```
+
+## Usage
+### Fetching problems
+
+```bash
+export AOC_SESSION_COOKIE=<my_current_cookie>
+poetry run aoc --year 2016 --day 9 rust fetch
 ```
 
 ### Running for real
 
 ```bash
-poetry run aoc --year 2016 --day 9 run rust
+poetry run aoc --year 2016 --day 9 rust run
 ```
 
 ### Running tests
 
 ```bash
-poetry run aoc --year 2016 --day 9 test rust
+poetry run aoc --year 2016 --day 9 rust run
 ```
 
-### Also in Python
+### Fetching pt2
 
 ```bash
-poetry run aoc --year 2016 --day 9 test python
+# Remember to not remove the placeholder {description_pt2} in the files
+poetry run aoc --year 2016 --day 9 rust fetch2
+```
+
+### Also in Python (and elixir now)
+
+```bash
+poetry run aoc --year 2016 --day 9 python run
 ```

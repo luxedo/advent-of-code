@@ -1,7 +1,10 @@
-/* Advent Of Code {year} - day {day}
- * {url}
- *
-{description}
+/*
+  Advent Of Code {year} - day {day}
+  {url}
+
+  {description_pt1}
+
+  {description_pt2}
 */
 
 use aoc_rust::load_input;

@@ -2,7 +2,9 @@
   Advent Of Code {year} - day {day}
   {url}
 
-  {description}
+  {description_pt1}
+
+  {description_pt2}
 """
 
 from aoc.langs.python import runner

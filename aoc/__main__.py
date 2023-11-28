@@ -15,6 +15,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum
 from html.parser import HTMLParser
+from os import environ
 from pathlib import Path
 from string import punctuation
 from textwrap import wrap
@@ -23,6 +24,7 @@ from typing import TextIO
 ROOT_DIR = Path(__file__).parent.parent
 HOST = "adventofcode.com"
 ROUTE = "/{year}/day/{day}"
+INPUT_URL = f"https://{HOST}{ROUTE}/input"
 
 
 class RunMode(Enum):
@@ -116,9 +118,9 @@ def aoc_main(spec: LanguageSpec, mode: RunMode, year: int, day: int):
 
     input_path = spec.input(year, day)
     if mode == RunMode.run and not input_path.is_file():
-        url = f"https://{HOST}{ROUTE.format(year=year, day=day)}/input"
         print(
-            f"Input not found for year {year}, day {day}. Please fetch it at {url} "
+            f"Input not found for year {year}, day {day}."
+            f"Please fetch it at {INPUT_URL.format(year=year, day=day)} "
             f"and save it to {str(input_path)}"
         )
         return
@@ -166,50 +168,48 @@ def aoc_main(spec: LanguageSpec, mode: RunMode, year: int, day: int):
             return
 
 
-def prepare_template(spec: LanguageSpec, year: int, day: int):
-    route = ROUTE.format(year=year, day=day)
+def fetch_url(route: str, cookie: str) -> str:
+    conn = http.client.HTTPSConnection(HOST)
+    conn.request("GET", route, headers={"Cookie": f"session={cookie}"})
+    res = conn.getresponse()
+    if res.status != 200:
+        raise ValueError("Could not connect!")
+    return res.read().decode("utf-8")
 
-    def fetch_url(route: str) -> str:
-        conn = http.client.HTTPSConnection(HOST)
-        conn.request("GET", route)
-        res = conn.getresponse()
-        if res.status != 200:
-            raise ValueError("Could not connect!")
-        return res.read().decode("utf-8")
 
-    def parse_body(body: str) -> str:
-        class AoCHTMLParser(HTMLParser):
-            def __init__(self, *args, **kwargs):
-                super().__init__(*args, **kwargs)
-                self.tags = []
-                self.text = ""
+def parse_body(body: str) -> str:
+    class AoCHTMLParser(HTMLParser):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.tags = []
+            self.text = ""
 
-            def handle_starttag(self, tag, attrs):
-                self.tags.append(tag)
-                if tag == "p":
-                    self.text += "\n"
+        def handle_starttag(self, tag, attrs):
+            self.tags.append(tag)
+            if tag == "p":
+                self.text += "\n"
 
-            def handle_endtag(self, tag):
-                self.tags.pop()
+        def handle_endtag(self, tag):
+            self.tags.pop()
 
-            def handle_data(self, data):
-                if "article" in self.tags:
-                    self.text += data
+        def handle_data(self, data):
+            if "article" in self.tags:
+                self.text += data
 
-        p = AoCHTMLParser()
-        p.feed(body)
-        description = p.text.strip()
-        return "\n".join(
-            "\n".join(
-                wrap(line, width=100, initial_indent="  ", subsequent_indent="  ")
-            )
-            for line in description.split("\n")
-        )
+    p = AoCHTMLParser()
+    p.feed(body)
+    description_pt1 = p.text.strip()
+    return "\n".join(
+        "\n".join(wrap(line, width=100, initial_indent="  ", subsequent_indent="  "))
+        for line in description_pt1.split("\n")
+    )
 
-    def process_title(description: str, day: int) -> str:
+
+def prepare_template(spec: LanguageSpec, year: int, day: int, cookie: str):
+    def process_title(description_pt1: str, day: int) -> str:
         punc = "".join(p for p in punctuation if p != "_")
         return (
-            description.split("\n")[0]
+            description_pt1.split("\n")[0]
             .replace("-", "")
             .replace(":", "")
             .strip()
@@ -241,74 +241,123 @@ def prepare_template(spec: LanguageSpec, year: int, day: int):
             if not template_destination.is_dir():
                 template_destination.mkdir(parents=True, exist_ok=True)
 
-    def prepare_template(
-        spec: LanguageSpec, year: int, day: int, title: str, description: str
+    def prepare_main_template(
+        spec: LanguageSpec, year: int, day: int, title: str, description_pt1: str
     ):
         template = spec.root.joinpath(spec.template)
         filename = spec.executable(year, day)
         if filename.is_file():
-            print(f"Main {filename} already exists. Skipping")
-        else:
-            print(f"Creating template for {filename}...")
-            with open(template, "r", encoding="utf-8") as fp:
-                full_url = f"https://{HOST}{route}"
-                bp = (
-                    fp.read()
-                    .replace("{url}", full_url)
-                    .replace("{description}", description)
-                    .replace("{year}", f"{year}")
-                    .replace("{day}", f"{day:02}")
-                )
-            with open(filename, "w", encoding="utf-8") as fp:
-                fp.write(bp)
+            print(f"Main {filename} already exists. Skipping...")
+            return
+        print(f"Creating template for {filename}...")
+        with open(template, "r", encoding="utf-8") as fp:
+            full_url = f"https://{HOST}{route}"
+            bp = (
+                fp.read()
+                .replace("{url}", full_url)
+                .replace("{description_pt1}", description_pt1)
+                .replace("{year}", f"{year}")
+                .replace("{day}", f"{day:02}")
+            )
+        with open(filename, "w", encoding="utf-8") as fp:
+            fp.write(bp)
 
     def prepare_test_template(spec: LanguageSpec, year: int, day: int):
         template = spec.root.joinpath(spec.test_template)
         filename = spec.test_executable(year, day)
-        print(filename)
         if filename.is_file():
-            print(f"Test {filename} already exists. Skipping")
-        else:
-            print(f"Creating template for {filename}...")
-            with open(template, "r", encoding="utf-8") as fp:
-                full_url = f"https://{HOST}{route}"
-                bp = (
-                    fp.read()
-                    .replace("{url}", full_url)
-                    .replace("{description}", description)
-                    .replace("{year}", f"{year}")
-                    .replace("{day}", f"{day:02}")
-                )
-            with open(filename, "w", encoding="utf-8") as fp:
-                fp.write(bp)
+            print(f"Test {filename} already exists. Skipping...")
+            return
+        print(f"Creating template for {filename}...")
+        with open(template, "r", encoding="utf-8") as fp:
+            full_url = f"https://{HOST}{route}"
+            bp = (
+                fp.read()
+                .replace("{url}", full_url)
+                .replace("{year}", f"{year}")
+                .replace("{day}", f"{day:02}")
+            )
+        with open(filename, "w", encoding="utf-8") as fp:
+            fp.write(bp)
 
-    body = fetch_url(route)
-    description = parse_body(body)
-    title = process_title(description, day)
+    def prepare_input(spec: LanguageSpec, year: int, day: int):
+        filename = spec.input(year, day)
+        if filename.is_file():
+            print(f"Input {filename} already exists. Skipping...")
+            return
+
+        print("Fetching input data: {filename}")
+        problem_data = fetch_url(INPUT_URL.format(year=year, day=day), cookie)
+        with open(filename, "w") as fp:
+            fp.write(problem_data)
+
+    route = ROUTE.format(year=year, day=day)
+    body = fetch_url(route, cookie)
+    description_pt1 = parse_body(body)
+    title = process_title(description_pt1, day)
     prepare_project(spec, year)
-    prepare_template(spec, year, day, title, description)
+    prepare_main_template(spec, year, day, title, description_pt1)
+
+    prepare_input(spec, year, day)
+
     if spec.test_template:
         prepare_test_template(spec, year, day)
 
 
+def update_main_template(spec: LanguageSpec, year: int, day: int, cookie: str):
+    filename = spec.executable(year, day)
+    if not filename.is_file():
+        print(f"Main {filename} does not exists. Skipping...")
+        return
+
+    route = ROUTE.format(year=year, day=day)
+    body = fetch_url(route, cookie)
+    description_pt2 = parse_body(body)
+    pt2_anchor = "--- Part Two ---"
+    try:
+        index = description_pt2.index(pt2_anchor)
+        description_pt2 = "  " + description_pt2[index:]
+    except ValueError:
+        print("Could not find the second part of the problem. Are you there yet?")
+        return
+    with open(filename, "r+", encoding="utf-8") as fp:
+        bp = fp.read().replace("{description_pt2}", description_pt2)
+        if pt2_anchor not in bp:
+            print(f"Updating template for {filename}...")
+            fp.seek(0)
+            fp.write(bp)
+        else:
+            print("The file already has the second part of the problem. Skipping...")
+
+
 def run():
+    class Command(Enum):
+        run = 0
+        test = 1
+        fetch = 2
+        fetch2 = 3
+
+    lang_specs = load_langs()
+    cookie = environ.get("AOC_SESSION_COOKIE")
     parser = argparse.ArgumentParser(
         description="Prepares the templates for the given day"
     )
-    parser.add_argument("lang", choices=["python", "rust", "elixir"])
-    parser.add_argument("command", choices=["run", "test", "fetch"])
+    parser.add_argument("lang", choices=lang_specs.keys())
+    parser.add_argument("command", choices=[c.name for c in Command])
     parser.add_argument("-d", "--day", required=True, type=int, help="AoC day")
     parser.add_argument("-y", "--year", required=True, type=int, help="AoC year")
 
     args = parser.parse_args()
 
-    lang_specs = load_langs()
     spec = lang_specs[args.lang]
-    match args.command:
-        case "run" | "test":
+    command = Command[args.command]
+    match command:
+        case Command.run | Command.test:
             aoc_main(spec, RunMode[args.command], args.year, args.day)
-        case "fetch":
-            prepare_template(spec, args.year, args.day)
+        case Command.fetch:
+            prepare_template(spec, args.year, args.day, cookie)
+        case Command.fetch2:
+            update_main_template(spec, args.year, args.day, cookie)
         case _:
             raise ValueError(f"Command '{args.command}' not found.")
 
