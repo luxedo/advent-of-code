@@ -316,16 +316,17 @@ def update_main_template(spec: LanguageSpec, year: int, day: int, cookie: str):
     pt2_anchor = "--- Part Two ---"
     try:
         index = description_pt2.index(pt2_anchor)
-        description_pt2 = "  " + description_pt2[index:]
+        description_pt2 = description_pt2[index:]
     except ValueError:
         print("Could not find the second part of the problem. Are you there yet?")
         return
     with open(filename, "r+", encoding="utf-8") as fp:
-        bp = fp.read().replace("{description_pt2}", description_pt2)
-        if pt2_anchor not in bp:
+        contents = fp.read()
+        if pt2_anchor not in contents:
             print(f"Updating template for {filename}...")
+            contents = contents.replace("{description_pt2}", description_pt2)
             fp.seek(0)
-            fp.write(bp)
+            fp.write(contents)
         else:
             print("The file already has the second part of the problem. Skipping...")
 
