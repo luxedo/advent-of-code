@@ -81,8 +81,7 @@ defmodule Day01 do
   def parse_input(input) do
     input
     |> String.trim()
-    |> String.split("\n")
-    |> Enum.filter(fn i -> i != "" end)
+    |> String.split("\n", trim: true)
     |> Enum.map(&String.to_integer/1)
   end
 
@@ -165,13 +164,11 @@ defmodule Day01 do
   def solve_pt2(input) do
     parse_input(input)
     |> Stream.cycle
-    |> Enum.reduce_while({MapSet.new(), 0}, fn offset, {acc, current} ->
-      acc = acc |> MapSet.put(current)
-      current = current + offset
-      if acc |> MapSet.member?(current) do
-        {:halt, current}
-      else
-        {:cont, {acc, current}}
+    |> Enum.reduce_while({MapSet.new([0]), 0}, fn offset, {acc, cur} ->
+      cur = cur + offset
+      cond do
+        MapSet.member?(acc, cur) -> {:halt, cur}
+        true -> {:cont, {MapSet.put(acc, cur), cur}}
       end
     end)
   end
