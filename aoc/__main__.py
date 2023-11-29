@@ -25,6 +25,7 @@ ROOT_DIR = Path(__file__).parent.parent
 HOST = "adventofcode.com"
 ROUTE = "/{year}/day/{day}"
 INPUT_URL = f"https://{HOST}{ROUTE}/input"
+PT2_ANCHOR = "--- Part Two ---"
 
 
 class RunMode(Enum):
@@ -148,7 +149,7 @@ def aoc_main(spec: LanguageSpec, mode: RunMode, year: int, day: int):
             executable=str(executable),
             test_executable=str(test_executable),
             destination=str(destination),
-            module_nme=executable.name.removesuffix(f".{spec.extension}"),
+            module_name=executable.name.removesuffix(f".{spec.extension}"),
             year=year,
             day=day,
         )
@@ -259,6 +260,10 @@ def prepare_template(spec: LanguageSpec, year: int, day: int, cookie: str):
                 .replace("{year}", f"{year}")
                 .replace("{day}", f"{day:02}")
             )
+            if PT2_ANCHOR in bp:
+                bp = "\n".join(
+                    [line for line in bp.split("\n") if "{description_pt2}" not in line]
+                )
         with open(filename, "w", encoding="utf-8") as fp:
             fp.write(bp)
 
@@ -313,16 +318,15 @@ def update_main_template(spec: LanguageSpec, year: int, day: int, cookie: str):
     route = ROUTE.format(year=year, day=day)
     body = fetch_url(route, cookie)
     description_pt2 = parse_body(body)
-    pt2_anchor = "--- Part Two ---"
     try:
-        index = description_pt2.index(pt2_anchor)
+        index = description_pt2.index(PT2_ANCHOR)
         description_pt2 = description_pt2[index:]
     except ValueError:
         print("Could not find the second part of the problem. Are you there yet?")
         return
     with open(filename, "r+", encoding="utf-8") as fp:
         contents = fp.read()
-        if pt2_anchor not in contents:
+        if PT2_ANCHOR not in contents:
             print(f"Updating template for {filename}...")
             contents = contents.replace("{description_pt2}", description_pt2)
             fp.seek(0)

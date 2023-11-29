@@ -1,4 +1,4 @@
-"""
+/*
   Advent Of Code 2018 - day 01
   https://adventofcode.com/2018/day/1
 
@@ -76,42 +76,85 @@
 
 
   What is the first frequency your device reaches twice?
-"""
-from itertools import cycle
 
-from aoc.langs.python import runner
+*/
 
+use aoc_rust::load_input;
+use std::collections::BTreeSet;
+use std::error::Error;
+use std::str::FromStr;
 
-def parse_inupt(input_data: str) -> list[int]:
-    return [int(i) for i in input_data.split()]
+struct Captcha(Vec<i64>);
+#[derive(Debug)]
+struct ParseCaptchaError;
+impl FromStr for Captcha {
+    type Err = ParseCaptchaError;
+    fn from_str(s: &str) -> Result<Captcha, Self::Err> {
+        let v = s
+            .split("\n")
+            .map(|s| s.trim().parse::<i64>())
+            .collect::<Result<Vec<_>, _>>()?;
+        Ok(Captcha(v))
+    }
+}
+impl From<std::num::ParseIntError> for ParseCaptchaError {
+    fn from(_other: std::num::ParseIntError) -> ParseCaptchaError {
+        ParseCaptchaError
+    }
+}
+impl Captcha {
+    fn sum(self) -> i64 {
+        self.0.iter().sum()
+    }
 
+    fn seen_twice(self) -> i64 {
+        let mut c = self.0.iter().cycle();
+        let mut current = 0;
+        let mut bs = BTreeSet::new();
+        while !bs.contains(&current) {
+            bs.insert(current);
+            let i = c.next().unwrap();
+            current += i;
+        }
+        current
+    }
+}
 
-def solve_pt1(input_data: str) -> int:
-    # solution_pt1: 439
-    return sum(parse_inupt(input_data))
+fn solve_pt1(input_text: &str) -> i64 {
+    let captcha: Captcha = input_text.parse::<Captcha>().unwrap();
+    captcha.sum()
+}
 
+fn solve_pt2(input_text: &str) -> i64 {
+    let captcha: Captcha = input_text.parse::<Captcha>().unwrap();
+    captcha.seen_twice()
+}
 
-def solve_pt2(input_data: str) -> int:
-    sequence = cycle([int(i) for i in input_data.split()])
-    seen = set()
-    current = 0
-    while current not in seen:
-        seen.add(current)
-        current += next(sequence)
-    # solution_pt2: 124645
-    return current
+fn main() -> Result<(), Box<dyn Error>> {
+    const FILENAME: &str = "../data/day_01_input.txt";
+    let input_text = load_input(FILENAME);
 
+    println!("Part one: {}", solve_pt1(&input_text));
+    // solution_pt1: ???
 
-if __name__ == "__main__":
-    tests = [
-        runner.AocTestCase(func=solve_pt1, output=3, input_data="+1\n-2\n+3\n+1"),
-        runner.AocTestCase(func=solve_pt1, output=3, input_data="+1\n+1\n+1"),
-        runner.AocTestCase(func=solve_pt1, output=0, input_data="+1\n+1\n-2"),
-        runner.AocTestCase(func=solve_pt1, output=-6, input_data="-1\n-2\n-3"),
-        runner.AocTestCase(func=solve_pt2, output=2, input_data="+1\n-2\n+3\n+1"),
-        runner.AocTestCase(func=solve_pt2, output=0, input_data="+1\n-1"),
-        runner.AocTestCase(func=solve_pt2, output=10, input_data="+3\n+3\n+4\n-2\n-4"),
-        runner.AocTestCase(func=solve_pt2, output=5, input_data="-6\n+3\n+8\n+5\n-6"),
-        runner.AocTestCase(func=solve_pt2, output=14, input_data="+7\n+7\n-2\n-7\n-4"),
-    ]
-    runner.run(solve_pt1, solve_pt2, tests)
+    println!("Part two: {}", solve_pt2(&input_text));
+    // solution_pt2: ???
+
+    Ok(())
+}
+
+// Example tests
+#[cfg(test)]
+mod example {
+    use aoc_rust::test_solution;
+
+    test_solution!(test1, solve_pt1, 3, "+1\n-2\n+3\n+1");
+    test_solution!(test2, solve_pt1, 3, "+1\n+1\n+1");
+    test_solution!(test3, solve_pt1, 0, "+1\n+1\n-2");
+    test_solution!(test4, solve_pt1, -6, "-1\n-2\n-3");
+    test_solution!(test5, solve_pt2, 2, "+1\n-2\n+3\n+1");
+    test_solution!(test6, solve_pt2, 0, "+1\n-1");
+    test_solution!(test7, solve_pt2, 10, "+3\n+3\n+4\n-2\n-4");
+    test_solution!(test8, solve_pt2, 5, "-6\n+3\n+8\n+5\n-6");
+    test_solution!(test9, solve_pt2, 14, "+7\n+7\n-2\n-7\n-4");
+}
