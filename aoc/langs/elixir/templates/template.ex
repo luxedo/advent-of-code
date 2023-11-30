@@ -6,7 +6,7 @@ defmodule Day{day} do
   {description_pt1}
 
   {description_pt2}
-   """
+  """
 
   @doc """
       iex> Day{day}.solve_pt1("abc")
@@ -35,8 +35,8 @@ defmodule Day{day} do
     |> Day{day}.solve_pt1
     IO.puts("Part one: #{ans1}")
 
-    ans2 = File.read!("../data/day_{day}_input.txt")
-    |> Day{day}.solve_pt2()
+    kans2 = File.read!("../data/day_{day}_input.txt")
+    k|> Day{day}.solve_pt2()
     IO.puts("Part two: #{ans2}")
   end
 end

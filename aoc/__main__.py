@@ -291,7 +291,7 @@ def prepare_template(spec: LanguageSpec, year: int, day: int, cookie: str):
             print(f"Input {filename} already exists. Skipping...")
             return
 
-        print("Fetching input data: {filename}")
+        print(f"Fetching input data: {filename}")
         problem_data = fetch_url(INPUT_URL.format(year=year, day=day), cookie)
         with open(filename, "w") as fp:
             fp.write(problem_data)

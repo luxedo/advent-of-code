@@ -78,7 +78,7 @@ defmodule Day01 do
 
   What is the first frequency your device reaches twice?
   """
-  def parse_input(input) do
+  def parse(input) do
     input
     |> String.trim()
     |> String.split("\n", trim: true)
@@ -116,7 +116,7 @@ defmodule Day01 do
         -6
   """
   def solve_pt1(input) do
-    parse_input(input) |> Enum.sum()
+    input |> parse |> Enum.sum()
   end
 
   @doc """
@@ -162,10 +162,12 @@ defmodule Day01 do
         14
   """
   def solve_pt2(input) do
-    parse_input(input)
-    |> Stream.cycle
+    input
+    |> parse
+    |> Stream.cycle()
     |> Enum.reduce_while({MapSet.new([0]), 0}, fn offset, {acc, cur} ->
       cur = cur + offset
+
       cond do
         MapSet.member?(acc, cur) -> {:halt, cur}
         true -> {:cont, {MapSet.put(acc, cur), cur}}

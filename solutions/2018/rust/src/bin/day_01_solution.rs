@@ -91,7 +91,7 @@ impl FromStr for Captcha {
     type Err = ParseCaptchaError;
     fn from_str(s: &str) -> Result<Captcha, Self::Err> {
         let v = s
-            .split("\n")
+            .split('\n')
             .map(|s| s.trim().parse::<i64>())
             .collect::<Result<Vec<_>, _>>()?;
         Ok(Captcha(v))
