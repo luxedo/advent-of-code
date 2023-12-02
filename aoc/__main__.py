@@ -287,6 +287,10 @@ def prepare_template(spec: LanguageSpec, year: int, day: int, cookie: str):
 
     def prepare_input(spec: LanguageSpec, year: int, day: int):
         filename = spec.input(year, day)
+        data_dir = filename.parent
+        if not data_dir.is_dir():
+            data_dir.mkdir(parents=True, exist_ok=True)
+
         if filename.is_file():
             print(f"Input {filename} already exists. Skipping...")
             return
