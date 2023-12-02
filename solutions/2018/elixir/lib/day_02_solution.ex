@@ -129,21 +129,20 @@ defmodule Day02 do
   def solve_pt2(input) do
     ids = input |> parse
 
-    {ix1, {ix2, _}} =
-      Enum.slice(ids, 0..-2)
-      |> Stream.with_index()
-      |> Enum.map(fn {item, idx1} ->
-        {idx1,
-         Enum.slice(ids, (idx1 + 1)..-1)
-         |> Stream.with_index()
-         |> Enum.map(fn {other, idx2} ->
-           {idx2, compare_strings(item, other)}
-         end)
-         |> Enum.max_by(fn {_, x} -> x end)}
-      end)
-      |> Enum.max_by(fn {_, {_, x}} -> x end)
-
-    subtract_strings(Enum.at(ids, ix1), Enum.at(ids, ix1 + ix2 + 1))
+    Enum.slice(ids, 0..-2)
+    |> Stream.with_index()
+    |> Enum.map(fn {item, idx1} ->
+      {idx1,
+       Enum.slice(ids, (idx1 + 1)..-1)
+       |> Stream.with_index()
+       |> Enum.map(fn {other, idx2} ->
+         {idx2, compare_strings(item, other)}
+       end)
+       |> Enum.max_by(fn {_, x} -> x end)}
+    end)
+    |> Enum.max_by(fn {_, {_, x}} -> x end)
+    |> (fn {ix1, {ix2, _}} -> {Enum.at(ids, ix1), Enum.at(ids, ix1 + ix2 + 1)} end).()
+    |> subtract_strings
   end
 
   def compare_strings(str1, str2) do
@@ -152,9 +151,10 @@ defmodule Day02 do
     |> Enum.sum()
   end
 
-  def subtract_strings(str1, str2) do
+  def subtract_strings({str1, str2}) do
     Enum.zip([String.graphemes(str1), String.graphemes(str2)])
-    |> Enum.filter(fn {a, b} -> a == b end) |> Enum.map_join(&(&1 |> Kernel.elem(0)))
+    |> Enum.filter(fn {a, b} -> a == b end)
+    |> Enum.map_join(&(&1 |> Kernel.elem(0)))
   end
 
   def main do
