@@ -113,7 +113,7 @@ defmodule Day01 do
     |> Enum.map(fn line ->
       Enum.map(0..(String.length(line) - 1), fn i ->
         String.slice(line, i..-1)
-        |> (&Enum.reduce_while(table, nil, fn {key, val}, acc ->
+        |> (&Enum.reduce_while(table, nil, fn {key, val}, _ -> # @TODO: Change this to find
               if Regex.run(key, &1),
                 do: {:halt, val},
                 else: {:cont, if(Regex.run(~r/^\d/, &1), do: String.at(&1, 0), else: nil)}

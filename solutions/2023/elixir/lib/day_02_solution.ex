@@ -142,7 +142,7 @@ defmodule Day02 do
   """
   def solve_pt2(input) do
     parse(input)
-    |> Enum.map(fn {game, cubes} ->
+    |> Enum.map(fn {_, cubes} ->
       Enum.reduce(cubes, [0, 0, 0], fn cube, acc ->
         Enum.zip(cube, acc)
         |> Enum.map(fn {prev, cur} -> if cur > prev, do: cur, else: prev end)
