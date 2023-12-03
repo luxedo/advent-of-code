@@ -62,13 +62,26 @@ defmodule Day01 do
 
   What is the sum of all of the calibration values?
   """
+  @table %{
+    "one" => "1",
+    "two" => "2",
+    "three" => "3",
+    "four" => "4",
+    "five" => "5",
+    "six" => "6",
+    "seven" => "7",
+    "eight" => "8",
+    "nine" => "9"
+  }
+
+  @digits Map.values(@table)
 
   @doc """
        iex> Day01.solve_pt1(\"""
-       ...> 1abc2
-       ...> pqr3stu8vwx
-       ...> a1b2c3d4e5f
-       ...> treb7uchet
+       ...>1abc2
+       ...>pqr3stu8vwx
+       ...>a1b2c3d4e5f
+       ...>treb7uchet
        ...>\""")
        142
   """
@@ -85,44 +98,37 @@ defmodule Day01 do
 
   @doc """
        iex> Day01.solve_pt2(\"""
-       ...> two1nine
-       ...> eightwothree
-       ...> abcone2threexyz
-       ...> xtwone3four
-       ...> 4nineeightseven2
-       ...> zoneight234
-       ...> 7pqrstsixteen
+       ...>two1nine
+       ...>eightwothree
+       ...>abcone2threexyz
+       ...>xtwone3four
+       ...>4nineeightseven2
+       ...>zoneight234
+       ...>7pqrstsixteen
        ...>\""")
        281
   """
   def solve_pt2(input) do
-    table = %{
-      ~r/^one/ => "1",
-      ~r/^two/ => "2",
-      ~r/^three/ => "3",
-      ~r/^four/ => "4",
-      ~r/^five/ => "5",
-      ~r/^six/ => "6",
-      ~r/^seven/ => "7",
-      ~r/^eight/ => "8",
-      ~r/^nine/ => "9"
-    }
-
     String.split(input, "\n", trim: true)
-    |> Enum.map(fn line -> String.trim(line) end)
     |> Enum.map(fn line ->
-      Enum.map(0..(String.length(line) - 1), fn i ->
-        String.slice(line, i..-1)
-        |> (&Enum.reduce_while(table, nil, fn {key, val}, _ -> # @TODO: Change this to find
-              if Regex.run(key, &1),
-                do: {:halt, val},
-                else: {:cont, if(Regex.run(~r/^\d/, &1), do: String.at(&1, 0), else: nil)}
-            end)).()
-      end)
-      |> Enum.filter(fn i -> !is_nil(i) end)
-      |> (fn number ->
-            (Enum.at(number, 0) <> Enum.at(number, -1)) |> String.to_integer()
-          end).()
+      digits =
+        Enum.map(0..(String.length(line) - 1), fn i ->
+          substring = String.slice(line, i..-1)
+
+          case String.at(substring, 0) do
+            n when n in @digits ->
+              n
+
+            _ ->
+              Enum.find(@table, {nil, nil}, fn {key, val} ->
+                String.starts_with?(substring, key)
+              end)
+              |> elem(1)
+          end
+        end)
+        |> Enum.filter(fn i -> !is_nil(i) end)
+
+      (List.first(digits) <> List.last(digits)) |> String.to_integer()
     end)
     |> Enum.sum()
   end

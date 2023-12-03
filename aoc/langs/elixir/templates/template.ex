@@ -31,12 +31,16 @@ defmodule Day{day} do
   end
 
   def main do
-    ans1 = File.read!("../data/day_{day}_input.txt")
-    |> Day{day}.solve_pt1
+    ans1 =
+      File.read!("../data/day_{day}_input.txt")
+      |> Day{day}.solve_pt1
+
     IO.puts("Part one: #{ans1}")
 
-    ans2 = File.read!("../data/day_{day}_input.txt")
-    |> Day{day}.solve_pt2()
+    ans2 =
+      File.read!("../data/day_{day}_input.txt")
+      |> Day{day}.solve_pt2()
+
     IO.puts("Part two: #{ans2}")
   end
 end

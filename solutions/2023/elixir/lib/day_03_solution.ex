@@ -146,7 +146,7 @@ defmodule Day03 do
     c0max >= c1min && c1max >= c0min
   end
 
-  def find_overlaps(cell0 = %{:c0 => p0min, :c1 => p0max}, list1) do
+  def find_overlaps(%{:c0 => p0min, :c1 => p0max}, list1) do
     Enum.map(list1, fn cell1 = %{:c0 => p1min, :c1 => p1max} ->
       if overlaps2d?(p0min, p0max, p1min, p1max), do: cell1, else: nil
     end)
@@ -154,6 +154,10 @@ defmodule Day03 do
       nil -> false
       _ -> true
     end)
+  end
+
+  def find_overlaps(list0, list1) when is_list(list0) and is_list(list1) do
+    Enum.map(list0, fn cell0 -> {cell0, find_overlaps(cell0, list1)} end)
   end
 
   @doc """
@@ -174,8 +178,9 @@ defmodule Day03 do
   def solve_pt1(input) do
     {digits, symbols} = parse(input)
 
-    Enum.filter(digits, fn cell0 -> length(find_overlaps(cell0, symbols)) > 0 end)
-    |> Enum.map(fn %{:value => value} -> value end)
+    find_overlaps(digits, symbols)
+    |> Enum.filter(fn {_, overlaps} -> length(overlaps) > 0 end)
+    |> Enum.map(fn {cell, _} -> cell.value end)
     |> Enum.sum()
   end
 
@@ -197,11 +202,11 @@ defmodule Day03 do
   def solve_pt2(input) do
     {digits, symbols} = parse(input)
 
-    Enum.map(symbols, fn cell0 ->
-      find_overlaps(cell0, digits)
+    find_overlaps(Enum.filter(symbols, fn %{:value => value} -> value == "*" end), digits)
+    |> Enum.filter(fn {_, overlaps} -> length(overlaps) == 2 end)
+    |> Enum.map(fn {_, overlaps} ->
+      Enum.map(overlaps, fn ov -> ov.value end) |> Enum.product()
     end)
-    |> Enum.filter(fn ovs -> length(ovs) == 2 end)
-    |> Enum.map(fn ovs -> Enum.map(ovs, fn ov -> ov.value end) |> Enum.product() end)
     |> Enum.sum()
   end
 
