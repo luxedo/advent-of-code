@@ -120,7 +120,7 @@ defmodule Day01 do
               n
 
             _ ->
-              Enum.find(@table, {nil, nil}, fn {key, val} ->
+              Enum.find(@table, {nil, nil}, fn {key, _} ->
                 String.starts_with?(substring, key)
               end)
               |> elem(1)
