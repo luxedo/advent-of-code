@@ -153,6 +153,14 @@ defmodule Day07 do
     "2" => 2,
     "J" => 1
   }
+  @five_of_a_kind_value 6
+  @four_of_a_kind_value 5
+  @full_house_value 4
+  @three_of_a_kind_value 3
+  @two_pair_value 2
+  @one_pair_value 1
+  @high_card_value 0
+
   def parse(input) do
     String.split(input, "\n", trim: true)
     |> Enum.map(fn line ->
@@ -184,13 +192,13 @@ defmodule Day07 do
     values = Map.values(counts) |> Enum.sort(:desc)
 
     cond do
-      five_of_a_kind(values) -> 6
-      four_of_a_kind(values) -> 5
-      full_house(values) -> 4
-      three_of_a_kind(values) -> 3
-      two_pair(values) -> 2
-      one_pair(values) -> 1
-      true -> 0
+      five_of_a_kind(values) -> @five_of_a_kind_value
+      four_of_a_kind(values) -> @four_of_a_kind_value
+      full_house(values) -> @full_house_value
+      three_of_a_kind(values) -> @three_of_a_kind_value
+      two_pair(values) -> @two_pair_value
+      one_pair(values) -> @one_pair_value
+      true -> @high_card_value
     end
   end
 
