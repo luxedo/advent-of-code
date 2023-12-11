@@ -136,11 +136,9 @@ defmodule Day09 do
   end
 
   def find_sequence(seq) when is_list(seq) do
-    case Enum.all?(seq, &(&1 == 0)) do
-      true ->
+    if Enum.all?(seq, &(&1 == 0)) do
         [seq]
-
-      false ->
+    else
         new_seq =
           Enum.reduce(Enum.zip(seq, List.delete_at(seq, 0)), [], fn {prev, cur}, acc ->
             [cur - prev | acc]
