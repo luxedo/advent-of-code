@@ -145,7 +145,6 @@ defmodule Day11 do
 
   def expand_universe(universe, axis: 0) do
     width = Kernel.length(Enum.at(universe, 0))
-    blank_space = for _ <- 1..width, do: :s
     expanded_space = for _ <- 1..width, do: :e
 
     Enum.map(universe, fn
@@ -166,7 +165,7 @@ defmodule Day11 do
     |> Enum.flat_map(fn {row, y} ->
       Enum.with_index(row)
       |> Enum.map(fn
-        {s = :g, x} -> {y, x}
+        {_ = :g, x} -> {y, x}
         _ -> nil
       end)
     end)
@@ -174,7 +173,7 @@ defmodule Day11 do
   end
 
   def to_distance(_ = :e, expansion), do: expansion
-  def to_distance(s, _), do: 1
+  def to_distance(_, _), do: 1
 
   def space_distances(universe, expansion, axis: 1) do
     Enum.at(universe, 0) |> Enum.map(&to_distance(&1, expansion))
@@ -185,8 +184,7 @@ defmodule Day11 do
   end
 
   def space_distances(universe, expansion) do
-    {space_distances(universe, expansion, axis: 0),
-     space_distances(universe, expansion, axis: 1)}
+    {space_distances(universe, expansion, axis: 0), space_distances(universe, expansion, axis: 1)}
   end
 
   def galaxy_distances(pairs, {distances_y, distances_x}) do
@@ -194,11 +192,10 @@ defmodule Day11 do
       [yl, yh] = Enum.sort([y0, y1])
       [xl, xh] = Enum.sort([x0, x1])
 
-      d =
-        (Enum.slice(distances_y, yl..yh)
-         |> Enum.sum()) +
-          (Enum.slice(distances_x, xl..xh)
-           |> Enum.sum()) - 2
+      (Enum.slice(distances_y, yl..yh)
+       |> Enum.sum()) +
+        (Enum.slice(distances_x, xl..xh)
+         |> Enum.sum()) - 2
 
       # [{y0, x0}, {y1, x1}, d, Enum.slice(distances_x, xl..xh), Enum.slice(distances_y, yl..yh)] |> IO.inspect
     end)
@@ -285,7 +282,7 @@ defmodule Day11 do
 
   """
   def solve_pt2(input) do
-    solve(input, 1000000)
+    solve(input, 1_000_000)
   end
 
   def main do
