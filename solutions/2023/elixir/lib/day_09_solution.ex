@@ -137,15 +137,15 @@ defmodule Day09 do
 
   def find_sequence(seq) when is_list(seq) do
     if Enum.all?(seq, &(&1 == 0)) do
-        [seq]
+      [seq]
     else
-        new_seq =
-          Enum.reduce(Enum.zip(seq, List.delete_at(seq, 0)), [], fn {prev, cur}, acc ->
-            [cur - prev | acc]
-          end)
-          |> Enum.reverse()
+      new_seq =
+        Enum.reduce(Enum.zip(seq, List.delete_at(seq, 0)), [], fn {prev, cur}, acc ->
+          [cur - prev | acc]
+        end)
+        |> Enum.reverse()
 
-        [seq | find_sequence(new_seq)]
+      [seq | find_sequence(new_seq)]
     end
   end
 
