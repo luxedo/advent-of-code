@@ -233,10 +233,10 @@ defmodule Day15 do
     # Set the current value to itself multiplied by 17.
     acc = acc * 17
     # Set the current value to the remainder of dividing itself by 256.
-    acc = Kernel.rem(acc, 256)
+    Kernel.rem(acc, 256)
   end
 
-  def put_in_box(boxes, box, lens = {code, focal}) do
+  def put_in_box(boxes, box, lens = {code, _}) do
     Map.update(boxes, box, [lens], fn lenses ->
       case Enum.find_index(lenses, fn {c, _} -> c == code end) do
         nil -> [lens | lenses]
@@ -273,7 +273,6 @@ defmodule Day15 do
     |> Enum.reduce(%{}, fn line, acc ->
       if String.contains?(line, "=") do
         [code, focal] = String.split(line, "=")
-        lens = {code, focal}
         box = hash(code)
         put_in_box(acc, box, {code, focal})
       else
@@ -285,7 +284,7 @@ defmodule Day15 do
     |> Enum.flat_map(fn {key, value} ->
       Enum.reverse(value)
       |> Enum.with_index()
-      |> Enum.map(fn {{code, focal}, i} ->
+      |> Enum.map(fn {{_, focal}, i} ->
         (key + 1) * (i + 1) * String.to_integer(focal)
       end)
     end)

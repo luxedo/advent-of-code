@@ -135,7 +135,7 @@ defmodule Day16 do
     String.split(input, "\n", trim: true) |> Enum.map(&String.graphemes/1)
   end
 
-  def count_energized(mirrors, energized, []) do
+  def count_energized(_, energized, []) do
     Enum.map(energized, fn line ->
       Enum.filter(line, &(&1 !== %{n: 0, e: 0, s: 0, w: 0})) |> Enum.count()
     end)

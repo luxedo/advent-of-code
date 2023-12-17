@@ -211,7 +211,6 @@ defmodule Day11 do
   def solve(input, expansion) do
     universe = parse(input) |> expand_universe
     {distances_y, distances_x} = space_distances(universe, expansion)
-    {length(distances_x), length(distances_y)}
     galaxy_pairs = list_galaxies(universe) |> combinations(2)
 
     galaxy_distances(galaxy_pairs, {distances_y, distances_x})
