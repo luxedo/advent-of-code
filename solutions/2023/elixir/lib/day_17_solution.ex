@@ -228,7 +228,7 @@ defmodule Day17 do
 
   def find_least_heat_path(
         city = %City{height: height, width: width},
-        start = {sy, sx},
+        {sy, sx},
         finish,
         crucible
       ) do
