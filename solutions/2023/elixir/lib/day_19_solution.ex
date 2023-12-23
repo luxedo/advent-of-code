@@ -104,30 +104,29 @@ defmodule Day19 do
     defstruct [:target, key: nil, cmp: nil, val: nil]
 
     def from_string(string) do
-      rule =
-        case String.split(string, ":") do
-          [r, t] ->
-            key =
-              case String.first(r) do
-                "x" -> :x
-                "m" -> :m
-                "a" -> :a
-                "s" -> :s
-              end
+      case String.split(string, ":") do
+        [r, t] ->
+          key =
+            case String.first(r) do
+              "x" -> :x
+              "m" -> :m
+              "a" -> :a
+              "s" -> :s
+            end
 
-            cmp =
-              case String.at(r, 1) do
-                ">" -> :>
-                "<" -> :<
-              end
+          cmp =
+            case String.at(r, 1) do
+              ">" -> :>
+              "<" -> :<
+            end
 
-            val = String.slice(r, 2..-1) |> String.to_integer()
+          val = String.slice(r, 2..-1) |> String.to_integer()
 
-            %Rule{target: t, key: key, cmp: cmp, val: val}
+          %Rule{target: t, key: key, cmp: cmp, val: val}
 
-          [t] ->
-            %Rule{target: t}
-        end
+        [t] ->
+          %Rule{target: t}
+      end
     end
   end
 
@@ -166,7 +165,7 @@ defmodule Day19 do
     def run(
           rules,
           [%Rule{target: target, key: key, cmp: cmp, val: val} | tail],
-          part = %{x: x, m: m, a: a, s: s}
+          part
         ) do
       arg =
         if key == nil do
