@@ -157,52 +157,50 @@ defmodule Day05 do
   What is the lowest location number that corresponds to any of the initial seed numbers?
   """
 
-  def parse(input) do
-    [seeds | tail] = String.split(input, "\n\n")
-    seeds = String.split(seeds, " ") |> List.delete_at(0) |> Enum.map(&String.to_integer/1)
-
-    maps =
-      Enum.map(tail, fn t ->
-        [name | maps] = String.split(t, "\n", trim: true)
-
-        [from, to] =
-          String.replace_trailing(name, " map:", "") |> String.split("-") |> List.delete_at(1)
-
-        map =
-          Enum.map(maps, fn m -> String.split(m, " ") |> Enum.map(&String.to_integer/1) end)
-          |> Enum.map(fn [dest, source, length] ->
-            {source..(source + length - 1), dest - source}
-          end)
-
-        {from, %{map: map, to: to}}
-      end)
-      |> Map.new()
-
-    {seeds, maps}
-  end
-
-  def recurse_map(values, key, map) do
-    case Map.has_key?(map, key) do
-      false ->
-        values
-
-      true ->
-        m = Map.fetch!(map, key)
-
-        v =
-          Enum.map(values, fn v ->
-            case Enum.find(m.map, fn {r, _} -> v in r end) do
-              nil -> v
-              {_, offset} -> v + offset
-            end
-          end)
-
-        recurse_map(v, m.to, map)
-    end
-  end
-
   defmodule Almanac do
-    # def remap([], dst, rsrc, offset), do: {[], dst}
+    def parse(input) do
+      [seeds | tail] = String.split(input, "\n\n")
+      seeds = String.split(seeds, " ") |> List.delete_at(0) |> Enum.map(&String.to_integer/1)
+
+      maps =
+        Enum.map(tail, fn t ->
+          [name | maps] = String.split(t, "\n", trim: true)
+
+          [from, to] =
+            String.replace_trailing(name, " map:", "") |> String.split("-") |> List.delete_at(1)
+
+          map =
+            Enum.map(maps, fn m -> String.split(m, " ") |> Enum.map(&String.to_integer/1) end)
+            |> Enum.map(fn [dest, source, length] ->
+              {source..(source + length - 1), dest - source}
+            end)
+
+          {from, %{map: map, to: to}}
+        end)
+        |> Map.new()
+
+      {seeds, maps}
+    end
+
+    def run_seeds(values, key, map) do
+      case Map.has_key?(map, key) do
+        false ->
+          values
+
+        true ->
+          m = Map.fetch!(map, key)
+
+          v =
+            Enum.map(values, fn v ->
+              case Enum.find(m.map, fn {r, _} -> v in r end) do
+                nil -> v
+                {_, offset} -> v + offset
+              end
+            end)
+
+          run_seeds(v, m.to, map)
+      end
+    end
 
     def remap(range = start..stop, rsrc = src_start..src_stop, offset) do
       if Range.disjoint?(range, rsrc) do
@@ -286,8 +284,8 @@ defmodule Day05 do
        35
   """
   def solve_pt1(input) do
-    {seeds, map} = parse(input)
-    recurse_map(seeds, "seed", map) |> Enum.min()
+    {seeds, map} = Almanac.parse(input)
+    Almanac.run_seeds(seeds, "seed", map) |> Enum.min()
   end
 
   @doc """
@@ -329,7 +327,7 @@ defmodule Day05 do
        46
   """
   def solve_pt2(input) do
-    {seeds, map} = parse(input)
+    {seeds, map} = Almanac.parse(input)
 
     seeds =
       Enum.chunk_every(seeds, 2)
