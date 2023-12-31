@@ -1,0 +1,390 @@
+defmodule Day21 do
+  @moduledoc """
+  Advent Of Code 2023 - day 21
+  https://adventofcode.com/2023/day/21
+
+    --- Day 21: Step Counter ---
+  You manage to catch the airship right as it's dropping someone else off on their all-expenses-paid
+  trip to Desert Island! It even helpfully drops you off near the gardener and his massive farm.
+
+  "You got the sand flowing again! Great work! Now we just need to wait until we have enough sand to
+  filter the water for Snow Island and we'll have snow again in no time."
+
+  While you wait, one of the Elves that works with the gardener heard how good you are at solving
+  problems and would like your help. He needs to get his steps in for the day, and so he'd like to
+  know which garden plots he can reach with exactly his remaining 64 steps.
+
+  He gives you an up-to-date map (your puzzle input) of his starting position (S), garden plots (.),
+  and rocks (#). For example:
+  ...........
+  .....###.#.
+  .###.##..#.
+  ..#.#...#..
+  ....#.#....
+  .##..S####.
+  .##..#...#.
+  .......##..
+  .##.#.####.
+  .##..##.##.
+  ...........
+
+
+  The Elf starts at the starting position (S) which also counts as a garden plot. Then, he can take
+  one step north, south, east, or west, but only onto tiles that are garden plots. This would allow
+  him to reach any of the tiles marked O:
+  ...........
+  .....###.#.
+  .###.##..#.
+  ..#.#...#..
+  ....#O#....
+  .##.OS####.
+  .##..#...#.
+  .......##..
+  .##.#.####.
+  .##..##.##.
+  ...........
+
+
+  Then, he takes a second step. Since at this point he could be at either tile marked O, his second
+  step would allow him to reach any garden plot that is one step north, south, east, or west of any
+  tile that he could have reached after the first step:
+  ...........
+  .....###.#.
+  .###.##..#.
+  ..#.#O..#..
+  ....#.#....
+  .##O.O####.
+  .##.O#...#.
+  .......##..
+  .##.#.####.
+  .##..##.##.
+  ...........
+
+
+  After two steps, he could be at any of the tiles marked O above, including the starting position
+  (either by going north-then-south or by going west-then-east).
+
+  A single third step leads to even more possibilities:
+  ...........
+  .....###.#.
+  .###.##..#.
+  ..#.#.O.#..
+  ...O#O#....
+  .##.OS####.
+  .##O.#...#.
+  ....O..##..
+  .##.#.####.
+  .##..##.##.
+  ...........
+
+
+  He will continue like this until his steps for the day have been exhausted. After a total of 6
+  steps, he could reach any of the garden plots marked O:
+  ...........
+  .....###.#.
+  .###.##.O#.
+  .O#O#O.O#..
+  O.O.#.#.O..
+  .##O.O####.
+  .##.O#O..#.
+  .O.O.O.##..
+  .##.#.####.
+  .##O.##.##.
+  ...........
+
+
+  In this example, if the Elf's goal was to get exactly 6 more steps today, he could use them to
+  reach any of 16 garden plots.
+
+  However, the Elf actually needs to get 64 steps today, and the map he's handed you is much larger
+  than the example map.
+
+  Starting from the garden plot marked S on your map, how many garden plots could the Elf reach in
+  exactly 64 steps?
+
+  {description_pt2}
+  """
+
+  defmodule Plot do
+    defstruct [:vec, plots: [], border: []]
+  end
+
+  defmodule Garden do
+    defstruct [:garden, :border, :height, :width]
+
+    def find_adjacent(garden) do
+      Enum.map(garden, fn {_, p} ->
+        vec = {y, x} = p.vec
+
+        plots =
+          Enum.map([{y - 1, x}, {y, x + 1}, {y + 1, x}, {y, x - 1}], fn vec ->
+            Map.get(garden, vec)
+          end)
+          |> Enum.filter(&(&1 != nil))
+          |> Enum.filter(fn
+            %Plot{} -> true
+            _ -> false
+          end)
+          |> Enum.map(& &1.vec)
+
+        {vec, plots}
+      end)
+      |> Map.new()
+    end
+
+    def parse(input) do
+      garden =
+        String.split(input, "\n", trim: true)
+        |> Enum.with_index()
+        |> Enum.flat_map(fn {line, y} ->
+          String.graphemes(line)
+          |> Enum.with_index()
+          |> Enum.map(fn {c, x} ->
+            case c do
+              "." -> {{y, x}, %Plot{vec: {y, x}}}
+              "S" -> {{y, x}, :start}
+              "#" -> nil
+            end
+          end)
+        end)
+        |> Enum.filter(&(&1 !== nil))
+        |> Map.new()
+
+      {start, _} = Enum.find(garden, fn {_, val} -> val == :start end)
+
+      garden = Map.replace!(garden, start, %Plot{vec: start}) |> find_adjacent()
+
+      {height, width} =
+        Enum.reduce(garden, {0, 0}, fn {{y, x}, _}, {ay, ax} ->
+          {if(y > ay, do: y, else: ay), if(x > ax, do: x, else: ax)}
+        end)
+
+      garden = %Garden{garden: garden, height: height, width: width}
+      border = border_plots(garden)
+
+      {start, Map.replace!(garden, :border, border)}
+    end
+
+    def border_plots(%Garden{garden: garden, height: height, width: width}) do
+      Enum.map(garden, fn {{y, x}, _} ->
+        y_border =
+          case y do
+            0 -> [{{-1, 0}, {height, x}}]
+            h when h == height -> [{{1, 0}, {0, x}}]
+            _ -> []
+          end
+
+        x_border =
+          case x do
+            0 -> [{{0, -1}, {y, width}}]
+            w when w == width -> [{{0, 1}, {y, 0}}]
+            _ -> []
+          end
+
+        {{y, x}, y_border ++ x_border}
+      end)
+      |> Enum.filter(fn
+        {_, []} -> false
+        _ -> true
+      end)
+      |> Map.new()
+    end
+
+    def get(garden = %{}, p), do: Map.fetch!(garden, p)
+
+    def get_all(garden = %Garden{}, ps) when is_list(ps), do: Enum.map(ps, &get(garden, &1))
+
+    def step_plots(%Garden{garden: garden}, steps = %MapSet{}) do
+      Enum.flat_map(steps, fn ps -> Map.fetch!(garden, ps) end)
+      |> MapSet.new()
+    end
+
+    def step_plots(
+          %Garden{garden: garden, border: border, height: height, width: width},
+          positions
+        ) do
+      # Compute centers
+      centers =
+        Enum.map(positions, fn {loc, steps} ->
+          new_pos =
+            if cache = Process.get({:c, steps}) do
+              cache
+            else
+              new_steps =
+                Enum.flat_map(steps, fn ps -> Map.fetch!(garden, ps) end)
+                |> MapSet.new()
+
+              Process.put({:c, steps}, new_steps)
+              new_steps
+            end
+
+          {loc, new_pos}
+        end)
+        |> Map.new()
+
+      borders =
+        Enum.flat_map(positions, fn {{ly, lx}, steps} ->
+          steps =
+            Enum.filter(steps, fn
+              {0, _} -> true
+              {_, 0} -> true
+              {h, _} when h == height -> true
+              {_, w} when w == width -> true
+              _ -> false
+            end)
+            |> MapSet.new()
+
+          new_pos =
+            if cache = Process.get({:b, steps}) do
+              cache
+            else
+              new_steps =
+                Enum.flat_map(steps, fn ps -> Map.fetch!(border, ps) end)
+                |> Enum.reduce(%{}, fn {{nly, nlx}, p}, acc ->
+                  Map.update(acc, {nly, nlx}, MapSet.new([p]), &MapSet.put(&1, p))
+                end)
+                |> Map.new()
+
+              Process.put({:b, steps}, new_steps)
+              new_steps
+            end
+
+          Enum.map(new_pos, fn {{nly, nlx}, p} ->
+            {{ly + nly, lx + nlx}, p}
+          end)
+        end)
+        |> Enum.reduce(%{}, fn {sector, ms}, acc ->
+          Map.update(acc, sector, ms, &MapSet.union(&1, ms))
+        end)
+
+      Map.merge(borders, centers, fn
+        _, v1 = %MapSet{}, v2 = %MapSet{} -> MapSet.union(v1, v2)
+        _, v1 = %MapSet{}, _ -> v1
+        _, _, v2 = %MapSet{} -> v2
+      end)
+    end
+  end
+
+  @doc """
+      iex> Day21.solve_pt1(\"""
+      ...>...........
+      ...>.....###.#.
+      ...>.###.##..#.
+      ...>..#.#...#..
+      ...>....#.#....
+      ...>.##..S####.
+      ...>.##..#...#.
+      ...>.......##..
+      ...>.##.#.####.
+      ...>.##..##.##.
+      ...>...........
+      ...>\""", 6)
+      16
+  """
+  def solve_pt1(input, n) do
+    {start, garden} = Garden.parse(input)
+    start = %{{0, 0} => MapSet.new([start])}
+
+    [plots | _] =
+      Enum.reduce(1..n, {start, [1]}, fn _, {acc, c} ->
+        acc = Garden.step_plots(garden, acc)
+        nc = Enum.flat_map(acc, fn {_, v} -> v end) |> Enum.count()
+        {acc, [nc | c]}
+      end)
+      |> Kernel.elem(1)
+
+    plots
+  end
+
+  @doc """
+      iex> input =\"""
+      ...>...........
+      ...>.....###.#.
+      ...>.###.##..#.
+      ...>..#.#...#..
+      ...>....#.#....
+      ...>.##..S####.
+      ...>.##..#...#.
+      ...>.......##..
+      ...>.##.#.####.
+      ...>.##..##.##.
+      ...>...........
+      ...>\"""
+      iex>Day21.solve_pt1(input, 10)
+      50
+      iex>Day21.solve_pt1(input, 50)
+      1594
+      # iex>Day21.solve_pt1(input, 100)
+      # 6536
+      # iex>Day21.solve_pt1(input, 500)
+      # 167004
+      # iex>Day21.solve_pt2(input, 1000)
+      # 668697
+      # iex>Day21.solve_pt2(input, 5000)
+      # 16733044
+      # @TODO: Add pt2 test case
+      # iex> input2 =\"""
+      # ...>...........
+      # ...>...........
+      # ...>...........
+      # ...>...........
+      # ...>...........
+      # ...>.....S.....
+      # ...>...........
+      # ...>...........
+      # ...>...........
+      # ...>...........
+      # ...>...........
+      # ...>\"""
+      # iex>Day21.solve_pt2(input2, 115)
+      # 50
+  """
+  def solve_pt2(input, n) do
+    {start, garden} = Garden.parse(input)
+    start = %{{0, 0} => MapSet.new([start])}
+
+    side = garden.height + 1
+    iters = trunc(side / 2) + 8 * side
+
+    {plots, ixs} =
+      Enum.reduce(1..iters, {start, [1]}, fn _, {acc, c} ->
+        acc = Garden.step_plots(garden, acc)
+        nc = Enum.flat_map(acc, fn {_, v} -> v end) |> Enum.count()
+        {acc, [nc | c]}
+      end)
+      |> Kernel.elem(1)
+      |> Enum.reverse()
+      |> Enum.with_index()
+      |> Enum.filter(fn {_, i} -> rem(i + trunc(side / 2 + 1), side) == 0 end)
+      |> Enum.unzip()
+
+    s = trunc((n - trunc(side / 2 + 1)) / side) - length(plots) + 2
+
+    [{plots, _idx} | _] =
+      Enum.reduce(1..s, {plots, ixs}, fn _, {acc, ixs} ->
+        b = Day09.find_sequence(acc)
+        {next, inext} = {Day09.next_in_sequence(b), List.last(ixs) + side}
+        {Enum.slice(acc, -4..-1) ++ [next], Enum.slice(ixs, -4..-1) ++ [inext]}
+      end)
+      |> Tuple.to_list()
+      |> Enum.zip()
+      |> Enum.reverse()
+
+    # 608152828731262
+    plots
+  end
+
+  def main do
+    ans1 =
+      File.read!("../data/day_21_input.txt")
+      |> Day21.solve_pt1(64)
+
+    IO.puts("Part one: #{ans1}")
+
+    ans2 =
+      File.read!("../data/day_21_input.txt")
+      |> Day21.solve_pt2(26_501_365)
+
+    IO.puts("Part two: #{ans2}")
+  end
+end
