@@ -1,0 +1,11 @@
+[test.test_01]
+part = 1
+input = """
+"""
+answer = 142
+
+[test.test_02]
+part = 2
+input = """
+"""
+answer = 281
