@@ -67,4 +67,3 @@ defmodule Year2023Day01 do
     v1_run(&solve_pt1/2, &solve_pt2/2)
   end
 end
-

@@ -107,8 +107,8 @@ defmodule Year2023Day11 do
   def solve_pt2(input_data, args) do
     expansion = case args do
         [value] -> String.to_integer(value)
-        _ -> 1_000_000 
-    end 
+        _ -> 1_000_000
+    end
     solve(input_data, expansion)
   end
 

@@ -1,0 +1,110 @@
+"""
+ElfScript Brigade
+
+Advent Of Code 2016 Day 01
+Python Solution
+
+Day 1: No Time for a Taxicab
+
+https://adventofcode.com/2016/day/1
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from enum import Enum
+
+
+class Orientation(Enum):
+    NORTH = 0
+    EAST = 1
+    SOUTH = 2
+    WEST = 3
+
+
+class Side(Enum):
+    LEFT = -1
+    RIGHT = 1
+
+    @classmethod
+    def from_str(cls, s: str) -> Side:
+        if s == "L":
+            return cls.LEFT
+        elif s == "R":
+            return cls.RIGHT
+        else:
+            raise ValueError("Could not determine side")
+
+
+@dataclass(frozen=True, eq=True)
+class Coord:
+    x: int = 0
+    y: int = 0
+
+
+@dataclass
+class Taxi:
+    orientation: Orientation = Orientation.NORTH
+    position: Coord = field(default_factory=Coord)
+
+    def turn(self, side: Side):
+        self.orientation = Orientation(
+            (self.orientation.value + side.value) % len(Orientation)
+        )
+
+    def step(self, steps: int):
+        x, y = self.position.x, self.position.y
+        match self.orientation:
+            case Orientation.NORTH:
+                y += steps
+            case Orientation.EAST:
+                x += steps
+            case Orientation.SOUTH:
+                y -= steps
+            case Orientation.WEST:
+                x -= steps
+        self.position = Coord(x, y)
+
+    def manhattan(self) -> int:
+        return abs(self.position.x) + abs(self.position.y)
+
+
+def parse_input(input_data: str) -> list[tuple[Side, int]]:
+    return [(Side.from_str(d[0]), int(d[1:])) for d in input_data.strip().split(", ")]
+
+
+def solve_pt1(input_data: str, _args: list[str] | None = None) -> int:
+    taxi = Taxi()
+    for side, steps in parse_input(input_data):
+        taxi.turn(side)
+        taxi.step(steps)
+    return taxi.manhattan()
+
+
+def solve_pt2(input_data: str, _args: list[str] | None = None) -> int:
+    taxi = Taxi()
+    seen = set([taxi.position])
+    for side, steps in parse_input(input_data):
+        taxi.turn(side)
+        for _ in range(steps):
+            taxi.step(1)
+            if taxi.position in seen:
+                return taxi.manhattan()
+            seen.add(taxi.position)
+    return taxi.manhattan()
+
+
+# if __name__ == "__main__":
+#     tests = [
+#         runner.AocTestCase(func=solve_pt1, output=5, input_data="R2, L3"),
+#         runner.AocTestCase(func=solve_pt1, output=2, input_data="R2, R2, R2"),
+#         runner.AocTestCase(func=solve_pt1, output=12, input_data="R5, L5, R5, R3"),
+#         runner.AocTestCase(func=solve_pt2, output=4, input_data="R8, R4, R4, R8"),
+#     ]
+#     runner.run(solve_pt1, solve_pt2, tests)
+
+if __name__ == "__main__":
+    from esb.protocol import fireplacev1_0 as fp1_0
+
+    # 🎅🎄❄️☃️🎁🦌
+    # Bright christmas lights HERE
+    fp1_0.run_solutions(solve_pt1, solve_pt2)
