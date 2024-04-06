@@ -3,26 +3,50 @@
 > In the heart of the North Pole, amidst the enchanting snow-covered landscape and the sparkling lights of Santa's Workshop, you, a devoted member of the [ElfScript Brigade](https://github.com/luxedo/esb?tab=readme-ov-file#esb---elfscript-brigade), step forward as the guiding star seeker. Fueled by an insatiable curiosity and a fervor for unraveling intricate coding puzzles, your resolve is unwavering. You believe wholeheartedly that every star collected is a step closer to weaving the magic of Christmas. As you conquer algorithms and elegantly craft lines of code, your vision extends beyond the monitor, picturing the joy and wonder these digital triumphs bring to children across the globe. In the tranquil hours of the Arctic night, armed with a keyboard and resolute determination, you persist in chasing those elusive stars. Each puzzle solved becomes a beacon of hope, a testament to your dedication, and a significant stride toward safeguarding Christmas for all.
 
 <!-- Do not delete - Report start -->
-<pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ELFSCRIPT BRIGADE STATUS REPORT</span>
+## ELFSCRIPT BRIGADE STATUS REPORT
 
-Brigadista ID: <span style="color: #ffff00; text-decoration-color: #ffff00">b7738cc9-f114-49ff-8a87-0f3f0d3e7f05</span>
-In Duty Since: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2024</span>-<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">03</span>-<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">29</span> <span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">22:19:37</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">311766</span>-<span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">03:00</span>
+* Brigadista ID: b7738cc9-f114-49ff-8a87-0f3f0d3e7f05
+* In Duty Since: 2024-03-29 22:19:37.311766-03:00
 
-SERVICE STARS
+### SERVICE STARS
 
-<span style="color: #808000; text-decoration-color: #808000">* </span><span style="color: #808000; text-decoration-color: #808000; font-weight: bold">2023</span>
-<span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span> <span style="color: #af00ff; text-decoration-color: #af00ff">ee</span>
-<span style="color: #808000; text-decoration-color: #808000">** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **</span>
-<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">01</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">02</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">03</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">04</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">05</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">06</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">07</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">08</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">09</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">11</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">12</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">13</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">14</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">15</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">16</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">17</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">18</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">19</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">20</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">21</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">22</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">23</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">24</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">25</span>
-<span style="color: #808000; text-decoration-color: #808000">==========================================================================</span>
 
-<span style="color: #808000; text-decoration-color: #808000">  </span><span style="color: #808000; text-decoration-color: #808000; font-weight: bold">2022</span>
+#### 2023
 
-<span style="color: #808000; text-decoration-color: #808000">**                                                                        </span>
-<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">01</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">02</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">03</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">04</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">05</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">06</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">07</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">08</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">09</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">11</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">12</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">13</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">14</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">15</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">16</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">17</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">18</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">19</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">20</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">21</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">22</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">23</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">24</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">25</span>
-<span style="color: #808000; text-decoration-color: #808000">==========================================================================</span>
+<table>
+  <tr><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td></tr>
+  <tr><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td></tr>
+  <tr><th>01</th><th>02</th><th>03</th><th>04</th><th>05</th><th>06</th><th>07</th><th>08</th><th>09</th><th>10</th></tr>
+</table>
+<table>
+  <tr><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td></tr>
+  <tr><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td></tr>
+  <tr><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th></tr>
+</table>
+<table>
+  <tr><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td><td>⚗️⚗️</td></tr>
+  <tr><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td></tr>
+  <tr><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th></tr>
+</table>
 
-</code></pre><!-- Do not delete - Report end -->
+#### 2022
+
+<table>
+  
+  <tr><td>⭐⭐</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td></tr>
+  <tr><th>01</th><th>02</th><th>03</th><th>04</th><th>05</th><th>06</th><th>07</th><th>08</th><th>09</th><th>10</th></tr>
+</table>
+<table>
+  
+  <tr><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td></tr>
+  <tr><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th></tr>
+</table>
+<table>
+  
+  <tr><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td><td>☆☆</td></tr>
+  <tr><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th></tr>
+</table>
+<!-- Do not delete - Report end -->
 
 ## Acknowledgment
 
