@@ -3,6 +3,7 @@ repos:
     rev: v4.5.0
     hooks:
       - id: trailing-whitespace
+        exclude: "tests/"
       - id: end-of-file-fixer
       - id: check-added-large-files
         args: [--maxkb=2048]
@@ -12,10 +13,6 @@ repos:
       - id: isort
         name: isort (python)
         args: [--profile, black, --filter-files]
-  - repo: https://github.com/ambv/black
-    rev: 23.11.0
-    hooks:
-      - id: black
   - repo:
       https://github.com/charliermarsh/ruff-pre-commit
       # Ruff version.
@@ -29,13 +26,3 @@ repos:
       - id: mypy
         name: mypy
         args: [--no-strict-optional, --ignore-missing-imports]
-        exclude: ^(bin\/(?!garanos)|test/update/)
-  - repo: https://github.com/doublify/pre-commit-rust
-    rev: v1.0
-    hooks:
-      - id: fmt
-        args: [--manifest-path, solutions/2016/rust/Cargo.toml, --]
-      - id: cargo-check
-        args: [--manifest-path, solutions/2016/rust/Cargo.toml]
-      - id: clippy
-        args: [--manifest-path, solutions/2016/rust/Cargo.toml]
