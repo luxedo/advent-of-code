@@ -106,7 +106,7 @@ fn find_move(enemy_move: Move, condition: Outcome) -> Move {
     }
 }
 
-fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt1(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let answer = input_data
         .trim_end_matches("\n")
         .split("\n")
@@ -116,7 +116,7 @@ fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display
     Ok(answer)
 }
 
-fn solve_pt2(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt2(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let answer = input_data
         .trim_end_matches("\n")
         .split("\n")

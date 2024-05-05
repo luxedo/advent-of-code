@@ -27,11 +27,11 @@ fn solve(input_data: &str, elves: usize) -> u64 {
     calories[0..elves].iter().sum()
 }
 
-fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt1(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     Ok(solve(input_data, 1))
 }
 
-fn solve_pt2(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt2(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     Ok(solve(input_data, 3))
 }
 

@@ -44,7 +44,7 @@ fn parse_priority(item: char) -> u32 {
     }
 }
 
-fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt1(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let answer = input_data
         .lines()
         .map(split_middle)
@@ -54,7 +54,7 @@ fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display
     Ok(answer)
 }
 
-fn solve_pt2(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt2(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     const ELVES: usize = 3;
     let answer = input_data
         .lines()

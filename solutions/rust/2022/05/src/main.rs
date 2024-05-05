@@ -89,12 +89,12 @@ fn get_top_boxes(boxes: Vec<Vec<char>>) -> String {
         .collect::<String>()
 }
 
-fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt1(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let answer = solve(input_data, crane9000);
     Ok(answer)
 }
 
-fn solve_pt2(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt2(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let answer = solve(input_data, crane9001);
     Ok(answer)
 }

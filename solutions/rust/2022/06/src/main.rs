@@ -27,13 +27,13 @@ fn solve(input_text: &str, window_size: usize) -> u64 {
         .unwrap()
         + window_size) as u64
 }
-fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt1(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let window_size: usize = 4;
     let answer = solve(input_data, window_size);
     Ok(answer)
 }
 
-fn solve_pt2(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt2(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let window_size: usize = 14;
     let answer = solve(input_data, window_size);
     Ok(answer)

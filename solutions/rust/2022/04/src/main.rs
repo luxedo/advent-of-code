@@ -48,12 +48,12 @@ fn solve(input_text: &str, overlap_fn: fn(&Range<u64>, &Range<u64>) -> bool) -> 
         .filter(|ranges| overlap_fn(&ranges[0], &ranges[1]))
         .count() as u64
 }
-fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt1(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let answer = solve(input_data, fully_contains);
     Ok(answer)
 }
 
-fn solve_pt2(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt2(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let answer = solve(input_data, any_overlap);
     Ok(answer)
 }

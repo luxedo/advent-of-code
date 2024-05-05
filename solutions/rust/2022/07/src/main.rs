@@ -168,7 +168,7 @@ fn input_to_root(input_text: &str, root: &mut Root) {
     root.compute_dir_sizes();
 }
 
-fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt1(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let at_most_pt1: u64 = 100000;
     let mut root = Root::new();
     input_to_root(input_data, &mut root);
@@ -179,7 +179,7 @@ fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display
     Ok(answer)
 }
 
-fn solve_pt2(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt2(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let total_disk: u64 = 70000000;
     let at_least: u64 = 30000000;
     let mut root = Root::new();

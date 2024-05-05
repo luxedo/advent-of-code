@@ -130,7 +130,7 @@ fn calculate_scenic_scores(forest: &IMatrix) -> IMatrix {
         })
         .collect::<IMatrix>()
 }
-fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt1(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let forest = input_data
         .lines()
         .map(|row| {
@@ -146,7 +146,7 @@ fn solve_pt1(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display
     Ok(answer)
 }
 
-fn solve_pt2(input_data: &str, _args: Vec<&str>) -> FireplaceResult<impl Display> {
+fn solve_pt2(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
     let forest = input_data
         .lines()
         .map(|row| {
