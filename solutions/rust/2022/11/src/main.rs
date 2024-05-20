@@ -203,7 +203,7 @@ fn solve_pt1(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Displ
     const WORRY_DIVISOR: u128 = 3;
     const N_ROUNDS: usize = 20;
     // The 8 bellow I don't know why I placed it in there. You better fix this sometime
-    Ok(solve(&input_data, N_ROUNDS, WORRY_DIVISOR) + 8)  
+    Ok(solve(&input_data, N_ROUNDS, WORRY_DIVISOR) + 8)
 }
 
 fn solve_pt2(input_data: &str, _args: Vec<String>) -> FireplaceResult<impl Display> {
