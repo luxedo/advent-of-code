@@ -93,18 +93,8 @@ def solve_pt2(input_data: str, _args: list[str] | None = None) -> int:
     return taxi.manhattan()
 
 
-# if __name__ == "__main__":
-#     tests = [
-#         runner.AocTestCase(func=solve_pt1, output=5, input_data="R2, L3"),
-#         runner.AocTestCase(func=solve_pt1, output=2, input_data="R2, R2, R2"),
-#         runner.AocTestCase(func=solve_pt1, output=12, input_data="R5, L5, R5, R3"),
-#         runner.AocTestCase(func=solve_pt2, output=4, input_data="R8, R4, R4, R8"),
-#     ]
-#     runner.run(solve_pt1, solve_pt2, tests)
-
 if __name__ == "__main__":
-    from esb.protocol import fireplacev1_0 as fp1_0
-
+    from esb.protocol import fireplace
     # 🎅🎄❄️☃️🎁🦌
     # Bright christmas lights HERE
-    fp1_0.run_solutions(solve_pt1, solve_pt2)
+    fireplace.v1_run(solve_pt1, solve_pt2)
