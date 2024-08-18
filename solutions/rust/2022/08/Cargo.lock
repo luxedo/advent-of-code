@@ -105,9 +105,9 @@ checksum = "acbf1af155f9b9ef647e42cdc158db4b64a1b61f743629225fde6f3e0be2a7c7"
 
 [[package]]
 name = "esb_fireplace"
-version = "0.2.0"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "256440bb0edf20b29cb9e3616fea48070926e361463c73836cc9ac92c7663381"
+checksum = "e2ae6f05ceaafaf2a32bd41a2791bfc10aa868f9942af31c49580059b11c2e97"
 dependencies = [
  "clap",
  "thiserror",

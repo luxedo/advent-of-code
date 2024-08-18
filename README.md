@@ -33,6 +33,8 @@ Run times: mean - 5.37e+00, stdev - 1.42e+01
 
 #### 2022 (18/25) ⭐
 
+Run times: mean - 1.05e-03, stdev - 8.57e-04
+
 <table>
   <tr><td>🦀🦀</td><td>🦀🦀</td><td>🦀🦀</td><td>🦀🦀</td><td>🦀🦀</td><td>🦀🦀</td><td>🦀🦀</td><td>🦀🦀</td><td>🦀🦀</td><td>🦀</td></tr>
   <tr><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td></tr>
