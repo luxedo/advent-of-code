@@ -40,6 +40,8 @@ class GiveDestination(Enum):
                 return cls.BOT
             case "output":
                 return cls.OUTPUT
+            case _:
+                raise ValueError(f"Cannot parse destination {string}")
 
 
 @dataclass
@@ -148,6 +150,7 @@ class Factory:
         match instruction:
             case ValueInstruction(value=value, bot_id=bot_id):
                 self.give_bot(bot_id, value)
+                return None
             case GiveInstruction(
                 bot_id, low_dest_type, low_dest, high_dest_type, high_dest
             ):
@@ -166,6 +169,8 @@ class Factory:
                     case GiveDestination.OUTPUT:
                         self.give_output(high_dest, high)
                 return Comparison(bot_id, low, high)
+            case _:
+                raise ValueError("Instruction not found")
 
     def has_moves(self) -> int | None:
         for bot in self.bots.values():

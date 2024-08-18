@@ -50,8 +50,7 @@ class Keypad:
                 if cell == self.starting_position:
                     self.finger = [x, y]
                     return
-        else:
-            raise ValueError("Could not find starting position")
+        raise ValueError("Could not find starting position")
 
     def move(self, direction: Direction) -> str:
         self.finger[0] += direction.value[0]
