@@ -20,3 +20,17 @@ repos:
       - id: mypy
         name: python-mypy
         args: [--no-strict-optional, --ignore-missing-imports]
+  - repo: local
+    hooks:
+      - id: go-fmt
+        name: Run go fmt
+        entry: go fmt
+        language: golang
+        types: [go]
+        pass_filenames: true
+      - id: go-lint
+        name: Run golangci-lint
+        entry: ./scripts/go_lint.sh
+        language: script
+        types: [go]
+        stages: [pre-commit]

@@ -8,6 +8,7 @@ Day 7: Internet Protocol Version 7
 
 https://adventofcode.com/2016/day/7
 """
+
 from typing import Iterable, Iterator
 
 
@@ -66,6 +67,7 @@ def solve_pt2(input_data: str, _args: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     from esb.protocol import fireplace
+
     # 🎅🎄❄️☃️🎁🦌
     # Bright christmas lights HERE
     fireplace.v1_run(solve_pt1, solve_pt2)

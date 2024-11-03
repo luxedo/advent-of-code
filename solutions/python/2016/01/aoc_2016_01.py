@@ -8,6 +8,7 @@ Day 1: No Time for a Taxicab
 
 https://adventofcode.com/2016/day/1
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -95,6 +96,7 @@ def solve_pt2(input_data: str, _args: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     from esb.protocol import fireplace
+
     # 🎅🎄❄️☃️🎁🦌
     # Bright christmas lights HERE
     fireplace.v1_run(solve_pt1, solve_pt2)

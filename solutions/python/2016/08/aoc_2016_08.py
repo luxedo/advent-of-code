@@ -8,6 +8,7 @@ Day 8: Two-Factor Authentication
 
 https://adventofcode.com/2016/day/8
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -124,6 +125,7 @@ def solve_pt2(input_data: str, _args: list[str] | None = None) -> str:
 
 if __name__ == "__main__":
     from esb.protocol import fireplace
+
     # 🎅🎄❄️☃️🎁🦌
     # Bright christmas lights HERE
     fireplace.v1_run(solve_pt1, solve_pt2)

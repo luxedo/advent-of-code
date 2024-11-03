@@ -19,7 +19,7 @@ from typing import Self
 @dataclass
 class Instruction:
     @classmethod
-    def parse_line(cls, line: str) -> Self:
+    def parse_line(cls, line: str):
         match line.split():
             case ["bot", *_]:
                 return GiveInstruction.parse_line(line)
@@ -34,7 +34,7 @@ class GiveDestination(Enum):
     OUTPUT = auto()
 
     @classmethod
-    def from_str(cls, string) -> Self:
+    def from_str(cls, string):
         match string:
             case "bot":
                 return cls.BOT

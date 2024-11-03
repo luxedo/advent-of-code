@@ -19,7 +19,7 @@ from queue import PriorityQueue
 from dataclasses import dataclass, field
 from itertools import combinations, product
 import re
-from typing import ClassVar, Self, Iterable
+from typing import Any, ClassVar, Self, Iterable
 
 
 @dataclass(frozen=True)
@@ -44,7 +44,7 @@ class Microchip:
         return self.element < other.element
 
 
-Floors = tuple[frozenset[RTG | Microchip]]
+Floors = tuple[frozenset[RTG | Microchip], ...]
 
 
 @dataclass(frozen=True)
@@ -68,12 +68,9 @@ class Facility:
         elevator: int,
         previous: Self | None = None,
         steps: int = 0,
-    ) -> Self:
+    ):
         return cls(
-            tuple(frozenset(f) for f in floors),
-            elevator=elevator,
-            previous=previous,
-            steps=steps,
+            tuple(frozenset(f) for f in floors), elevator=elevator, previous=previous, steps=steps
         )
 
     def __repr__(self) -> str:
@@ -81,31 +78,21 @@ class Facility:
             f'{f"  {key+1}  " if key != self.elevator else f"  {key+1} E"} - {sorted(tuple(value))}'
             for key, value in enumerate(self.floors)
         ]
-        floors_str = "\n".join(reversed(floors))
+        floors_str = '\n'.join(reversed(floors))
         return f"Facility:\n{floors_str}"
 
-    def __hash__(self):
-        a = [self.elevator]
+    def __hash__(self) -> int:
+        h: list[Any] = [self.elevator]
         for floor in self.floors:
             lrs = len([r for r in floor if isinstance(r, RTG)])
             lms = len([r for r in floor if isinstance(r, Microchip)])
-            a.append((lrs, lms))
-        return hash(tuple(a))
+            h.append((lrs, lms))
+        return hash(tuple(h))
 
-    def __eq__(self, other: Self):
+    def __eq__(self, other):
         for i in range(len(self.floors)):
-            ra, ma = list(
-                zip(
-                    *[(1, 0) if isinstance(r, RTG) else (0, 1) for r in self.floors[i]]
-                    + [(0, 0)]
-                )
-            )
-            rb, mb = list(
-                zip(
-                    *[(1, 0) if isinstance(r, RTG) else (0, 1) for r in other.floors[i]]
-                    + [(0, 0)]
-                )
-            )
+            ra, ma = list(zip(*[(1, 0) if isinstance(r, RTG) else (0, 1) for r in self.floors[i]] + [(0, 0)]))
+            rb, mb = list(zip(*[(1, 0) if isinstance(r, RTG) else (0, 1) for r in other.floors[i]] + [(0, 0)]))
             if sum(ra) != sum(rb) or sum(ma) != sum(mb):
                 return False
         return True
@@ -115,20 +102,18 @@ class Facility:
 
     @property
     def distance(self):
-        return self.steps + sum(
-            len(f) * (len(self.floors) - i - 1) for i, f in enumerate(self.floors)
-        )
+        return self.steps + sum(len(f) * (len(self.floors) -i - 1) for i, f in enumerate(self.floors))
 
     @classmethod
     def parse(cls, input_data: str) -> Self:
-        floors = [list() for _ in range(len(cls.floors_names))]
+        floors: list[list[RTG | Microchip]] = [list() for _ in range(len(cls.floors_names))]
         for line in input_data.split("\n"):
             floor_idx, items = cls.parse_line(line)
             floors[floor_idx].extend(items)
         return cls(tuple(frozenset(items) for items in floors))
 
     @classmethod
-    def parse_line(cls, line: str) -> str:
+    def parse_line(cls, line: str) -> tuple[int, frozenset[RTG | Microchip]]:
         header = re.search(
             f"The ({'|'.join(cls.floors_names)}) floor contains (.*)", line
         )
@@ -139,14 +124,15 @@ class Facility:
                 floor_index = cls.floors_names.index(match.group(1))
                 rest = match.group(2)
 
+        items: frozenset[RTG | Microchip]
         if rest == "nothing relevant.":
             items = frozenset()
         else:
-            items = cls.parse_items(rest)
+            items = frozenset(cls.parse_items(rest))
         return floor_index, items
 
     @classmethod
-    def parse_items(cls, line: str) -> set[RTG | Microchip]:
+    def parse_items(cls, line: str) -> frozenset[RTG | Microchip]:
         return frozenset(cls.parse_item(item) for item in re.split(",? and |, ", line))
 
     @classmethod
@@ -195,9 +181,7 @@ class Facility:
         new_floors = list(self.floors)
         new_floors[self.elevator] = self.floors[self.elevator] - set(items)
         new_floors[elevator_position] = self.floors[elevator_position] | set(items)
-        return self.new(
-            new_floors, elevator=elevator_position, previous=self, steps=self.steps + 1
-        )
+        return self.new(new_floors, elevator=elevator_position, previous=self, steps=self.steps+1)
 
     def is_valid(self) -> bool:
         for floor in self.floors:
@@ -222,7 +206,7 @@ class Facility:
 
 def solve_pt1(input_data: str, args: list[str] | None = None) -> int:
     initial_state = Facility.parse(input_data)
-    queue = PriorityQueue()
+    queue: PriorityQueue[Facility] = PriorityQueue()
     queue.put(initial_state)
     seen = set([initial_state])
     try:

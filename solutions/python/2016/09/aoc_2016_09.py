@@ -8,6 +8,7 @@ Day 9: Explosives in Cyberspace
 
 https://adventofcode.com/2016/day/9
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -99,6 +100,7 @@ def solve_pt2(input_data: str, _args: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     from esb.protocol import fireplace
+
     # 🎅🎄❄️☃️🎁🦌
     # Bright christmas lights HERE
     fireplace.v1_run(solve_pt1, solve_pt2)

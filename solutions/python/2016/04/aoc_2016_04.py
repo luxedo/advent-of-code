@@ -8,6 +8,7 @@ Day 4: Security Through Obscurity
 
 https://adventofcode.com/2016/day/4
 """
+
 from __future__ import annotations
 
 from collections import Counter
@@ -69,6 +70,7 @@ def solve_pt2(input_data: str, args: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     from esb.protocol import fireplace
+
     # 🎅🎄❄️☃️🎁🦌
     # Bright christmas lights HERE
     fireplace.v1_run(solve_pt1, solve_pt2)
