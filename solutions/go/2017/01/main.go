@@ -4,7 +4,7 @@ package main
 * ElfScript Brigade
 *
 * Advent Of Code 2017 Day 01
-* Rust Solution
+* Go Solution
 *
 * Day 1: Inverse Captcha
 *
