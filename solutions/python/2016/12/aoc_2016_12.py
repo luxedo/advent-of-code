@@ -10,8 +10,8 @@ https://adventofcode.com/2016/day/12
 """
 
 from abc import ABC, abstractmethod
-from enum import Enum, auto
 from dataclasses import dataclass, field
+from enum import Enum, auto
 from typing import Generator, Self
 
 

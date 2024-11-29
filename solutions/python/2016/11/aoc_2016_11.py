@@ -15,11 +15,11 @@ https://adventofcode.com/2016/day/11
 # 3. The elevator always stops on each floor. So, items interact when this happens
 # 4. Generators or microchips in the elevators can charge each other
 
-from queue import PriorityQueue
+import re
 from dataclasses import dataclass, field
 from itertools import combinations, product
-import re
-from typing import Any, ClassVar, Self, Iterable
+from queue import PriorityQueue
+from typing import Any, ClassVar, Iterable, Self
 
 
 @dataclass(frozen=True)
