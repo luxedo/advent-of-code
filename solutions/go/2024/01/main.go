@@ -46,8 +46,8 @@ func solve_pt1(input_data string, args []string) (interface{}, error) {
 	idListA, idListB := parse(input_data)
 
 	total := 0
-	for i := 0; i < len(idListA); i++ {
-		total += absDiff(idListA[i], idListB[i])
+	for i, idA := range idListA {
+		total += absDiff(idA, idListB[i])
 	}
 
 	return total, nil
