@@ -30,7 +30,7 @@ func multiply(input_data string) int {
 	return acc
 }
 
-func filter_disabled(input_data string) string {
+func filterDisabled(input_data string) string {
 	re := regexp.MustCompile(`(?s)don't\(\).*?do\(\)`)
 	return re.ReplaceAllString(input_data, "-")
 }
@@ -40,7 +40,7 @@ func solve_pt1(input_data string, args []string) (interface{}, error) {
 }
 
 func solve_pt2(input_data string, args []string) (interface{}, error) {
-	return multiply(filter_disabled(input_data)), nil
+	return multiply(filterDisabled(input_data)), nil
 }
 
 func main() {
