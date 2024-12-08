@@ -107,7 +107,7 @@ type Lab struct {
 }
 
 func (l Lab) Parse(input_data string) *Lab {
-	rows := strings.Split(input_data, "\n")
+	rows := strings.Split(strings.TrimSpace(input_data), "\n")
 	l.visited = make(Set[Guard])
 	l.height, l.width = len(rows), len(rows[0])
 	l.cells = make([][]bool, l.height)
@@ -183,14 +183,14 @@ func (l *Lab) IsLoop() bool {
 }
 
 func solve_pt1(input_data string, args []string) (interface{}, error) {
-	lab := Lab{}.Parse(strings.TrimSpace(input_data))
+	lab := Lab{}.Parse(input_data)
 	for ; lab.GuardInSight(); lab.Update() {
 	}
 	return lab.Visited(), nil
 }
 
 func solve_pt2(input_data string, args []string) (interface{}, error) {
-	lab := Lab{}.Parse(strings.TrimSpace(input_data))
+	lab := Lab{}.Parse(input_data)
 
 	acc := 0
 	for y := range lab.height {
