@@ -150,7 +150,6 @@ func (e *Equation) Solve() error {
 }
 
 func (e *Equation) Calibrate(operators []*Operator) Equation {
-	// fmt.Println(e)
 	if e.equation.Size() == 1 {
 		v, _ := e.equation.Peek(0)
 		if v == e.answer {
@@ -167,7 +166,6 @@ func (e *Equation) Calibrate(operators []*Operator) Equation {
 		ne.Solve()
 		ne.Calibrate(operators)
 		if ne.valid {
-			// fmt.Println("yeee")
 			(*e).operators = ne.operators.Clone()
 			(*e).operators.PushBack(*op)
 			e.valid = true
@@ -191,7 +189,6 @@ func (c Calibrator) Calibrate(operators []*Operator) Calibrator {
 	for i, eq := range c {
 		c[i] = eq.Calibrate(operators)
 	}
-	// fmt.Println(c)
 	return c
 }
 

@@ -30,14 +30,6 @@ func (s Set[T]) Contains(g T) bool {
 	return exists
 }
 
-func (s Set[T]) Clone() Set[T] {
-	clonedSet := make(Set[T])
-	for key := range s {
-		clonedSet[key] = struct{}{}
-	}
-	return clonedSet
-}
-
 type Vec struct{ y, x int }
 
 func (a Vec) Add(b Vec) Vec {
@@ -51,8 +43,6 @@ func (a Vec) Sub(b Vec) Vec {
 func (a Vec) Mul(b int) Vec {
 	return Vec{a.y * b, a.x * b}
 }
-
-
 
 type Antenna struct {
 	vec Vec
@@ -79,8 +69,7 @@ type AntennaArray struct {
 	antinodes []Antinode
 }
 
-func (AntennaArray) Parse(input_data string) AntennaArray {
-	arr := AntennaArray{}
+func (arr AntennaArray) Parse(input_data string) AntennaArray {
 	rows := strings.Split(strings.TrimSpace(input_data), "\n")
 	arr.height, arr.width = len(rows), len(rows[0])
 	for y, line := range rows {
@@ -170,7 +159,7 @@ func (arr *AntennaArray) FindAntinodesPt2(freq rune) []Antinode {
 				if !arr.Inbounds(anti.vec) {
 					break
 				}
-			  antinodes = append(antinodes, anti)
+				antinodes = append(antinodes, anti)
 			}
 		}
 	}
