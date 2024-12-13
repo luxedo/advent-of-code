@@ -9,7 +9,7 @@
 ## SERVICE STARS
 
 
-### 2024 (9/25)
+### 2024 (10/25)
 
 <table>
   <tr>
@@ -42,18 +42,18 @@
   <tr>
     <td>🐹🐹</td>
     <td>🐹🐹</td>
-    <td>☐ ☐</td>
+    <td>🐹 ☐</td>
     <td>🐹🐹</td>
-    <td>☐ ☐</td>
-    <td>☐ ☐</td>
+    <td>🐹 ☐</td>
+    <td>🐹🐹</td>
   </tr>
   <tr>
     <td>⭐⭐</td>
     <td>⭐⭐</td>
-    <td>☆ ☆</td>
+    <td>⭐☆</td>
     <td>⭐⭐</td>
-    <td>☆ ☆</td>
-    <td>☆ ☆</td>
+    <td>⭐☆</td>
+    <td>⭐⭐</td>
   </tr>
   <tr>
     <th>07</th>

@@ -1,0 +1,4 @@
+github.com/luxedo/esb_fireplace-go v0.3.0 h1:zhpWG9AJfWEzqiaYsPjlBAwIMa1IF1gWoQoM4zvdLxI=
+github.com/luxedo/esb_fireplace-go v0.3.0/go.mod h1:L8zIvYDHIKTHc3g3VACvjS0qBHvKmt31KRjWLP5ftkU=
+github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=
+github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
