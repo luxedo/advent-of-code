@@ -329,7 +329,7 @@ func (s *Solver) Dijkstra(maze *Maze, start Vec, end Vec) ([][]Move, int) {
 				gScore[nextMove] = nScore
 				if !pq.Contains(nextMove) {
 					pq.PushMove(nextMove, nScore)
-				} 
+				}
 			} else if nScore == gScore[nextMove] {
 				cameFrom[nextMove] = append(cameFrom[nextMove], *curr)
 			}
@@ -365,7 +365,7 @@ func solve_pt2(input_data string, args []string) (interface{}, error) {
 	solver := Solver{}
 	paths, _ := solver.Dijkstra(maze, maze.start, maze.end)
 	// for _, path := range paths {
-		// fmt.Println(maze.Format(path))
+	// fmt.Println(maze.Format(path))
 	// }
 	allTiles := Set[Vec]{}
 	for _, path := range paths {
