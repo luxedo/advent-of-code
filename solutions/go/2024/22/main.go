@@ -99,15 +99,15 @@ func (Monkey) Prune(value int) int {
 func (m *Monkey) PseudoRandom(secret int) int {
 	// 1. Calculate the result of multiplying the secret number by 64. Then, mix this result into the
 	// secret number. Finally, prune the secret number.
-	secret = m.Prune(m.Mix(secret, secret*64))
+	secret = m.Prune(m.Mix(secret, secret<<6))
 
 	// 2. Calculate the result of dividing the secret number by 32. Round the result down to the
 	// nearest integer. Then, mix this result into the secret number. Finally, prune the secret number.
-	secret = m.Prune(m.Mix(secret, secret/32))
+	secret = m.Prune(m.Mix(secret, secret>>5))
 
 	// 3. Calculate the result of multiplying the secret number by 2048. Then, mix this result into
 	// the secret number. Finally, prune the secret number.
-	secret = m.Prune(m.Mix(secret, secret*2048))
+	secret = m.Prune(m.Mix(secret, secret<<11))
 	return secret
 }
 
@@ -161,7 +161,7 @@ func (m *Market) GetMostBananas(lag int) int {
 	scoresMap := m.BuildScoresMap(lag)
 	candidates := Set[Sequence]{}
 	for key, value := range scoresMap {
-		if !candidates.Contains(key.sequence) && value == 9 {
+		if value == 9 {
 			candidates.Add(key.sequence)
 		}
 	}
