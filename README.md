@@ -9,7 +9,7 @@
 ## SERVICE STARS
 
 
-### 2024 (22/25)
+### 2024 (24/25)
 
 <table>
   <tr>
@@ -99,7 +99,7 @@
     <td>🐹🐹</td>
     <td>🐹🐹</td>
     <td>🐹🐹</td>
-    <td>☐ ☐</td>
+    <td>🐹🐹</td>
   </tr>
   <tr>
     <td>⭐⭐</td>
@@ -107,7 +107,7 @@
     <td>⭐⭐</td>
     <td>⭐⭐</td>
     <td>⭐⭐</td>
-    <td>☆ ☆</td>
+    <td>⭐⭐</td>
   </tr>
   <tr>
     <th>19</th>
@@ -121,10 +121,10 @@
     <td colspan="6" />
   </tr>
   <tr>
-    <td colspan="6" align="center">☐ ☐</td>
+    <td colspan="6" align="center">🐹 ☐</td>
   </tr>
   <tr>
-    <td colspan="6" align="center">☆ ☆</td>
+    <td colspan="6" align="center">⭐⭐</td>
   </tr>
   <tr>
     <th colspan="6" align="center">25</th>
