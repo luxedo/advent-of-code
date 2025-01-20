@@ -94,5 +94,3 @@ x04 AND y04 -> z04
 x05 AND y05 -> z00
 """
 answer = "z00,z01,z02,z05"
-
-
