@@ -387,6 +387,14 @@
     <td>☐ ☐</td>
   </tr>
   <tr>
+    <td>🦄 ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+  </tr>
+  <tr>
     <td>⭐⭐</td>
     <td>☆ ☆</td>
     <td>☆ ☆</td>
@@ -404,6 +412,14 @@
   </tr>
   <tr>
     <td colspan="6" />
+  </tr>
+  <tr>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
   </tr>
   <tr>
     <td>☐ ☐</td>
@@ -441,6 +457,14 @@
     <td>☐ ☐</td>
   </tr>
   <tr>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+  </tr>
+  <tr>
     <td>☆ ☆</td>
     <td>☆ ☆</td>
     <td>☆ ☆</td>
@@ -468,6 +492,14 @@
     <td>☐ ☐</td>
   </tr>
   <tr>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+    <td>☐ ☐</td>
+  </tr>
+  <tr>
     <td>☆ ☆</td>
     <td>☆ ☆</td>
     <td>☆ ☆</td>
@@ -485,6 +517,9 @@
   </tr>
   <tr>
     <td colspan="6" />
+  </tr>
+  <tr>
+    <td colspan="6" align="center">☐ ☐</td>
   </tr>
   <tr>
     <td colspan="6" align="center">☐ ☐</td>
