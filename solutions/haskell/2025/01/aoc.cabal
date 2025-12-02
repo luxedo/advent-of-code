@@ -1,0 +1,16 @@
+cabal-version:      3.4
+name:               aoc-y2025-d01
+version:            0.1.0.0
+build-type:         Simple
+
+common warnings
+    ghc-options: -Wall
+
+executable solve
+    import:           warnings
+    main-is:          Main.hs
+    build-depends:
+      base ^>=4.18.3.0,
+      esb-fireplace
+    hs-source-dirs:   app
+    default-language: GHC2021

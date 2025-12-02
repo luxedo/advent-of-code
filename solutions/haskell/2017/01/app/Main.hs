@@ -1,7 +1,7 @@
 {-  ElfScript Brigade
  -
  -  Advent Of Code 2017 Day 01
- -  Elixir Solution
+ -  Haskell Solution
  -
  -  Day 1: Inverse Captcha
  -
