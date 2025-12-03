@@ -12,7 +12,6 @@ module Main where
 
 import Data.Function
 import Data.Maybe qualified
-import Debug.Trace
 import Fireplace
 
 data Side = LeftRot | RightRot deriving (Enum, Show)
@@ -41,7 +40,6 @@ parse input = words input & map parseRotate & collect
 
 newtype Dial = Dial (Int, Int) deriving (Show, Eq)
 
--- 5956 - too low
 rotate :: Dial -> Int -> Dial
 rotate (Dial (p, w)) x = do
   let r = p + x
