@@ -18,22 +18,13 @@ type Battery = Int
 type Joltage = Int
 
 parse :: String -> [Bank]
-parse input = map parseBank (split '\n' input)
+parse input = lines input & map parseBank 
 
 parseBank :: String -> [Battery]
 parseBank = map parseBattery
 
 parseBattery :: Char -> Battery
 parseBattery b = read [b] :: Battery
-
-split :: (Eq a) => a -> [a] -> [[a]]
-split _ [] = []
-split c st = pf : rst
-  where
-    rst
-      | (_ : sf1) <- sf = split c sf1
-      | otherwise = []
-    (pf, sf) = span (c /=) st
 
 argmax :: (Ord a) => [a] -> (a, Int)
 argmax xs = foldr (\(x, y) acc -> if x == maximum xs then (x, y) else acc) (head xs, 0) (zip xs [0 ..])
