@@ -93,8 +93,6 @@ solvePt2 input _args = do
   let cafeteria = parse input
   pure $ show $ length $ zipWith zip cafeteria (fixedPoint removePapers cafeteria) & concatMap (filter (== (Paper, Empty)))
 
--- pure $ show $ length $ parse input & fixedPoint removePapers
-
 main :: IO ()
 main = do
   -- 🎅🎄❄️☃️🎁🦌

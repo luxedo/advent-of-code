@@ -9,7 +9,7 @@
 ## SERVICE STARS
 
 
-### 2025 (5/25)
+### 2025 (6/25)
 
 <table>
   <tr>
@@ -17,7 +17,7 @@
     <td>🦄🦄</td>
     <td>🦄🦄</td>
     <td>🦄🦄</td>
-    <td>☐ ☐</td>
+    <td>🦄🦄</td>
     <td>🦄🦄</td>
   </tr>
   <tr>
@@ -25,7 +25,7 @@
     <td>⭐⭐</td>
     <td>⭐⭐</td>
     <td>⭐⭐</td>
-    <td>☆ ☆</td>
+    <td>⭐⭐</td>
     <td>⭐⭐</td>
   </tr>
   <tr>
