@@ -14,7 +14,7 @@ import Data.Function
 import Data.List
 import Fireplace
 
-data Operator = Add | Mul deriving (Enum, Show)
+data Operator = Add | Mul deriving (Show)
 
 data Equation = Equation
   { operator :: Operator,

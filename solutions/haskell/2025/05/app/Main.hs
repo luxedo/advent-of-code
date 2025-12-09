@@ -50,28 +50,14 @@ countFresh ranges = length . filter anyRange
     anyRange i = any (`inRange` i) ranges
 
 countIds :: [FreshRange] -> Int
-countIds = sum . map rangeSize . fixedPoint mergeRanges
+countIds = sum . map rangeSize . mergeRanges . sort
 
 mergeRanges :: [FreshRange] -> [FreshRange]
-mergeRanges ranges = foldl mergeRange [] (sort ranges)
-
-mergeRange :: [FreshRange] -> FreshRange -> [FreshRange]
-mergeRange [] r = [r]
-mergeRange (lastMerged : rest) newRange@(start, end) =
-  let (lastStart, lastEnd) = lastMerged
-   in if start <= lastEnd + 1
-        then
-          let mergedEnd = max lastEnd end
-           in (lastStart, mergedEnd) : rest
-        else
-          newRange : lastMerged : rest
-
-fixedPoint :: (Eq a) => (a -> a) -> a -> a
-fixedPoint f x
-  | x' == x = x
-  | otherwise = fixedPoint f x'
-  where
-    x' = f x
+mergeRanges [] = []
+mergeRanges [r] = [r]
+mergeRanges ((s1, e1) : (s2, e2) : rest)
+  | e1 >= s2 - 1 = mergeRanges ((min s1 s2, max e1 e2) : rest)
+mergeRanges (r : rest) = r : mergeRanges rest
 
 solvePt1 :: String -> [String] -> IO String
 solvePt1 input _args = do
