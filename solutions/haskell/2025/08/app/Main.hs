@@ -132,7 +132,6 @@ solvePt2 input _args = do
   where
     getX (x, _, _) = x
 
--- pure $ show $ connected & reverse & take 2 & map getCircuit
 
 main :: IO ()
 main = do
