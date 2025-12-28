@@ -12,9 +12,8 @@ module Main where
 
 import Control.Arrow
 import Data.Function
-import Data.Map qualified as M
 import Data.Map qualified as Map
-import Data.Maybe (fromMaybe)
+import Data.Maybe
 import Fireplace
 
 type Rack = [Server]
@@ -27,7 +26,7 @@ type Server = (Name, Cables)
 
 type Path = [Name]
 
-type RackMap = M.Map Name Cables
+type RackMap = Map.Map Name Cables
 
 parse :: String -> RackMap
 parse = Map.insert "out" [] . Map.fromList . map parseServer . lines
@@ -36,12 +35,12 @@ parseServer :: String -> Server
 parseServer line = break (== ':') line & second (words . tail)
 
 countPaths :: Name -> Name -> RackMap -> Int
-countPaths start end cache = counts M.! start
+countPaths start end cache = counts Map.! start
   where
-    counts = M.fromSet calculate (M.keysSet cache)
+    counts = Map.fromSet calculate (Map.keysSet cache)
     calculate node
       | node == end = 1
-      | otherwise = sum [fromMaybe 0 (M.lookup child counts) | child <- fromMaybe [] (M.lookup node cache)]
+      | otherwise = sum [fromMaybe 0 (Map.lookup child counts) | child <- fromMaybe [] (Map.lookup node cache)]
 
 solvePt1 :: String -> [String] -> IO String
 solvePt1 input _args =
