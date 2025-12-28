@@ -18,7 +18,7 @@ type Battery = Int
 type Joltage = Int
 
 parse :: String -> [Bank]
-parse input = lines input & map parseBank 
+parse input = lines input & map parseBank
 
 parseBank :: String -> [Battery]
 parseBank = map parseBattery
