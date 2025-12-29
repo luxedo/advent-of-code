@@ -26,7 +26,18 @@ split c st = pf : rst
     (pf, sf) = span (c /=) st
 
 parse :: String -> [IdRange]
-parse input = splitOn "," input & map parseIdRange
+parse input = splitStr "," input & map parseIdRange
+
+splitStr :: (Eq a) => [a] -> [a] -> [[a]]
+splitStr _ [] = []
+splitStr sub str = split' sub str [] []
+  where
+    split' _ [] subacc acc = reverse (reverse subacc : acc)
+    split' u s subacc acc
+      | u `isPrefixOf` s = split' u (drop (length u) s) [] (reverse subacc : acc)
+      | otherwise = split' u (drop 1 s) (head s : subacc) acc
+
+
 
 parseIdRange :: String -> IdRange
 parseIdRange s = mkIdRange (split '-' s)
