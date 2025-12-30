@@ -13,12 +13,14 @@ defmodule Year2023Day11 do
 
   def parse(input) do
     String.split(input, "\n", trim: true)
-    |> Enum.map(fn line -> String.graphemes(line) |> Enum.map(&if &1 == ".", do: :s, else: :g) end)
+    |> Enum.map(fn line ->
+      String.graphemes(line) |> Enum.map(&if &1 == ".", do: :s, else: :g)
+    end)
   end
 
   def transpose(rows) do
     rows
-    |> List.zip()
+    |> Enum.zip()
     |> Enum.map(&Tuple.to_list/1)
   end
 
@@ -97,18 +99,22 @@ defmodule Year2023Day11 do
   end
 
   def solve_pt1(input_data, args) do
-    expansion = case args do
+    expansion =
+      case args do
         [value] -> String.to_integer(value)
         _ -> 2
-    end
+      end
+
     solve(input_data, expansion)
   end
 
   def solve_pt2(input_data, args) do
-    expansion = case args do
+    expansion =
+      case args do
         [value] -> String.to_integer(value)
         _ -> 1_000_000
-    end
+      end
+
     solve(input_data, expansion)
   end
 

@@ -59,18 +59,18 @@ func (c *ClawMachine) SolveDirectSubstitution() (*Solution, error) {
 	Bdividend := (cy*x0 - cx*y0)
 	Bdivisor := (y1*x0 - y0*x1)
 	if Bdivisor == 0 {
-		return nil, errors.New("Zero division for B. No solution!")
+		return nil, errors.New("zero division for B. No solution")
 	} else if Bdividend%Bdivisor != 0 {
-		return nil, errors.New("Non integer solution!")
+		return nil, errors.New("non integer solution")
 	}
 
 	B := Bdividend / Bdivisor
 	Adividend := (cx - B*x1)
 	Adivisor := x0
 	if Adivisor == 0 {
-		return nil, errors.New("Zero division for A. No solution!")
+		return nil, errors.New("zero division for A. No solution")
 	} else if Adividend%Adivisor != 0 {
-		return nil, errors.New("Non integer solution!")
+		return nil, errors.New("non integer solution")
 	}
 	A := Adividend / Adivisor
 

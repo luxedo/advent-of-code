@@ -49,7 +49,10 @@ defmodule Year2023Day09 do
   end
 
   def solve_pt2(input_data, _args) do
-    parse(input_data) |> Enum.map(&find_sequence/1) |> Enum.map(&previous_in_sequence/1) |> Enum.sum()
+    parse(input_data)
+    |> Enum.map(&find_sequence/1)
+    |> Enum.map(&previous_in_sequence/1)
+    |> Enum.sum()
   end
 
   def start do

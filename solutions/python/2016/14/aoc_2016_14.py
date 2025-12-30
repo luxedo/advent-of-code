@@ -18,7 +18,7 @@ from operator import itemgetter
 @dataclass
 class OneTimePad:
     salt: bytes
-    hash_func: Callable
+    hash_func: Callable[[bytes], str]
     index: int = 0
 
     @staticmethod
@@ -42,7 +42,7 @@ class OneTimePad:
 
     def run(self, iters: int):
         candidates: dict[int, tuple[str, str]] = {}
-        keys = []
+        keys: list[tuple[str, int, int, str, str]] = []
         while len(keys) < iters:
             h = self.hash_func(self.salt + str(self.index).encode("ascii"))
             triplets, fives = self.find_matches(h)

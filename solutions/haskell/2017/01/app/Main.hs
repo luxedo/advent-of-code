@@ -8,16 +8,16 @@
  -  https://adventofcode.com/2017/day/1 -}
 module Main where
 
-import Data.Char (digitToInt, isSpace)
-import Fireplace
+import           Data.Char (digitToInt, isSpace)
+import           Fireplace
 
 solvePt1 :: String -> [String] -> IO String
 solvePt1 input _args = do
   let captcha = filter (not . isSpace) input
-  pure $ show $ sum $ map (digitToInt . fst) $ filter (uncurry (==)) $ zip captcha (tail captcha ++ [head input])
+  pure $ show $ sum $ map (digitToInt . fst) $ filter (uncurry (==)) $ zip captcha (drop 1 $ cycle captcha)
 
 solvePt2 :: String -> [String] -> IO String
-solvePt2 input _args = do
+solvePt2 _input _args = do
   pure "December"
 
 main :: IO ()

@@ -172,12 +172,6 @@ func (pq *PriorityQueue) Contains(m Move) bool {
 	return (*pq).s.Contains(m)
 }
 
-func (pq *PriorityQueue) update(item *MoveItem, value Move, priority int) {
-	item.value = value
-	item.priority = priority
-	heap.Fix(pq, item.index)
-}
-
 func (c Cell) String() string {
 	return string(c)
 }
@@ -277,9 +271,7 @@ func (m *Maze) Clone() *Maze {
 	nm.grid = make([][]Cell, nm.height)
 	for y, line := range m.grid {
 		nm.grid[y] = make([]Cell, nm.width)
-		for x, c := range line {
-			nm.grid[y][x] = c
-		}
+		copy(nm.grid[y], line)
 	}
 	return &nm
 }

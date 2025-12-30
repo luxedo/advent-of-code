@@ -10,16 +10,16 @@
 
 module Main where
 
-import Data.Function
-import Data.Maybe qualified
-import Fireplace
+import           Data.Function
+import qualified Data.Maybe
+import           Fireplace
 
 data Side = LeftRot | RightRot deriving (Enum, Show)
 
 parseSide :: Char -> Maybe Side
 parseSide 'L' = Just LeftRot
 parseSide 'R' = Just RightRot
-parseSide _ = Nothing
+parseSide _   = Nothing
 
 newtype Rotate = Rotate (Int, Side) deriving (Show)
 
@@ -30,7 +30,7 @@ parseRotate s = do
   let num = read cs :: Int
   case parseSide c of
     Just side -> Just (Rotate (num, side))
-    Nothing -> Nothing
+    Nothing   -> Nothing
 
 collect :: [Maybe a] -> [a]
 collect = Data.Maybe.fromMaybe (error "Could not collect") . sequence
@@ -50,7 +50,7 @@ rotate (Dial (p, w)) x = do
   Dial (newPos, wrap)
 
 rotateDial :: Dial -> Rotate -> Dial
-rotateDial d (Rotate (x, LeftRot)) = rotate d (-x)
+rotateDial d (Rotate (x, LeftRot))  = rotate d (-x)
 rotateDial d (Rotate (x, RightRot)) = rotate d x
 
 rotateMany :: Dial -> [Rotate] -> [Dial]

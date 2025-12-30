@@ -59,7 +59,7 @@ func (d Disk) String() string {
 		} else {
 			add = strings.Repeat(strconv.Itoa(curr.id), curr.size)
 		}
-		s += fmt.Sprintf("%s", add)
+		s += add
 		curr = curr.next
 	}
 	return s
@@ -71,7 +71,7 @@ func (d Disk) ListString() string {
 	for curr != nil {
 		s += fmt.Sprintf("%v", curr)
 		if curr.next != nil {
-			s += fmt.Sprintf(" -> ")
+			s += " -> "
 		}
 		curr = curr.next
 	}
@@ -141,7 +141,7 @@ func (d *Disk) PushBack(block *Block) {
 
 func (d *Disk) PushAt(block *Block, index int) error {
 	if index < 0 || index >= d.length {
-		return errors.New("Cannot insert. Check your index")
+		return errors.New("cannot insert. Check your index")
 	}
 	if index == 0 {
 		d.PushFront(block)
@@ -168,7 +168,7 @@ func (d *Disk) PushAt(block *Block, index int) error {
 
 func (d *Disk) PopFront() (*Block, error) {
 	if d.front == nil {
-		return nil, errors.New("Cannot pop front. Please stop!")
+		return nil, errors.New("cannot pop front. Please stop")
 	}
 	d.length--
 	front := d.front
@@ -184,7 +184,7 @@ func (d *Disk) PopFront() (*Block, error) {
 
 func (d *Disk) PopBack() (*Block, error) {
 	if d.back == nil {
-		return nil, errors.New("Cannot pop back. Please stop!")
+		return nil, errors.New("cannot pop back. Please stop")
 	}
 	d.length--
 	back := d.back
@@ -200,7 +200,7 @@ func (d *Disk) PopBack() (*Block, error) {
 
 func (d *Disk) Peek(index int) (*Block, error) {
 	if index < 0 || index >= d.length {
-		return nil, errors.New("Cannot peek. Check your index")
+		return nil, errors.New("cannot peek. Check your index")
 	}
 	block := d.front
 	for i := 0; i < index; i++ {

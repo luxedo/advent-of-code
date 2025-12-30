@@ -108,9 +108,8 @@ func (b *BathroomSecurity) SafetyFactor() int {
 			q3++
 		} else if guard.p.y > h2 && guard.p.x > w2 {
 			q4++
-		} else {
-			// Guard is in the line
 		}
+		// else: Do nothing, guard is in the line
 	}
 	return q1 * q2 * q3 * q4
 }

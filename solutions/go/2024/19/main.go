@@ -102,9 +102,7 @@ func (t Towel) String() string {
 }
 
 func (t Towel) New(colors []Color) *Towel {
-	for i, c := range colors {
-		t.stripes[i] = c
-	}
+	copy(t.stripes[:], colors)
 	return &t
 }
 

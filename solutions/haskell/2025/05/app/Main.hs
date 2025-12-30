@@ -6,14 +6,13 @@
  -  Day 5: Cafeteria
  -
  -  https://adventofcode.com/2025/day/5 -}
-{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
-
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns -Wno-x-partial #-}
 module Main where
 
-import Data.Function
-import Data.Ix
-import Data.List
-import Fireplace
+import           Data.Function
+import           Data.Ix
+import           Data.List
+import           Fireplace
 
 type Ingredient = Int
 
@@ -31,7 +30,7 @@ splitStr sub str = split' sub str [] []
     split' _ [] subacc acc = reverse (reverse subacc : acc)
     split' u s subacc acc
       | u `isPrefixOf` s = split' u (drop (length u) s) [] (reverse subacc : acc)
-      | otherwise = split' u (tail s) (head s : subacc) acc
+      | otherwise = split' u (drop 1 s) (head s : subacc) acc
 
 parseRanges :: String -> [FreshRange]
 parseRanges = map parseRange . lines

@@ -64,12 +64,12 @@ defmodule Year2023Day12 do
       |> Map.update!(:dmg, &(&1 + 1))
     end
 
-
     def combine_list(springs) when is_list(springs) do
       combine_list(springs, 0)
     end
 
     def combine_list([], _), do: []
+
     def combine_list([sp = %Spring{} | tail], c) do
       [combine(sp) | combine_list(tail, c + 1)]
     end

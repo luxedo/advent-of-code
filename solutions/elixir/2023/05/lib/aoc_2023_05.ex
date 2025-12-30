@@ -56,7 +56,7 @@ defmodule Year2023Day05 do
       end
     end
 
-    def remap(range = start..stop, rsrc = src_start..src_stop, offset) do
+    def remap(range = start..stop//_, rsrc = src_start..src_stop//_, offset) do
       if Range.disjoint?(range, rsrc) do
         {[range], []}
       else
@@ -111,7 +111,7 @@ defmodule Year2023Day05 do
       Enum.chunk_every(seeds, 2)
       |> Enum.map(fn [a, b] -> a..(a + b) end)
 
-    Almanac.location(map, seeds) |> Enum.map(fn start.._ -> start end) |> Enum.min()
+    Almanac.location(map, seeds) |> Enum.map(fn start.._//_ -> start end) |> Enum.min()
   end
 
   def start do

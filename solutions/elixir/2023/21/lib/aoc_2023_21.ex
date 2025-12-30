@@ -193,10 +193,11 @@ defmodule Year2023Day21 do
   end
 
   defp solve_pt1(input_data, args) do
-    n = case args do
+    n =
+      case args do
         [value] -> String.to_integer(value)
         _ -> 64
-    end
+      end
 
     {start, garden} = Garden.parse(input_data)
     start = %{{0, 0} => MapSet.new([start])}
@@ -213,10 +214,11 @@ defmodule Year2023Day21 do
   end
 
   defp solve_pt2(input_data, args) do
-    n = case args do
+    n =
+      case args do
         [value] -> String.to_integer(value)
-        _ -> 26501365
-    end
+        _ -> 26_501_365
+      end
 
     {start, garden} = Garden.parse(input_data)
     start = %{{0, 0} => MapSet.new([start])}

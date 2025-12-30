@@ -6,13 +6,14 @@
  -  Day 12: Christmas Tree Farm
  -
  -  https://adventofcode.com/2025/day/12 -}
+{-# OPTIONS_GHC -Wno-x-partial #-}
 module Main where
 
-import Data.Bifunctor
-import Data.Function
-import Data.List
-import Data.Maybe
-import Fireplace
+import           Data.Bifunctor
+import           Data.Function
+import           Data.List
+import           Data.Maybe
+import           Fireplace
 
 type Shape = (Int, [[Bool]])
 
@@ -29,7 +30,7 @@ parseShape s =
   where
     parseCell '.' = False
     parseCell '#' = True
-    parseCell _ = error "Cannot parse cell"
+    parseCell _   = error "Cannot parse cell"
 
 parseRegion :: String -> Region
 parseRegion r =
@@ -51,7 +52,7 @@ packingFits :: [Shape] -> [Region] -> [Region]
 packingFits shapes regions =
   -- TODO: proper solution with backtracking
   let firstShape = snd $ head shapes
-      (height, width) = (length $ firstShape, length $ head firstShape)
+      (height, width) = (length firstShape, length $ head firstShape)
    in filter (fitArea height width) regions
   where
     fitArea h w region =

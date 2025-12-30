@@ -10,11 +10,11 @@
 
 module Main where
 
-import Control.Arrow
-import Data.Function
-import Data.Map qualified as Map
-import Data.Maybe
-import Fireplace
+import           Control.Arrow
+import           Data.Function
+import qualified Data.Map      as Map
+import           Data.Maybe
+import           Fireplace
 
 type Rack = [Server]
 

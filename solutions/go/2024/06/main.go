@@ -114,9 +114,10 @@ func (l Lab) Parse(input_data string) *Lab {
 	for i, row := range rows {
 		l.cells[i] = make([]bool, l.width)
 		for j, cell := range row {
-			if cell == '.' {
+			switch cell {
+			case '.':
 				l.cells[i][j] = true
-			} else if cell == '^' {
+			case '^':
 				l.cells[i][j] = true
 				l.guard = Guard{i, j, UP}
 			}

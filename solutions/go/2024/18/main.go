@@ -140,12 +140,6 @@ func (pq *PriorityQueue) Contains(m Position) bool {
 	return (*pq).s.Contains(m)
 }
 
-func (pq *PriorityQueue) update(item *PositionItem, value Position, priority int) {
-	item.value = value
-	item.priority = priority
-	heap.Fix(pq, item.index)
-}
-
 func (m Memory) Parse(input_data string) *Memory {
 	m.corrupted = make([][]bool, m.sides)
 	for y := range m.sides {
@@ -171,9 +165,7 @@ func (m *Memory) Clone() *Memory {
 		}
 	}
 	nm.falling = make([]Position, len(m.falling))
-	for i, fall := range m.falling {
-		nm.falling[i] = fall
-	}
+	copy(nm.falling, m.falling)
 	return &nm
 }
 

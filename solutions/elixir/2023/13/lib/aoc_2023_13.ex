@@ -22,7 +22,7 @@ defmodule Year2023Day13 do
 
   def transpose(rows) do
     rows
-    |> List.zip()
+    |> Enum.zip()
     |> Enum.map(&Tuple.to_list/1)
   end
 

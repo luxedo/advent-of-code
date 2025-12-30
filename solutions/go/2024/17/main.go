@@ -174,7 +174,7 @@ func (p *Program) RevPartialEqual(values *[]uint8, index int) bool {
 
 func (c *Computer) SearchProgram(program *Program, acc int, index int) (int, error) {
 	if index < 0 {
-		return 0, errors.New("Negative index! What?!?")
+		return 0, errors.New("negative index")
 	}
 	for j := range 1 << BITS {
 		offset := BITS * index
@@ -191,7 +191,7 @@ func (c *Computer) SearchProgram(program *Program, acc int, index int) (int, err
 			}
 		}
 	}
-	return 0, errors.New("Could not find solution :(")
+	return 0, errors.New("could not find solution :(")
 }
 
 func solve_pt1(input_data string, args []string) (interface{}, error) {

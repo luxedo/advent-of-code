@@ -6,11 +6,12 @@
  -  Day 2: Gift Shop
  -
  -  https://adventofcode.com/2025/day/2 -}
+{-# OPTIONS_GHC -Wno-x-partial #-}
 module Main where
 
-import Data.Function
-import Data.List
-import Fireplace
+import           Data.Function
+import           Data.List
+import           Fireplace
 
 newtype IdRange = IdRange (Id, Id) deriving (Show)
 
@@ -44,7 +45,7 @@ parseIdRange s = mkIdRange (split '-' s)
 
 mkIdRange :: [String] -> IdRange
 mkIdRange [low, high] = IdRange (read low :: Id, read high :: Id)
-mkIdRange _ = error (show "Cannot parse IdRange")
+mkIdRange _           = error (show "Cannot parse IdRange")
 
 splitHalf :: Id -> [Id]
 splitHalf x = [x `mod` d, x `div` d]

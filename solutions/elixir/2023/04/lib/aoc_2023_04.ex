@@ -23,7 +23,9 @@ defmodule Year2023Day04 do
 
       [winning, yours] =
         String.split(values, " | ")
-        |> Enum.map(fn m -> String.split(m, " ", trim: true) |> Enum.map(&String.to_integer/1) end)
+        |> Enum.map(fn m ->
+          String.split(m, " ", trim: true) |> Enum.map(&String.to_integer/1)
+        end)
 
       {card, winning, yours}
     end)

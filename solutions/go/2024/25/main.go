@@ -23,9 +23,8 @@ type (
 	Lock       [5]int
 	Key        [5]int
 	Schematics struct {
-		height int
-		Locks  []Lock
-		Keys   []Key
+		Locks []Lock
+		Keys  []Key
 	}
 )
 

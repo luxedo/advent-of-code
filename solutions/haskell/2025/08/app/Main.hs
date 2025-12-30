@@ -6,22 +6,21 @@
  -  Day 8: Playground
  -
  -  https://adventofcode.com/2025/day/8 -}
-{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns -Wno-x-partial #-}
 
 module Main where
 
-import Data.Function
-import Data.List
-import Data.Maybe
-import Data.Ord
-import Fireplace
-import Foreign (new)
-import GHC.Float
+import           Data.Function
+import           Data.List
+import           Data.Maybe
+import           Data.Ord
+import           Fireplace
+import           GHC.Float
 
 parseArgs :: [String] -> Int
 parseArgs [s] = read s :: Int
-parseArgs [] = 1000
-parseArgs _ = error "Incorrect args"
+parseArgs []  = 1000
+parseArgs _   = error "Incorrect args"
 
 type Box = Vector
 
@@ -43,8 +42,8 @@ parse = map parseBox . lines
 parseBox :: String -> Box
 parseBox line =
   let (x, rest) = break (== ',') line
-      (y, z) = break (== ',') (tail rest)
-   in (read x, read y, read $ tail z)
+      (y, z) = break (== ',') (drop 1 rest)
+   in (read x, read y, read $ drop 1 z)
 
 distances :: [Box] -> [Connection]
 distances [] = []

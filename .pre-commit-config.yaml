@@ -7,6 +7,11 @@ repos:
       - id: end-of-file-fixer
       - id: check-added-large-files
         args: [--maxkb=2048]
+  -   repo: https://github.com/koalaman/shellcheck-precommit
+      rev: v0.11.0
+      hooks:
+      -   id: shellcheck
+  # Python
   - repo:
       https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.1.6
@@ -20,17 +25,61 @@ repos:
       - id: mypy
         name: python-mypy
         args: [--no-strict-optional, --ignore-missing-imports]
+  # Elixir
+  - repo: local
+    hooks:
+      - id: elixir-format
+        name: elixir-format
+        entry: ./scripts/elixir.sh format
+        language: script
+        types: [elixir]
+        pass_filenames: true
+      - id: elixir-build
+        name: elixir-build
+        entry: ./scripts/elixir.sh build
+        language: script
+        types: [elixir]
+        pass_filenames: true
+  # Go
   - repo: local
     hooks:
       - id: go-fmt
-        name: Run go fmt
-        entry: go fmt
-        language: golang
+        name: go-fmt
+        entry: ./scripts/go.sh fmt
+        language: script
         types: [go]
         pass_filenames: true
       - id: go-lint
-        name: Run golangci-lint
-        entry: ./scripts/go_lint.sh
+        name: go-lint
+        entry: ./scripts/go.sh lint
         language: script
         types: [go]
         stages: [pre-commit]
+        pass_filenames: true
+  # Haskell
+  - repo: local
+    hooks:
+      - id: haskell-stylish
+        name: haskell-stylish
+        entry: ./scripts/haskell.sh stylish
+        language: script
+        types: [haskell]
+        pass_filenames: true
+      - id: haskell-hlint
+        name: haskell-hlint
+        entry: ./scripts/haskell.sh hlint
+        language: script
+        types: [haskell]
+        pass_filenames: true
+      - id: haskell-format-cabal
+        name: haskell-format-cabal
+        entry: ./scripts/haskell.sh format-cabal
+        language: script
+        types: [haskell]
+        pass_filenames: true
+      - id: haskell-build
+        name: haskell-build
+        entry: ./scripts/haskell.sh build
+        language: script
+        types: [haskell]
+        pass_filenames: true

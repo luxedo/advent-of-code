@@ -112,7 +112,7 @@ defmodule Year2023Day19 do
         run_ranges(rules, target, parts)
       else
         Enum.flat_map(parts, fn part ->
-          start..stop = Map.get(part, key)
+          start..stop//_ = Map.get(part, key)
 
           {range_true, range_false} =
             case cmp do
@@ -166,10 +166,10 @@ defmodule Year2023Day19 do
     |> Enum.filter(fn {s, _} -> s == "A" end)
     |> Enum.map(fn {_,
                     %Parts{
-                      x: x0..x1,
-                      m: m0..m1,
-                      a: a0..a1,
-                      s: s0..s1
+                      x: x0..x1//_,
+                      m: m0..m1//_,
+                      a: a0..a1//_,
+                      s: s0..s1//_
                     }} ->
       (x1 - x0 + 1) * (m1 - m0 + 1) * (a1 - a0 + 1) * (s1 - s0 + 1)
     end)

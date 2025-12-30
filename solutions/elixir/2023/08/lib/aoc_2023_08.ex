@@ -36,7 +36,7 @@ defmodule Year2023Day08 do
   end
 
   def count_cycles(instructions, map, starting_nodes, end_nodes) do
-    nodes = Enum.map(starting_nodes, &({&1, 0, false}))
+    nodes = Enum.map(starting_nodes, &{&1, 0, false})
 
     Stream.cycle(instructions)
     |> Enum.reduce_while(nodes, fn side, nodes ->

@@ -9,10 +9,10 @@
 
 module Main where
 
-import Data.Char
-import Data.Function
-import Data.List
-import Fireplace
+import           Data.Char
+import           Data.Function
+import           Data.List
+import           Fireplace
 
 data Operator = Add | Mul deriving (Show)
 
@@ -54,7 +54,7 @@ parseOperands = map read
 parseOperator :: String -> Operator
 parseOperator "+" = Add
 parseOperator "*" = Mul
-parseOperator _ = error "Could not parse Operator"
+parseOperator _   = error "Could not parse Operator"
 
 solveEquation :: Equation -> Int
 solveEquation Equation {operator, operands} = getOperation operator operands

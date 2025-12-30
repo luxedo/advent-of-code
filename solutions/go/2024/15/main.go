@@ -118,7 +118,7 @@ func (a Actions) ParseAction(aStr rune) (Action, error) {
 	case rune(LEFT):
 		return LEFT, nil
 	default:
-		return Action(0), errors.New("Cannot parse action")
+		return Action(0), errors.New("cannot parse action")
 	}
 }
 

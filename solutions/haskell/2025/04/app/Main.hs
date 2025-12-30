@@ -8,9 +8,9 @@
  -  https://adventofcode.com/2025/day/4 -}
 module Main where
 
-import Data.Function
-import Data.Maybe
-import Fireplace
+import           Data.Function
+import           Data.Maybe
+import           Fireplace
 
 type Cafeteria = [[Slot]]
 
@@ -24,7 +24,7 @@ parse input = lines input & map (map parseSlot)
 parseSlot :: Char -> Slot
 parseSlot '@' = Paper
 parseSlot '.' = Empty
-parseSlot _ = error "Could not parse Slot"
+parseSlot _   = error "Could not parse Slot"
 
 enumerate :: [a] -> [(Int, a)]
 enumerate = zip [0 :: Int ..]
@@ -33,12 +33,13 @@ countNeighbors :: Cafeteria -> [Coordinates]
 countNeighbors c = index2d c & map (\((i, j), slot) -> ((i, j), slot, length $ slotsAround c i j & filter (== Paper)))
 
 safeIndex :: Cafeteria -> Int -> Int -> Maybe Slot
-safeIndex c i j
+safeIndex c@(c0 : _) i j
   | i < 0 = Nothing
   | j < 0 = Nothing
   | i >= length c = Nothing
-  | j >= length (head c) = Nothing
+  | j >= length c0 = Nothing
   | otherwise = Just ((c !! i) !! j)
+safeIndex [] _ _ = error "Cannot index on empty"
 
 slotsAround :: Cafeteria -> Int -> Int -> [Slot]
 slotsAround c i j = [safeIndex c (i + dy) (j + dx) | dx <- [-1, 0, 1], dy <- [-1, 0, 1]] & catMaybes
@@ -61,7 +62,7 @@ removePapers c = listRemovable c & applyRemoval c
 
 removePaper :: Slot -> Slot
 removePaper Paper = Empty
-removePaper _ = error "Can only remove slot with Paper"
+removePaper _     = error "Can only remove slot with Paper"
 
 applyRemoval :: Cafeteria -> [Coordinates] -> Cafeteria
 applyRemoval = foldl applyChange
@@ -81,7 +82,7 @@ update1d col f xs
   | otherwise =
       let (beforeCols, targetAndAfter) = splitAt col xs
        in case targetAndAfter of
-            [] -> error "Cannot update1d on invalid col"
+            []                    -> error "Cannot update1d on invalid col"
             targetCol : afterCols -> beforeCols ++ [f targetCol] ++ afterCols
 
 solvePt1 :: String -> [String] -> IO String

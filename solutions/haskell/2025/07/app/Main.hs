@@ -10,8 +10,8 @@
 
 module Main where
 
-import Data.Function
-import Fireplace
+import           Data.Function
+import           Fireplace
 
 type TachyonManifold = [[Slot]]
 
@@ -24,7 +24,7 @@ parseSlot :: Char -> Slot
 parseSlot 'S' = Beam 1
 parseSlot '.' = Beam 0
 parseSlot '^' = Splitter 0
-parseSlot _ = error "Could not parse Slot"
+parseSlot _   = error "Could not parse Slot"
 
 runBeam :: Int -> TachyonManifold -> TachyonManifold
 runBeam height manifold
@@ -45,7 +45,7 @@ updateRow target next =
     iterBeam (col, Beam count) = addAt col count
     iterBeam (col, Splitter count) = addAt (col - 1) count . addAt (col + 1) count
     setBeam :: Slot -> Int -> Slot
-    setBeam (Beam _) = Beam
+    setBeam (Beam _)     = Beam
     setBeam (Splitter _) = Splitter
     addAt :: (Num a) => Int -> a -> [a] -> [a]
     addAt i newVal list = take i list ++ [(list !! i) + newVal] ++ drop (i + 1) list
@@ -55,14 +55,14 @@ countBeams = map countBeam
   where
     countBeam s = case s of
       Splitter i -> i
-      Beam i -> i
+      Beam i     -> i
 
 splitersHit :: [Slot] -> Int
 splitersHit = length . filter splitterHit
   where
     splitterHit s = case s of
       Splitter i | i > 0 -> True
-      _ -> False
+      _                  -> False
 
 prettyPrintMatrix :: (Show a) => [[a]] -> IO ()
 prettyPrintMatrix = mapM_ (putStrLn . unwords . map show)

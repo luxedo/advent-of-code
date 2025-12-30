@@ -41,7 +41,7 @@ func (d *Deque[T]) PopFront() (T, error) {
 	size := d.Size()
 	if size == 0 {
 		var zero T
-		return zero, errors.New("Deque is empty: cannot pop")
+		return zero, errors.New("deque is empty: cannot pop")
 	}
 	front := (*d)[0]
 	*d = (*d)[1:]
@@ -52,10 +52,10 @@ func (d *Deque[T]) Peek(idx int) (T, error) {
 	size := d.Size()
 	if size == 0 {
 		var zero T
-		return zero, errors.New("Deque is empty: cannot peek")
+		return zero, errors.New("deque is empty: cannot peek")
 	} else if idx >= size {
 		var zero T
-		return zero, errors.New("Index not available")
+		return zero, errors.New("index not available")
 	}
 	return (*d)[idx], nil
 }
@@ -142,7 +142,7 @@ func (e *Equation) Solve() error {
 	num1, err1 := e.equation.PopFront()
 	num2, err2 := e.equation.PopFront()
 	if err1 != nil || err2 != nil {
-		return errors.New("Malformed equation")
+		return errors.New("malformed equation")
 	}
 	op, _ := e.operators.PopFront()
 	e.equation.PushFront(op(num1, num2))
@@ -163,7 +163,10 @@ func (e *Equation) Calibrate(operators []*Operator) Equation {
 	for _, op := range operators {
 		ne := e.Clone()
 		ne.operators.PushBack(*op)
-		ne.Solve()
+		err := ne.Solve()
+		if err != nil {
+			panic("Cannot calibrate")
+		}
 		ne.Calibrate(operators)
 		if ne.valid {
 			(*e).operators = ne.operators.Clone()

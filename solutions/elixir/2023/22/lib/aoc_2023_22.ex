@@ -18,7 +18,7 @@ defmodule Year2023Day22 do
       %Brick{idx: idx, xs: sx..ex, ys: sy..ey, zs: sz..ez}
     end
 
-    def drop(b = %Brick{zs: z0..z1}) do
+    def drop(b = %Brick{zs: z0..z1//_}) do
       Map.merge(b, %{zs: (z0 - 1)..(z1 - 1)})
     end
   end
@@ -55,7 +55,7 @@ defmodule Year2023Day22 do
 
     def new(bricks) do
       bheight =
-        Enum.map(bricks, fn {k, %Brick{zs: z0.._}} ->
+        Enum.map(bricks, fn {k, %Brick{zs: z0.._//_}} ->
           {z0, k}
         end)
         |> Enum.reduce(%{}, fn {k, v}, acc ->
@@ -63,7 +63,7 @@ defmodule Year2023Day22 do
         end)
 
       {width, depth, height} =
-        Enum.reduce(bricks, {0, 0, 0}, fn {_, %Brick{xs: x0..x1, ys: y0..y1, zs: z0..z1}},
+        Enum.reduce(bricks, {0, 0, 0}, fn {_, %Brick{xs: x0..x1//_, ys: y0..y1//_, zs: z0..z1//_}},
                                           {mx, my, mz} ->
           {
             Enum.max([mx, x0, x1]),
@@ -117,7 +117,7 @@ defmodule Year2023Day22 do
         Enum.reduce(st, {levels, st, 0, 0}, fn {idx, brick}, {levels, st, m, bm} ->
           height = Pile.find_top(levels, brick)
           levels = Pile.place(brick, height, levels)
-          z0..z1 = brick.zs
+          z0..z1//_ = brick.zs
           dz = z1 - z0
           st = Map.replace(st, idx, Map.merge(brick, %{zs: height..(height + dz)}))
           bmi = if z0 == height, do: 0, else: 1
@@ -153,7 +153,7 @@ defmodule Year2023Day22 do
       new_levels =
         Enum.flat_map(brick.ys, fn y ->
           Enum.map(brick.xs, fn x ->
-            z0..z1 = brick.zs
+            z0..z1//_ = brick.zs
             {{y, x}, for(z <- z1..z0//-1, do: {z - z0 + height, brick.idx})}
           end)
         end)
@@ -164,7 +164,7 @@ defmodule Year2023Day22 do
 
     def remove(pile = %Pile{bricks: bricks, bheight: bheight}, idx) do
       {brick, bricks} = Map.pop!(bricks, idx)
-      z0.._ = brick.zs
+      z0.._//_ = brick.zs
       bheight = Map.update!(bheight, z0, &List.delete(&1, idx))
 
       Map.merge(pile, %{
@@ -190,7 +190,8 @@ defmodule Year2023Day22 do
 
     Enum.map(fpile.bricks, fn {idx, _} ->
       (Pile.remove(fpile, idx) |> Pile.drop()).bricks_moved
-    end) |> Enum.sum
+    end)
+    |> Enum.sum()
   end
 
   def start do

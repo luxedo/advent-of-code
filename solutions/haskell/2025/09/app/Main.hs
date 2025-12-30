@@ -6,14 +6,15 @@
  -  Day 9: Movie Theater
  -
  -  https://adventofcode.com/2025/day/9 -}
+{-# OPTIONS_GHC -Wno-x-partial #-}
 module Main where
 
-import Data.Bifunctor
-import Data.Function
-import Data.List
-import Data.Maybe
-import Data.Ord
-import Fireplace
+import           Data.Bifunctor
+import           Data.Function
+import           Data.List
+import           Data.Maybe
+import           Data.Ord
+import           Fireplace
 
 type Point = (Int, Int)
 
@@ -33,7 +34,7 @@ parse :: String -> [RedTile]
 parse = map parseTile . lines
 
 parseTile :: String -> RedTile
-parseTile line = bimap read (read . tail) (break (== ',') line)
+parseTile line = bimap read (read . drop 1) (break (== ',') line)
 
 listAreas :: [RedTile] -> [(TilePair, Area)]
 listAreas tiles = [((t1, t2), area t1 t2) | t1 <- tiles, t2 <- tiles]
@@ -46,23 +47,23 @@ area (x1, y1) (x2, y2) = (abs (x2 - x1) + 1) * (abs (y2 - y1) + 1)
 
 getVerticalSegments :: [Point] -> [Segment]
 getVerticalSegments points =
-  let pairs = zip points $ tail $ cycle points
+  let pairs = zip points $ drop 1 $ cycle points
    in [Segment x1 (min y1 y2) (max y1 y2) | ((x1, y1), (x2, y2)) <- pairs, x1 == x2]
 
 buildSlabs :: [Point] -> [Slab]
 buildSlabs points =
   let segments = getVerticalSegments points
       ys = sort . nub $ concat [[y1, y2] | (y1, y2) <- map (\s -> (yMin s, yMax s)) segments]
-      intervals = zip ys (tail ys)
+      intervals = zip ys (drop 1 ys)
    in [Slab y1 y2 (findXRanges y1 y2 segments) | (y1, y2) <- intervals]
   where
     findXRanges y1 y2 segments =
       let activeX = sort [x s | s <- segments, yMin s <= y1 && yMax s >= y2]
        in toPairs activeX
     toPairs :: [Int] -> [Range]
-    toPairs [] = []
+    toPairs []             = []
     toPairs (a : b : rest) = (a, b) : toPairs rest
-    toPairs [_] = error "Missing pair"
+    toPairs [_]            = error "Missing pair"
 
 inboundArea :: [Slab] -> RedTile -> RedTile -> Bool
 inboundArea slabs (x1, y1) (x2, y2) =

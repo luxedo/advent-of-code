@@ -8,8 +8,8 @@
  -  https://adventofcode.com/2025/day/3 -}
 module Main where
 
-import Data.Function
-import Fireplace
+import           Data.Function
+import           Fireplace
 
 type Bank = [Battery]
 
@@ -27,7 +27,14 @@ parseBattery :: Char -> Battery
 parseBattery b = read [b] :: Battery
 
 argmax :: (Ord a) => [a] -> (a, Int)
-argmax xs = foldr (\(x, y) acc -> if x == maximum xs then (x, y) else acc) (head xs, 0) (zip xs [0 ..])
+argmax xs@(x0 : _) =
+  foldr
+    ( \(x, y) acc ->
+        if x == maximum xs then (x, y) else acc
+    )
+    (x0, 0)
+    (zip xs [0 ..])
+argmax [] = error "Cannot argmax on empty"
 
 largestJoltage :: Int -> Bank -> Joltage
 largestJoltage 1 bank = maximum bank

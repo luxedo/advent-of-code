@@ -123,7 +123,8 @@ defmodule Year2023Day24 do
       end
     end
 
-    def in_range(hails_map, xlow..xhigh, ylow..yhigh, zlow..zhigh) when is_map(hails_map) do
+    def in_range(hails_map, xlow..xhigh//_, ylow..yhigh//_, zlow..zhigh//_)
+        when is_map(hails_map) do
       Enum.filter(hails_map, fn {_, value} ->
         case value do
           {:skewed} ->
@@ -223,17 +224,23 @@ defmodule Year2023Day24 do
 
   def solve_pt1(input_data, args) do
     default_range = 200_000_000_000_000..400_000_000_000_000
-    [zrange, yrange] = case args do
-      [z0, zf, y0, yf] -> [
-        String.to_integer(z0)..String.to_integer(zf),
-        String.to_integer(y0)..String.to_integer(yf),
-      ]
-      _ -> [
-        default_range,
-        default_range
-      ]
-    end
-    #IO.inspect(zrange)
+
+    [zrange, yrange] =
+      case args do
+        [z0, zf, y0, yf] ->
+          [
+            String.to_integer(z0)..String.to_integer(zf),
+            String.to_integer(y0)..String.to_integer(yf)
+          ]
+
+        _ ->
+          [
+            default_range,
+            default_range
+          ]
+      end
+
+    # IO.inspect(zrange)
     # IO.inspect(yrange)
     Hail.parse(input_data)
     |> Enum.map(&Map.merge(&1, %{z: 0, vz: 0}))

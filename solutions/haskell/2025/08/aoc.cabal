@@ -1,16 +1,13 @@
-cabal-version:      3.12
-name:               aoc-y2025-d08
-version:            0.1.0.0
-build-type:         Simple
-
-common warnings
-    ghc-options: -Wall
+cabal-version: 3.12
+name:          aoc-y2025-d08
+version:       0.1.0.0
+build-type:    Simple
 
 executable solve
-    import:           warnings
     main-is:          Main.hs
-    build-depends:
-      base ^>=4.21.0.0,
-      esb-fireplace
     hs-source-dirs:   app
     default-language: GHC2024
+    ghc-options:      -Wall -Werror
+    build-depends:
+        base ^>=4.21.0.0,
+        esb-fireplace
