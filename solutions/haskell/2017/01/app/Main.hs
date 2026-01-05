@@ -11,14 +11,14 @@ module Main where
 import           Data.Char (digitToInt, isSpace)
 import           Fireplace
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
   let captcha = filter (not . isSpace) input
-  pure $ show $ sum $ map (digitToInt . fst) $ filter (uncurry (==)) $ zip captcha (drop 1 $ cycle captcha)
+  sum $ map (digitToInt . fst) $ filter (uncurry (==)) $ zip captcha (drop 1 $ cycle captcha)
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> String
 solvePt2 _input _args = do
-  pure "December"
+  "December"
 
 main :: IO ()
 main = do

@@ -60,13 +60,13 @@ packingFits shapes regions =
           fitY = height region `div` h
        in fitX * fitY >= sum (shapeIdx region)
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
-  pure $ show $ length $ parse input & uncurry packingFits
+  length $ parse input & uncurry packingFits
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> String
 solvePt2 _input _args = do
-  pure "December"
+  "December"
 
 main :: IO ()
 main = do

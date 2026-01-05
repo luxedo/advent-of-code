@@ -42,13 +42,13 @@ largestJoltage n bank = do
   let (m, i) = argmax $ take (length bank - n + 1) bank
   (m * 10 ^ (n - 1)) + largestJoltage (n - 1) (drop (i + 1) bank)
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
-  pure (show $ sum $ parse input & map (largestJoltage 2))
+  parse input & map (largestJoltage 2) & sum
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
-  pure (show $ sum $ parse input & map (largestJoltage 12))
+  parse input & map (largestJoltage 12) & sum
 
 main :: IO ()
 main = do

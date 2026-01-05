@@ -32,7 +32,7 @@ parse :: String -> RackMap
 parse = Map.insert "out" [] . Map.fromList . map parseServer . lines
 
 parseServer :: String -> Server
-parseServer line = break (== ':') line & second (words . tail)
+parseServer line = break (== ':') line & second (words . drop 1)
 
 countPaths :: Name -> Name -> RackMap -> Int
 countPaths start end cache = counts Map.! start
@@ -42,13 +42,13 @@ countPaths start end cache = counts Map.! start
       | node == end = 1
       | otherwise = sum [fromMaybe 0 (Map.lookup child counts) | child <- fromMaybe [] (Map.lookup node cache)]
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args =
-  pure $ show $ parse input & countPaths "you" "out"
+  parse input & countPaths "you" "out"
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
-  pure $ show $ parse input & (go "fft" "dac" &&& go "dac" "fft") & uncurry (+)
+  parse input & (go "fft" "dac" &&& go "dac" "fft") & uncurry (+)
   where
     go node1 node2 graph =
       product

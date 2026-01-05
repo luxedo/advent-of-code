@@ -82,13 +82,13 @@ invalidIdsPt2 low high = nub (possibleSlices low ++ possibleSlices high) & conca
 searchInvalid :: (Id -> Id -> [Id]) -> IdRange -> [Id]
 searchInvalid fn (IdRange (low, high)) = fn low high & filter (\x -> x >= low && x <= high)
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
-  pure (parse input & concatMap (searchInvalid invalidIdsPt1) & sum & show)
+  parse input & concatMap (searchInvalid invalidIdsPt1) & sum
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
-  pure (parse input & concatMap (searchInvalid invalidIdsPt2) & nub & sum & show)
+  parse input & concatMap (searchInvalid invalidIdsPt2) & nub & sum
 
 main :: IO ()
 main = do

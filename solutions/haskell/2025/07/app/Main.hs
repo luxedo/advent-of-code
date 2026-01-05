@@ -67,13 +67,13 @@ splitersHit = length . filter splitterHit
 prettyPrintMatrix :: (Show a) => [[a]] -> IO ()
 prettyPrintMatrix = mapM_ (putStrLn . unwords . map show)
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
-  pure $ show $ parse input & runBeam 0 & map splitersHit & sum
+  parse input & runBeam 0 & map splitersHit & sum
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
-  pure $ show $ parse input & runBeam 0 & last & countBeams & sum
+  parse input & runBeam 0 & last & countBeams & sum
 
 main :: IO ()
 main = do

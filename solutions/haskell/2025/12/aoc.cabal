@@ -10,4 +10,4 @@ executable solve
     ghc-options:      -Wall -Werror
     build-depends:
         base ^>=4.21.0.0,
-        esb-fireplace
+        esb-fireplace ^>=0.1

@@ -59,16 +59,16 @@ parseOperator _   = error "Could not parse Operator"
 solveEquation :: Equation -> Int
 solveEquation Equation {operator, operands} = getOperation operator operands
 
-solveEquations :: String -> Dialect -> String
-solveEquations input notation = show $ parse input notation & map solveEquation & sum
+solveEquations :: String -> Dialect -> Int
+solveEquations input notation = parse input notation & map solveEquation & sum
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
-  pure $ solveEquations input regularNotation
+  solveEquations input regularNotation
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
-  pure $ solveEquations input cephalopodNotation
+  solveEquations input cephalopodNotation
 
 main :: IO ()
 main = do

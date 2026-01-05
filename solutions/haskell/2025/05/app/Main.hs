@@ -58,13 +58,13 @@ mergeRanges ((s1, e1) : (s2, e2) : rest)
   | e1 >= s2 - 1 = mergeRanges ((min s1 s2, max e1 e2) : rest)
 mergeRanges (r : rest) = r : mergeRanges rest
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
-  pure $ show $ parse input & uncurry countFresh
+  parse input & uncurry countFresh
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
-  pure $ show $ parse input & fst & countIds
+  parse input & fst & countIds
 
 main :: IO ()
 main = do

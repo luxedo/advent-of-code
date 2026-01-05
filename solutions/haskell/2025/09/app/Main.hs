@@ -76,15 +76,15 @@ inboundArea slabs (x1, y1) (x2, y2) =
       isXCovered slab = any (\(px1, px2) -> px1 <= minX && px2 >= maxX) (sxRanges slab)
    in totalYcovered && all isXCovered overlappingSlabs
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
-  pure $ show $ parse input & listAreasSorted & head & snd
+  parse input & listAreasSorted & head & snd
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
   let tiles = parse input
   let slabs = buildSlabs tiles
-  pure $ show $ listAreasSorted tiles & find (\((p0, p1), _) -> inboundArea slabs p0 p1) & fromJust & snd
+  listAreasSorted tiles & find (\((p0, p1), _) -> inboundArea slabs p0 p1) & fromJust & snd
 
 main :: IO ()
 main = do

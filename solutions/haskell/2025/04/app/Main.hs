@@ -85,14 +85,14 @@ update1d col f xs
             []                    -> error "Cannot update1d on invalid col"
             targetCol : afterCols -> beforeCols ++ [f targetCol] ++ afterCols
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
-  pure $ show $ length $ parse input & listRemovable
+  length $ parse input & listRemovable
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
   let cafeteria = parse input
-  pure $ show $ length $ zipWith zip cafeteria (fixedPoint removePapers cafeteria) & concatMap (filter (== (Paper, Empty)))
+  length $ zipWith zip cafeteria (fixedPoint removePapers cafeteria) & concatMap (filter (== (Paper, Empty)))
 
 main :: IO ()
 main = do

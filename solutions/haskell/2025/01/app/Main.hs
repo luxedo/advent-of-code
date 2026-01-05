@@ -62,15 +62,15 @@ countZeros = length . filter (\case Dial (0, _) -> True; _ -> False)
 countZeroPasses :: Dial -> Int
 countZeroPasses (Dial (_, w)) = w
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input _args = do
   let rotations = parse input
-  pure (show (Dial (50, 0) `rotateMany` rotations & countZeros))
+  Dial (50, 0) `rotateMany` rotations & countZeros
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
   let rotations = parse input
-  pure (show (Dial (50, 0) `rotateMany` rotations & last & countZeroPasses))
+  Dial (50, 0) `rotateMany` rotations & last & countZeroPasses
 
 main :: IO ()
 main = do

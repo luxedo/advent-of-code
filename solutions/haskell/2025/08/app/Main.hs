@@ -111,23 +111,23 @@ connectFull circuits connected (conn : conns) =
           (newCircuit, conn : connected)
         else connectFull newCircuit (conn : connected) conns
 
-solvePt1 :: String -> [String] -> IO String
+solvePt1 :: String -> [String] -> Int
 solvePt1 input args = do
   let pairs = parseArgs args
   let boxes = parse input
   let circuits = [Circuit (i, []) | i <- [0 .. length boxes - 1]]
   let connections = boxes & distances & sortBy (comparing snd) & take pairs
   let connected = foldr connect circuits connections & filter hasConnections & findGroups []
-  pure $ show $ sortBy (comparing Data.Ord.Down) (connected & getGroupNodes & map length) & take 3 & product
+  sortBy (comparing Data.Ord.Down) (connected & getGroupNodes & map length) & take 3 & product
 
-solvePt2 :: String -> [String] -> IO String
+solvePt2 :: String -> [String] -> Int
 solvePt2 input _args = do
   let boxes = parse input
   let circuits = [Circuit (i, []) | i <- [0 .. length boxes - 1]]
   let connections = boxes & distances & sortBy (comparing snd)
   let finalConnections = connectFull circuits [] connections & snd
   let (c1, c2) = head finalConnections & fst
-  pure $ show $ getX (boxes !! c1) * getX (boxes !! c2)
+  getX (boxes !! c1) * getX (boxes !! c2)
   where
     getX (x, _, _) = x
 
