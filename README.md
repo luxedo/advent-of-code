@@ -9,7 +9,7 @@
 ## SERVICE STARS
 
 
-### 2025 (10/25)
+### 2025 (12/12) ⭐
 
 <table>
   <tr>
@@ -43,7 +43,7 @@
     <td>🦄🦄</td>
     <td>🦄🦄</td>
     <td>🦄🦄</td>
-    <td>🦄 ☐</td>
+    <td>🦄🦄</td>
     <td>🦄🦄</td>
     <td>🦄 ☐</td>
   </tr>
@@ -51,9 +51,9 @@
     <td>⭐⭐</td>
     <td>⭐⭐</td>
     <td>⭐⭐</td>
-    <td>⭐☆</td>
     <td>⭐⭐</td>
-    <td>⭐☆</td>
+    <td>⭐⭐</td>
+    <td>⭐⭐</td>
   </tr>
   <tr>
     <th>07</th>
@@ -121,13 +121,13 @@
     <td colspan="6" />
   </tr>
   <tr>
-    <td colspan="6" align="center">☐ ☐</td>
+    <td colspan="6" align="center">🦄 ☐</td>
   </tr>
   <tr>
-    <td colspan="6" align="center">☆ ☆</td>
+    <td colspan="6" align="center">⭐⭐</td>
   </tr>
   <tr>
-    <th colspan="6" align="center">25</th>
+    <th colspan="6" align="center">12</th>
   </tr>
 </table>
 
